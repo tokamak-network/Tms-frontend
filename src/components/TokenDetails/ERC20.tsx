@@ -4,7 +4,9 @@ import { useAccount } from 'wagmi';
 
 interface TokenDetailsProps {
   tokenAddress: string;
-  setTokenDetails: React.Dispatch<React.SetStateAction<TokenDetailsState | undefined>>;
+  setTokenDetails: React.Dispatch<
+    React.SetStateAction<TokenDetailsState | undefined>
+  >;
 }
 
 interface TokenDetailsState {
@@ -16,20 +18,40 @@ interface TokenDetailsState {
   allowance: string | undefined;
 }
 
-const TokenDetails: React.FC<TokenDetailsProps> = ({ tokenAddress, setTokenDetails }) => {
+const TokenDetails: React.FC<TokenDetailsProps> = ({
+  tokenAddress,
+  setTokenDetails,
+}) => {
   const { address: userAddress } = useAccount();
-  const [tokenDetails, setTokenDetailsState] = useState<TokenDetailsState | undefined>(undefined);
+  const [tokenDetails, setTokenDetailsState] = useState<
+    TokenDetailsState | undefined
+  >(undefined);
 
   useEffect(() => {
     const fetchTokenDetails = async () => {
-      if (!tokenAddress ||!userAddress) return;
-      console.log(tokenAddress, userAddress);
+      if (!tokenAddress || !userAddress) return;
       try {
-        const formattedTokenAddress = tokenAddress.startsWith('0x') ? tokenAddress : `0x${tokenAddress}`;
-        const { name, symbol, decimals, totalSupply, balanceOf, allowance } = await useERC20Contract(formattedTokenAddress, userAddress);
-        console.log("Name:", name, symbol, decimals, totalSupply, balanceOf, allowance);
-        setTokenDetails({ name, symbol, decimals, totalSupply, balanceOf, allowance });
-        setTokenDetailsState({ name, symbol, decimals, totalSupply, balanceOf, allowance });
+        const formattedTokenAddress = tokenAddress.startsWith('0x')
+          ? tokenAddress
+          : `0x${tokenAddress}`;
+        const { name, symbol, decimals, totalSupply, balanceOf, allowance } =
+          await useERC20Contract(formattedTokenAddress, userAddress);
+        setTokenDetails({
+          name,
+          symbol,
+          decimals,
+          totalSupply,
+          balanceOf,
+          allowance,
+        });
+        setTokenDetailsState({
+          name,
+          symbol,
+          decimals,
+          totalSupply,
+          balanceOf,
+          allowance,
+        });
       } catch (error) {
         console.error('Failed to fetch token details', error);
       }
@@ -37,35 +59,46 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({ tokenAddress, setTokenDetai
 
     fetchTokenDetails();
   }, [tokenAddress, userAddress]);
-  
+
   if (!tokenDetails) {
     return (
-      <div className="flex justify-center items-center h-32">
-        <div className="loader"></div>
+      <div className='flex justify-center items-center h-32'>
+        <div className='loader'></div>
       </div>
     );
   }
-  console.log(tokenDetails);
+
   return (
-    <div className="bg-indigo-900 rounded shadow-sm p-4">
-      <div className="text-white text-sm space-y-2">
-        <div>
-          <span className="font-bold">Name:</span> {tokenDetails.name}
+    <div className='p-4 rounded-lg border  border-gray-200 bg-white shadow-sm'>
+      <div className='text-center mb-4'>
+        <h3 className='text-lg font-sans text-gray-900'>
+          {tokenDetails.name} ({tokenDetails.symbol})
+        </h3>
+      </div>
+      <div className='grid grid-cols-2 gap-4'>
+        <div className='flex flex-row items-center '>
+          <span className='text-gray-700'>Balance :</span>
+          <span className='font-sans text-gray-900 ml-2'>
+            {tokenDetails.balanceOf}
+          </span>
         </div>
-        <div>
-          <span className="font-bold">Symbol:</span> {tokenDetails.symbol}
+        <div className='flex flex-row items-center '>
+          <span className='text-gray-700'>Decimals :</span>
+          <span className='font-sans text-gray-900 ml-2'>
+            {tokenDetails.decimals}
+          </span>
         </div>
-        <div>
-          <span className="font-bold">Decimals:</span> {tokenDetails.decimals}
+        <div className='flex flex-row items-center '>
+          <span className='text-gray-700'>Supply :</span>
+          <span className='font-sans text-gray-900 ml-2'>
+            {tokenDetails.totalSupply}
+          </span>
         </div>
-        <div>
-          <span className="font-bold">Total Supply:</span> {tokenDetails.totalSupply}
-        </div>
-        <div>
-          <span className="font-bold">Balance Of:</span> {tokenDetails.balanceOf}
-        </div>
-        <div>
-          <span className="font-bold">Allowance:</span> {tokenDetails.allowance}
+        <div className='flex flex-row items-center '>
+          <span className='text-gray-700'>Allowance :</span>
+          <span className='font-sans text-gray-900 ml-2'>
+            {tokenDetails.allowance}
+          </span>
         </div>
       </div>
     </div>
