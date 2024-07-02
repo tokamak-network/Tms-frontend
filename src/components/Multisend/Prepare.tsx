@@ -41,7 +41,7 @@ const PrepareComponent = ({ setTokenDetails, setCSVData }) => {
               onChange={handleInputChange}
             />
           </div>
-      
+          
           {error && <div className='mt-2 text-xs text-red-500'>{error}</div>}
           {tokenAddress && !error && (
             <>
