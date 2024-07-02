@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import TokenDetails from '../TokenDetails/ERC20';
 import { ethers } from 'ethers';
 import CSVUploader from './csvUploader';
+import NativeETHDetails from '../TokenDetails/NativeETH';
 
 const PrepareComponent = ({ setTokenDetails, setCSVData }) => {
   const [tokenAddress, setTokenAddress] = useState('');
@@ -40,13 +41,21 @@ const PrepareComponent = ({ setTokenDetails, setCSVData }) => {
               onChange={handleInputChange}
             />
           </div>
-
+          
           {error && <div className='mt-2 text-xs text-red-500'>{error}</div>}
           {tokenAddress && !error && (
-            <TokenDetails
-              tokenAddress={tokenAddress}
-              setTokenDetails={setTokenDetails}
-            />
+            <>
+            {tokenAddress !== '0x0000000000000000000000000000000000000000' ? (
+              <TokenDetails
+                tokenAddress={tokenAddress}
+                setTokenDetails={setTokenDetails}
+              />
+            ) : (
+              <NativeETHDetails 
+                setEthDetails={setTokenDetails}
+              />
+            )}
+            </>
           )}
         </div>
         <div className='flex flex-col'></div>
