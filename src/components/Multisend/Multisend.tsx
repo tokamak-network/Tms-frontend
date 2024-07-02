@@ -20,9 +20,10 @@ export function Multisend() {
   } else {
     buttonText = 'Next';
   }
+  
 
   return (
-    <div className='flex flex-col items-center px-20 pb-6 shadow-sm bg-indigo-950 max-md:px-5'>
+    <div className='flex flex-col items-center px-20 pb-6 shadow-sm bg-white-950 max-md:px-5'>
       <div className='flex flex-col items-center w-full max-w-[900px] max-md:max-w-full'>
         <div className='flex items-center gap-5 max-w-full text-xs text-blue-400 whitespace-nowrap'>
           <div className='flex items-center gap-1.5 relative'>
