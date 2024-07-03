@@ -4,13 +4,14 @@ import { ethers } from 'ethers';
 import CSVUploader from './csvUploader';
 import NativeETHDetails from '../TokenDetails/NativeETH';
 
-const PrepareComponent = ({ setTokenDetails, setCSVData }) => {
+const PrepareComponent = ({ setTokenDetails, setCSVData, setToken }) => {
   const [tokenAddress, setTokenAddress] = useState('');
   const [error, setError] = useState('');
 
   const handleInputChange = (e: any) => {
     const input = e.target.value;
     setTokenAddress(input);
+    setToken(input);
 
     if (!input) {
       setError('');

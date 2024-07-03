@@ -7,16 +7,22 @@ const StatCard = ({ title, value, textColor = 'text-black' }) => (
     className={`h-20 w-80 border border-gray-500 rounded-md flex flex-col items-center justify-center`}
   >
     <h1 className='text-base'>{title}</h1>
-    <h1 className={`font-bold text-3xl ${textColor}`}>{value?value:0}</h1>
+    <h1 className={`font-bold text-3xl ${textColor}`}>{value ? value : 0}</h1>
   </div>
 );
 
-const ApproveComponent = ({ tokenBalance, tokenDetails, recipients }) => {
+const ApproveComponent = ({
+  tokenBalance,
+  tokenDetails,
+  recipients,
+  setAmountType,
+  setTotalAmount,
+}) => {
   const account = useAccount().address;
   const ethBalance = useBalance({ address: account }).data?.value;
-  const ethBalanceFormatted = parseFloat(
-    ethers.formatEther(BigInt(ethBalance))
-  ).toFixed(3);
+  const ethBalanceFormatted = ethBalance
+    ? parseFloat(ethers.formatEther(BigInt(ethBalance))).toFixed(3)
+    : '0';
 
   const symbol = tokenDetails.symbol;
   const allowance = parseInt(tokenDetails.allowance);
@@ -37,14 +43,23 @@ const ApproveComponent = ({ tokenBalance, tokenDetails, recipients }) => {
     (acc, current) => acc + current.amount,
     0
   );
+  const handleRadioChange = (e) => {
+    const amountType = e.target.id;
+    const totalAmount = totalTokensToSend.toFixed(3);
+    setAmountType(amountType);
+    setTotalAmount(totalAmount);
+  };
 
   return (
     <div className='flex flex-col px-5 py-6 mt-5 max-w-65 rounded shadow-sm  w-full '>
       <div className='h-full w-full border border-gray-800  rounded-md mx-auto my-10 p-5'>
         <div className='flex justify-center gap-5 mt-5'>
           <StatCard title='Send Amount' value={totalTokensToSend.toFixed(3)} />
-          {tokenDetails|| (
-            <StatCard title={`${symbol ? symbol : 'TON'} Balance`} value={tokenBalance} />
+          {tokenDetails || (
+            <StatCard
+              title={`${symbol ? symbol : 'TON'} Balance`}
+              value={tokenBalance}
+            />
           )}
           <StatCard title='ETH balance' value={ethBalanceFormatted} />
         </div>
@@ -71,11 +86,21 @@ const ApproveComponent = ({ tokenBalance, tokenDetails, recipients }) => {
             Amount to approve
           </h1>
           <div className='flex flex-row gap-4 mt-5 ml-4'>
-            <input type='radio' id='exact-amount' name='amount-type' />
+            <input
+              type='radio'
+              id='exact-amount'
+              name='amount-type'
+              onChange={handleRadioChange}
+            />
             <label htmlFor='exact-amount' className='text-grey text-xl mr-8'>
               Approve Exact Amount
             </label>
-            <input type='radio' id='unlimited-amount' name='amount-type' />
+            <input
+              type='radio'
+              id='unlimited-amount'
+              name='amount-type'
+              onChange={handleRadioChange}
+            />
             <label htmlFor='unlimited-amount' className='text-grey text-xl'>
               Approve Unlimited Amount
             </label>
