@@ -11,29 +11,48 @@ const Navbar = () => {
   };
 
   return (
-    <nav className='flex justify-between items-center p-4 bg-gray-800 text-white'>
-      <div className='text-xl font-bold'>Multisender</div>
-      <div className='flex items-center space-x-4'>
-        <div className='relative'>
-          <button className='focus:outline-none' onClick={toggleDropdown}>
-            Products
-          </button>
-          {dropdownOpen && (
-            <div className='absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg'>
-              <a href='#' className='block px-4 py-2 hover:bg-gray-200'>
-                Product 1
-              </a>
-              <a href='#' className='block px-4 py-2 hover:bg-gray-200'>
-                Product 2
-              </a>
-              <a href='#' className='block px-4 py-2 hover:bg-gray-200'>
-                Product 3
-              </a>
-            </div>
-          )}
+    <nav className='flex flex-col'>
+      <div className='bg-[#2775FF] py-2'>
+        <div className='container mx-auto flex justify-center items-center text-white'>
+          <div className='flex space-x-5'>
+            <a href='https://www.tokamak.network/#/' className='hover'>
+              Tokamak Network
+            </a>
+            <a href='https://titan.tokamak.network/' className='hover'>
+              L2 Mainnet
+            </a>
+            <a href='https://bridge.tokamak.network/#/' className='hover'>
+              Bridge & Swap
+            </a>
+            <a
+              href='https://simple.staking.tokamak.network/home'
+              className='hover'
+            >
+              Staking
+            </a>
+            <a href='https://dao.tokamak.network/#/' className='hover'>
+              DAO
+            </a>
+            <a href='https://tonstarter.tokamak.network/' className='hover'>
+              Launchpad
+            </a>
+          </div>
         </div>
-        <div className='cursor-pointer'>
-          <ConnectWallet />
+      </div>
+      <div className='bg-white py-4'>
+        <div className='container mx-auto flex justify-between items-center'>
+          <div className='flex items-center'>
+            <img
+              src='https://www.tokamak.network/img/tokamak-symbol.42cbe8cc.svg'
+              alt='https://www.tokamak.network/img/tokamak-symbol.42cbe8cc.svg'
+              className='h-8 w-8 mr-2'
+            />
+            <h2 className='text-xl font-bold'>Tokamak Multisender</h2>
+          </div>
+          <div className='cursor-pointer'>
+            <ConnectWallet />
+          </div>
+          
         </div>
       </div>
     </nav>

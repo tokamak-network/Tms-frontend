@@ -14,6 +14,8 @@ export const ConnectWallet = () => {
       }) => {
         // Note: If your app doesn't use authentication, you
         // can remove all 'authenticationStatus' checks
+        console.log('chain', chain);
+
         const ready = mounted && authenticationStatus !== 'loading';
         const connected =
           ready &&
@@ -37,7 +39,7 @@ export const ConnectWallet = () => {
                   <button
                     onClick={openConnectModal}
                     type='button'
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    className='bg-transparent border-2 border-gray-300 text-gray-500 py-2 px-6 rounded-full hover:bg-gray-700 hover:text-white transition duration-300 font-titillium'
                   >
                     Connect Wallet
                   </button>
@@ -48,23 +50,23 @@ export const ConnectWallet = () => {
                   <button
                     onClick={openChainModal}
                     type='button'
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    className='bg-transparent border-2 border-gray-300 text-gray-400 py-2 px-6 rounded-full hover:bg-gray-700 hover:text-white transition duration-300 font-titillium'
                   >
                     Wrong network
                   </button>
                 );
               }
               return (
-                <div className="flex gap-12">
+                <div className='flex gap-12'>
                   <button
                     onClick={openChainModal}
-                    className="flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    className='bg-transparent border-2 border-gray-300 text-gray-400 py-2 px-6 rounded-full hover:bg-gray-700 hover:text-white transition duration-300 font-titillium'
                     type='button'
                   >
                     {chain.hasIcon && (
                       <div
                         style={{
-                          background: chain.iconBackground,
+                          background: chain.iconUrl,
                           width: 12,
                           height: 12,
                           borderRadius: 999,
@@ -86,7 +88,7 @@ export const ConnectWallet = () => {
                   <button
                     onClick={openAccountModal}
                     type='button'
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    className='bg-transparent border-2 border-gray-300 text-gray-400 py-2 px-6 rounded-full hover:bg-gray-700 hover:text-white transition duration-300 font-titillium'
                   >
                     {account.displayName}
                     {account.displayBalance
