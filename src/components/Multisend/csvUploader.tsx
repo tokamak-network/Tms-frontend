@@ -183,7 +183,7 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
   };
 
   return (
-    <div className='flex flex-col py-1 mt-1.5 text-xs border-color-red leading-4 text-sky-500 rounded shadow-sm bg-purple-950 max-md:max-w-full p-4'>
+    <div className='flex flex-col py-1 mt-1.5 text-xs border-color-red leading-4 text-sky-500 rounded shadow-sm  bg-white-950 max-md:max-w-full p-4'>
       {showModal && (
         <div className='fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center'>
           <div className='bg-white p-6 rounded shadow-md w-1/3 relative'>
@@ -260,16 +260,20 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
           </div>
         </div>
       )}
+       <div className='flex items-center justify-between'>
+        <p className=''>Address List</p>
+        <span className='text-blue-500 font-medium cursor-pointer'>
+          CSV Example
+        </span>
+      </div>
 
       <textarea
-        className='mt-4 p-2 font-poppins font-normal text-base leading-[21px] text-cap rounded font-poppinsbg-white-900 text-white w-full border border-grey-800 '
+        className='mt-4 p-2 font-poppins font-normal text-base leading-[21px] text-cap rounded font-poppinsbg-white-900 text-black w-full border border-grey-800 '
         rows={10}
         placeholder='Or paste your CSV content here'
         value={csvContent}
         onChange={handleTextareaChange}
       />
-
-      <div className='mt-6 text-xs leading-5 text-sky-500'>Show Sample CSV</div>
       {errors.length > 0 && (
         <div
           className='mt-4 p-2 items-center bg-white text-red-800 rounded space-y-2'
