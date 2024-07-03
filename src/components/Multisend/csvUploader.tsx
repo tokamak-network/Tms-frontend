@@ -6,11 +6,10 @@ interface Error {
   message: string;
 }
 
-const CSVUploader: React.FC = ({ setCSVData }) => {
+const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
   const [csvContent, setCsvContent] = useState<string>('');
   const [errors, setErrors] = useState<Error[]>([]);
   const [dynamicMessage, setDynamicMessage] = useState<string>('');
-  const [showModal, setShowModal] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
   const [fileUrl, setFileUrl] = useState<string>('');
@@ -65,7 +64,7 @@ const CSVUploader: React.FC = ({ setCSVData }) => {
       });
       if (!response.ok) {
         console.log(response);
-        
+
         throw new Error('Network response was not ok');
       }
       console.log(response);
@@ -184,14 +183,7 @@ const CSVUploader: React.FC = ({ setCSVData }) => {
   };
 
   return (
-    <div className='flex flex-col py-1 mt-1.5 text-xs border-color-red leading-4 text-sky-500 rounded shadow-sm bg-white-950 max-md:max-w-full p-4'>
-      <button
-        onClick={() => setShowModal(true)}
-        className='bg-blue-500 text-white px-4 py-2 rounded'
-      >
-        Upload CSV
-      </button>
-
+    <div className='flex flex-col py-1 mt-1.5 text-xs border-color-red leading-4 text-sky-500 rounded shadow-sm bg-purple-950 max-md:max-w-full p-4'>
       {showModal && (
         <div className='fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center'>
           <div className='bg-white p-6 rounded shadow-md w-1/3 relative'>
