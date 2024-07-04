@@ -14,7 +14,6 @@ export const ConnectWallet = () => {
       }) => {
         // Note: If your app doesn't use authentication, you
         // can remove all 'authenticationStatus' checks
-        console.log('chain', chain);
 
         const ready = mounted && authenticationStatus !== 'loading';
         const connected =

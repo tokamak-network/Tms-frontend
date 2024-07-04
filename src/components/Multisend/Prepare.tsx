@@ -24,7 +24,7 @@ const PrepareComponent = ({ setTokenDetails, setCSVData, setToken }) => {
   };
 
   return (
-    <div className='flex flex-col px-5 py-6 mt-5 max-w-full rounded shadow-sm bg-white-950 w-[566px] font-sans'>
+    <div className='flex flex-col px-5 mt-5 max-w-full rounded shadow-sm bg-white-950 w-[566px] font-sans'>
       <div>
         <div className='flex items-end gap-6 font-ans-serif'>
           <div className='flex gap-1.5 px-3.5 py-2.5 mt-2 text-indigo-500 border border-solid border-zinc-400 leading-[1%] max-md:flex-wrap box-border w-[370px] h-10 rounded-full border-1'>
@@ -44,7 +44,7 @@ const PrepareComponent = ({ setTokenDetails, setCSVData, setToken }) => {
           </div>
           <button
             onClick={() => setShowModal(true)}
-            className='bg-gray-200 text-black rounded-full py-2 px-6 hover:bg-gray-300 transition duration-300 '
+            className='bg-gray-200 text-center text-black rounded-full py-2 px-6 hover:bg-gray-300 transition duration-300 '
           >
             Upload CSV
           </button>
