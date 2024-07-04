@@ -183,7 +183,7 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
   };
 
   return (
-    <div className='flex flex-col py-1 mt-1.5 text-xs border-color-red leading-4 text-sky-500 rounded shadow-sm  bg-white-950 max-md:max-w-full p-4'>
+    <div className='flex flex-col py-1 mt-1.5 text-xs border-color-red leading-4 text-sky-500 max-md:max-w-full '>
       {showModal && (
         <div className='fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center'>
           <div className='bg-white p-6 rounded shadow-md w-1/3 relative'>
@@ -260,20 +260,39 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
           </div>
         </div>
       )}
-       <div className='flex items-center justify-between'>
+      <div className='flex items-center justify-between mb-4 mt-2'>
         <p className=''>Address List</p>
         <span className='text-blue-500 font-medium cursor-pointer'>
           CSV Example
         </span>
       </div>
 
-      <textarea
-        className='mt-4 p-2 font-poppins font-normal text-base leading-[21px] text-cap rounded font-poppinsbg-white-900 text-black w-full border border-grey-800 '
-        rows={10}
-        placeholder='Or paste your CSV content here'
-        value={csvContent}
-        onChange={handleTextareaChange}
-      />
+      <div className='container h-400 w-800 bg-white rounded-lg p-0 border border-gray-300'>
+        <div className='flex h-full'>
+          <div className='w-12 bg-[#F0F2F7] rounded-l-lg p-2'>
+            <ul className='list-none m-0 p-0'>
+              {[...Array(csvContent.split('\n').length).keys()].map((i) => (
+                <li
+                  key={i + 1}
+                  className='h-6 leading-10 text-center border-gray-300 text-gray-600 text-sm'
+                >
+                  {i + 1}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <textarea
+            className='w-full h-full p-4 text-base font-normal text-gray-600  bg-white rounded-r-lg focus:outline-none'
+            rows={
+              csvContent.split('\n').length > 6
+                ? csvContent.split('\n').length
+                : 6
+            }
+            value={csvContent}
+            onChange={handleTextareaChange}
+          />
+        </div>
+      </div>
       {errors.length > 0 && (
         <div
           className='mt-4 p-2 items-center bg-white text-red-800 rounded space-y-2'
