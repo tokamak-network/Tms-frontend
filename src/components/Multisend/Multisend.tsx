@@ -171,7 +171,7 @@ export function Multisend() {
                   ? handleMultiSend()
                   : setCurrentStep(1);
               }}
-              className='  w-[500px] text-center px-16 py-4 mt-5 text-xs leading-4 text-white bg-[#007AFF] rounded-3xl'
+              className='  font-ans-serif font-semibold text-s w-[500px] text-center px-16 py-4 mt-5  leading-4 text-white bg-[#007AFF] rounded-3xl'
             >
               {buttonText}
             </button>
