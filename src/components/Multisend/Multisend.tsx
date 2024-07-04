@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PrepareComponent from './Prepare';
 import ApproveComponent from './Approve'; // Import the Approve component
 import { useApprove } from '../../hooks/useApprove';
 import { useMultiSend } from '../../hooks/useMultisend';
 import { parseUnits } from 'viem';
 import SuccessCard from '../cards/successCard';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
 
 export function Multisend() {
   const [TokenDetails, setTokenDetails] = useState('');
@@ -14,16 +16,27 @@ export function Multisend() {
   const [amountType, setAmountType] = useState<'exact' | 'ax'>('exact');
   const [tokenAddress, setTokenAddress] = useState('');
   const [txnHash, setTxnHash] = useState(null);
-  const [currentStep, setCurrentStep] = React.useState(4);
+  const [currentStep, setCurrentStep] = React.useState(1);
+  const account = useAccount().address;
 
   const handleNextClick = () => {
     setCurrentStep((prevStep) => prevStep + 1);
   };
-  console.log(currentStep, 'hidhuiui');
+  useEffect(() => {
+    console.log(account, 'uhgugug');
+    // Any other side effects or cleanup logic
+    return () => {
+      // Cleanup logic if needed
+    };
+  }, [account]);
 
   let buttonText;
   if (currentStep === 1) {
-    buttonText = 'Continue';
+    if (!account) {
+      buttonText = 'Connect Wallet';
+    } else {
+      buttonText = 'Continue';
+    }
   } else if (currentStep === 2) {
     buttonText = 'Approve';
   } else if (currentStep === 3) {
@@ -144,20 +157,26 @@ export function Multisend() {
       {currentStep === 4 && <SuccessCard txnHash={txnHash} />}
 
       {currentStep && (
-        <button
-          onClick={() => {
-            currentStep == 1
-              ? handleNextClick()
-              : currentStep == 2
-              ? handleApprove()
-              : currentStep === 3
-              ? handleMultiSend()
-              : setCurrentStep(1);
-          }}
-          className='  w-[500px] text-center px-16 py-4 mt-5 text-xs leading-4 text-white bg-[#007AFF] rounded-3xl'
-        >
-          {buttonText}
-        </button>
+        <ConnectButton.Custom>
+          {({ openConnectModal }) => (
+            <button
+              onClick={() => {
+                currentStep == 1 && !account
+                  ? openConnectModal()
+                  : currentStep == 1 && account
+                  ? handleNextClick()
+                  : currentStep == 2
+                  ? handleApprove()
+                  : currentStep === 3
+                  ? handleMultiSend()
+                  : setCurrentStep(1);
+              }}
+              className='  w-[500px] text-center px-16 py-4 mt-5 text-xs leading-4 text-white bg-[#007AFF] rounded-3xl'
+            >
+              {buttonText}
+            </button>
+          )}
+        </ConnectButton.Custom>
       )}
     </div>
   );
