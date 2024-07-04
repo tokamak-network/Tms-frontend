@@ -98,7 +98,7 @@ export function Multisend() {
           <div className='text-grey-500'>Prepare</div>
           <div className='flex-1 h-0.5 bg-gray-300 ml-6'></div>
         </div>
-        
+
         <div className='flex items-center gap-1.5 relative'>
           <span
             className={`flex justify-center items-center ${
@@ -154,7 +154,7 @@ export function Multisend() {
               ? handleMultiSend()
               : setCurrentStep(1);
           }}
-          className='flex justify-center items-center px-16 py-4 mt-5 text-xs leading-4 text-white bg-sky-500 rounded max-md:px-5 max-md:max-w-full'
+          className='  w-[500px] text-center px-16 py-4 mt-5 text-xs leading-4 text-white bg-[#007AFF] rounded-3xl'
         >
           {buttonText}
         </button>
