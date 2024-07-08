@@ -9,7 +9,7 @@ const PrepareComponent = ({ setTokenDetails, setCSVData, setToken }) => {
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false); // State for modal visibility
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e) => {
     const input = e.target.value;
     setTokenAddress(input);
     setToken(input);
@@ -24,10 +24,10 @@ const PrepareComponent = ({ setTokenDetails, setCSVData, setToken }) => {
   };
 
   return (
-    <div className='flex flex-col px-5 mt-5 max-w-full rounded shadow-sm bg-white-950 w-[566px] font-sans'>
+    <div className='flex flex-col mt-10 max-w-full rounded shadow-sm bg-white-950 w-[600px] font-sans'>
       <div>
-        <div className='flex items-end gap-6 font-ans-serif'>
-          <div className='flex gap-1.5 px-3.5 py-2.5 mt-2 text-indigo-500 border border-solid border-zinc-400 leading-[1%] max-md:flex-wrap box-border w-[370px] h-10 rounded-full border-1'>
+        <div className='flex justify-between font-ans-serif'>
+          <div className='flex gap-1.5 px-3.5 py-2.5 text-indigo-500 border border-solid border-zinc-400 leading-[1%] max-md:flex-wrap box-border w-[370px] h-10 rounded-full border-1'>
             <img
               loading='lazy'
               src='https://cdn.builder.io/api/v1/image/assets/TEMP/4792370c216477454484b83d83d4e4aaae409419cf9974d042cb7489c6fefe2e?'

@@ -15,7 +15,7 @@ const SuccessCard = ({ txnHash }) => {
   }, [txnHash]);
 
   return (
-    <div className='flex flex-col px-5 py-6 mt-5 max-w-65 rounded w-full '>
+    <div className='flex flex-col mt-10 max-w-65 rounded w-full '>
       <div className='h-full w-full  rounded-md mx-auto my-10 p-5 text-center '>
         <h1 className=' text-xl font-poppins text-bold  p-3 flex justify-center'>SUCCESS!</h1>
         <p className='text-base mb-4 '>

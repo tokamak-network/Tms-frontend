@@ -6,6 +6,7 @@ interface Error {
   message: string;
 }
 
+
 const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
   const [csvContent, setCsvContent] = useState<string>('');
   const [errors, setErrors] = useState<Error[]>([]);
@@ -266,8 +267,7 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
           CSV Example
         </span>
       </div>
-
-      <div className='container h-400 w-800 bg-white rounded-lg p-0 border border-gray-300'>
+      <div className='container h-400 w-800 bg-white rounded-lg p-0 border border-gray-300  overflow-y-scroll always-scrollable'>
         <div className='flex h-full'>
           <div className='w-12 bg-[#F0F2F7] rounded-l-lg p-2'>
             <ul className='list-none m-0 p-0'>
