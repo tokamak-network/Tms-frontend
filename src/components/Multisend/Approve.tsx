@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 
 const StatCard = ({ title, value }) => (
   <div
-    className={`h-10 w-40 rounded-md flex flex-col items-start justify-center`}
+    className={`h-10 rounded-md flex flex-col items-start justify-center`}
   >
     <h1 className='text-xs text-gray-400'>{title}</h1>
     <h1 className={`font-bold text-2xl`}>{value ? value : 0}</h1>
@@ -50,22 +50,23 @@ const ApproveComponent = ({
     setTotalAmount(totalAmount);
   };
   return (
-    <div className='flex flex-col px-5 py-6 mt-5 max-w-full rounded shadow-sm bg-white-950 font-ans-serif'>
-      <div className='flex justify-center gap-10'>
-        <StatCard title='Send Amount' value={totalTokensToSend.toFixed(3)} />
-        {tokenDetails && (
+    <div className='flex flex-col mt-10 max-w-full rounded shadow-sm bg-white-950 font-ans-serif'>
+      <div className='flex justify-between w-full'>
+      {tokenDetails && (
           <StatCard
             title={`${symbol ? symbol : 'TON'} Balance`}
             value={tokenBalance}
           />
         )}
+        <StatCard title='Send Amount' value={totalTokensToSend.toFixed(3)} />
         <StatCard title='ETH balance' value={ethBalanceFormatted} />
       </div>
-      <div className=' mt-5 ml-2 text-ans-serif'>
-        <p className='p-3 flex justify-between text-gray-400'>Address List</p>
+      <div className='mt-5 text-ans-serif'>
+        <p className='flex justify-between text-gray-400'>Address List</p>
+        <div className="scrollable">
         {parsedRecipients.length > 0 ? (
           parsedRecipients.map((recipient, index) => (
-            <div key={index} className='flex justify-between p-3'>
+            <div key={index} className='flex justify-between'>
               <p className='text-[#007AFF] text-m'>{recipient.address}</p>
               <p className='text-blue text-bold'>
                 {recipient.amount} {symbol ? symbol : 'TON'}
@@ -75,6 +76,7 @@ const ApproveComponent = ({
         ) : (
           <p>No recipients found</p>
         )}
+        </div>
       </div>
       <div className='mt-10'>
         <div className='flex flex-row gap-4 mt-5 ml-4 text-ans-serif'>

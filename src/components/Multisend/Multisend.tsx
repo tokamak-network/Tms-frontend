@@ -96,8 +96,8 @@ export function Multisend() {
   };
 
   return (
-    <div className='flex flex-col items-center'>
-      <div className='flex items-center gap-20 text-l text-grey-400'>
+    <div className='flex flex-col items-center pt-8'>
+      <div className='flex items-center gap-40 text-l text-grey-400'>
         <div className='flex items-center gap-1.5 relative'>
           <span
             className={`flex justify-center items-center ${
