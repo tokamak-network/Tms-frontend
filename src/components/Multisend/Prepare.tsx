@@ -4,6 +4,7 @@ import { ethers } from 'ethers';
 import CSVUploader from './csvUploader';
 import NativeETHDetails from '../TokenDetails/NativeETH';
 
+
 const PrepareComponent = ({ setTokenDetails, setCSVData, setToken }) => {
   const [tokenAddress, setTokenAddress] = useState('');
   const [error, setError] = useState('');
@@ -27,19 +28,19 @@ const PrepareComponent = ({ setTokenDetails, setCSVData, setToken }) => {
     <div className='flex flex-col mt-10 max-w-full rounded shadow-sm bg-white-950 w-[600px] font-sans'>
       <div>
         <div className='flex justify-between font-ans-serif'>
-          <div className='flex gap-1.5 px-3.5 py-2.5 text-indigo-500 border border-solid border-zinc-400 leading-[1%] max-md:flex-wrap box-border w-[370px] h-10 rounded-full border-1'>
-            <img
-              loading='lazy'
-              src='https://cdn.builder.io/api/v1/image/assets/TEMP/4792370c216477454484b83d83d4e4aaae409419cf9974d042cb7489c6fefe2e?'
-              className='shrink-0 aspect-square w-6'
-              alt='token'
-            />
+          <div className='flex gap-1.5 px-3.5 py-2.5 text-indigo-500 border border-solid border-zinc-400 leading-[1%] max-md:flex-wrap box-border w-[440px] h-10 rounded-full border-1'>
             <input
               type='text'
               placeholder='Search Token name or address'
-              className='flex-auto my-auto bg-transparent text-gray-600 placeholder-gray-600 focus:outline-none  font-normal text-base leading-[21px] text-cap leading-trim-both'
+              className='flex-auto my-auto bg-transparent text-gray-600 placeholder-gray-600 focus:outline-none  font-normal text-base leading-[21px] text-cap leading-trim-both pl-2'
               value={tokenAddress}
               onChange={handleInputChange}
+            />
+            <img
+              loading='lazy'
+              src='https://cdn.builder.io/api/v1/image/assets/TEMP/4792370c216477454484b83d83d4e4aaae409419cf9974d042cb7489c6fefe2e?'
+              className='shrink-0 aspect-square w-6 '
+              alt='token'
             />
           </div>
           <button
