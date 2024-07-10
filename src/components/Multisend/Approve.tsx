@@ -50,7 +50,7 @@ const ApproveComponent = ({
     setTotalAmount(totalAmount);
   };
   return (
-    <div className='flex flex-col mt-12 mb-10 w-[650px]  rounded shadow-sm bg-white-950 font-ans-serif'>
+    <div className='flex flex-col mt-12 mb-10 w-[650px]  rounded   font-ans-serif'>
       <div className='flex justify-between w-full'>
       {tokenDetails && (
           <StatCard
