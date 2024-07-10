@@ -1,11 +1,12 @@
 import React, { useState, ChangeEvent, useRef } from 'react';
 import { isAddress } from '@ethersproject/address';
+import axios from 'axios';
+import ExampleCSV from '../cards/exampleCSV';
 
 interface Error {
   line: number;
   message: string;
 }
-
 
 const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
   const [csvContent, setCsvContent] = useState<string>('');
@@ -17,6 +18,7 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
   const [uploading, setUploading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [isExampleCSVOpen, setIsExampleCSVOpen] = useState(false);
 
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -50,6 +52,9 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
     validateCSV(content);
     setCSVData(content);
   };
+  const openExampleCSV = () => {
+    setIsExampleCSVOpen(!isExampleCSVOpen);
+  };
 
   const handleUrlUpload = async () => {
     if (!fileUrl) return;
@@ -60,26 +65,27 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
     setErrorMessage('');
 
     try {
-      const response = await fetch(fileUrl, {
-        mode: 'no-cors', // Add this line
-      });
-      if (!response.ok) {
-        console.log(response);
+      const response = await axios.get(fileUrl);
 
-        throw new Error('Network response was not ok');
+      if (response.status !== 200) {
+        throw new Error(
+          'Failed to fetch the CSV file. Network response was not ok'
+        );
       }
-      console.log(response);
 
-      const content = await response.text();
+      const content = response.data; // Get response data directly
+
       setCsvContent(content);
       validateCSV(content);
       setCSVData(content);
       simulateProgress();
+      setUploadSuccess(true);
     } catch (error) {
       console.error('Error fetching the CSV file:', error);
       setErrorMessage(
         'Failed to fetch the CSV file. Please check the URL and try again.'
       );
+    } finally {
       setUploading(false);
     }
   };
@@ -182,14 +188,16 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
     setShowModal(false);
     setFileUrl('');
   };
+  console.log(csvContent, 'csvContent');
 
   return (
-    <div className='flex flex-col py-1 mt-1.5 text-xs border-color-red leading-4 text-sky-500 max-md:max-w-full '>
+    <div className='flex flex-col py-1 mt-1.5 font-quicksand text-xs border-color-red leading-4  max-md:max-w-full '>
+      {isExampleCSVOpen && <ExampleCSV setIsExampleCSVOpen={setIsExampleCSVOpen} />}
       {showModal && (
         <div className='fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center'>
           <div className='bg-white p-6 rounded shadow-md w-1/3 relative'>
             <button
-              className='absolute top-2 right-2 text-gray-500 hover:text-gray-800'
+              className='absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl'
               onClick={handleCloseModal}
             >
               &times;
@@ -229,7 +237,16 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
                   </button>
                 </div>
               ) : (
-                <p>Select a CSV file to upload or drag and drop it here</p>
+                <div className='text-center font-quicksand my-2'>
+                  <img
+                    loading='lazy'
+                    src='https://down-yuantu.pngtree.com/original_origin_pic/19/04/19/7f707b36d5f764a5360303429aa856d9.png?e=1720594680&st=ODMyZDM3NDk2OTI5YzNkZjJlN2RmYTVjZjc1YWVkOTk&n=%E2%80%94Pngtree%E2%80%94file+upload+icon_4717174.png'
+                    className='w-10 ml-52'
+                    alt='logo'
+                  />
+                  <p className='font-bold my-2'>Click to Upload CSV</p>
+                  <p>or drag and drop it here</p>
+                </div>
               )}
             </div>
             <div className='text-center mb-4'>Or upload from URL</div>
@@ -263,7 +280,10 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
       )}
       <div className='flex items-center justify-between mb-4 mt-2'>
         <p className=''>Address List</p>
-        <span className='text-blue-500 font-medium cursor-pointer'>
+        <span
+          onClick={openExampleCSV}
+          className='text-blue-500 font-medium cursor-pointer'
+        >
           CSV Example
         </span>
       </div>

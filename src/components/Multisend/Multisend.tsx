@@ -64,7 +64,7 @@ export function Multisend() {
     }
   };
   const handleMultiSend = async () => {
-    console.log('csvdata', csvData);
+    
     const addresses = [];
     const amounts = [];
 

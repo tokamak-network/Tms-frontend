@@ -50,7 +50,7 @@ const ApproveComponent = ({
     setTotalAmount(totalAmount);
   };
   return (
-    <div className='flex flex-col mt-10 max-w-full rounded shadow-sm bg-white-950 font-ans-serif'>
+    <div className='flex flex-col mt-12 mb-10 w-[650px]  rounded   font-ans-serif'>
       <div className='flex justify-between w-full'>
       {tokenDetails && (
           <StatCard
@@ -62,13 +62,13 @@ const ApproveComponent = ({
         <StatCard title='ETH balance' value={ethBalanceFormatted} />
       </div>
       <div className='mt-5 text-ans-serif'>
-        <p className='flex justify-between text-gray-400'>Address List</p>
+        <p className='flex justify-between text-gray-400 mb-2'>Address List</p>
         <div className="scrollable">
         {parsedRecipients.length > 0 ? (
           parsedRecipients.map((recipient, index) => (
             <div key={index} className='flex justify-between'>
               <p className='text-[#007AFF] text-m'>{recipient.address}</p>
-              <p className='text-blue text-bold'>
+              <p className='font-medium'>
                 {recipient.amount} {symbol ? symbol : 'TON'}
               </p>
             </div>
