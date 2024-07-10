@@ -197,7 +197,7 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
         <div className='fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center'>
           <div className='bg-white p-6 rounded shadow-md w-1/3 relative'>
             <button
-              className='absolute top-2 right-2 text-gray-500 hover:text-gray-800'
+              className='absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl'
               onClick={handleCloseModal}
             >
               &times;
