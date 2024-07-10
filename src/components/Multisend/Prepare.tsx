@@ -3,12 +3,14 @@ import TokenDetails from '../TokenDetails/ERC20';
 import { ethers } from 'ethers';
 import CSVUploader from './csvUploader';
 import NativeETHDetails from '../TokenDetails/NativeETH';
-
+import { useAccount } from 'wagmi';
 
 const PrepareComponent = ({ setTokenDetails, setCSVData, setToken }) => {
   const [tokenAddress, setTokenAddress] = useState('');
   const [error, setError] = useState('');
-  const [showModal, setShowModal] = useState(false); // State for modal visibility
+  const [showModal, setShowModal] = useState(false);
+  const [showTokenDetails, setShowTokenDetails] = useState(false); 
+  const account = useAccount().address;
 
   const handleInputChange = (e) => {
     const input = e.target.value;
@@ -19,10 +21,13 @@ const PrepareComponent = ({ setTokenDetails, setCSVData, setToken }) => {
       setError('');
     } else if (!ethers.isAddress(input)) {
       setError('Invalid address');
+      setShowTokenDetails(false); 
     } else {
       setError('');
+      setShowTokenDetails(true);
     }
   };
+
 
   return (
     <div className='flex flex-col mt-10 max-w-full rounded shadow-sm bg-white-950 w-[600px] font-sans'>
@@ -52,17 +57,20 @@ const PrepareComponent = ({ setTokenDetails, setCSVData, setToken }) => {
         </div>
 
         {error && <div className='mt-2 text-xs text-red-500'>{error}</div>}
-        {tokenAddress && !error && (
-          <>
-            {tokenAddress !== '0x0000000000000000000000000000000000000000' ? (
-              <TokenDetails
-                tokenAddress={tokenAddress}
-                setTokenDetails={setTokenDetails}
-              />
-            ) : (
-              <NativeETHDetails setEthDetails={setTokenDetails} />
-            )}
-          </>
+        {showTokenDetails && ( 
+          <div className='modal'>
+            <div className='modal-content'>
+              {tokenAddress !== '0x0000000000000000000000000000000000000000' ? (
+                <TokenDetails
+                  tokenAddress={tokenAddress}
+                  setTokenDetails={setTokenDetails}
+                  setshowTokenDetails={setShowTokenDetails} 
+                />
+              ) : (
+                <NativeETHDetails setEthDetails={setTokenDetails} />
+              )}
+            </div>
+          </div>
         )}
       </div>
 
