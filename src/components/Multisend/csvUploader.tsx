@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent, useRef } from 'react';
 import { isAddress } from '@ethersproject/address';
 import axios from 'axios';
 import ExampleCSV from '../cards/exampleCSV';
+import UploadIcon from '../../../images/upload_icon.png'
 
 interface Error {
   line: number;
@@ -192,7 +193,9 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
 
   return (
     <div className='flex flex-col py-1 mt-1.5 font-quicksand text-xs border-color-red leading-4  max-md:max-w-full '>
-      {isExampleCSVOpen && <ExampleCSV setIsExampleCSVOpen={setIsExampleCSVOpen} />}
+      {isExampleCSVOpen && (
+        <ExampleCSV setIsExampleCSVOpen={setIsExampleCSVOpen} />
+      )}
       {showModal && (
         <div className='fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center'>
           <div className='bg-white p-6 rounded shadow-md w-1/3 relative'>
@@ -240,9 +243,9 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
                 <div className='text-center font-quicksand my-2'>
                   <img
                     loading='lazy'
-                    src='https://down-yuantu.pngtree.com/original_origin_pic/19/04/19/7f707b36d5f764a5360303429aa856d9.png?e=1720594680&st=ODMyZDM3NDk2OTI5YzNkZjJlN2RmYTVjZjc1YWVkOTk&n=%E2%80%94Pngtree%E2%80%94file+upload+icon_4717174.png'
+                    src={UploadIcon.src}
                     className='w-10 ml-52'
-                    alt='logo'
+                    alt='upload_icon'
                   />
                   <p className='font-bold my-2'>Click to Upload CSV</p>
                   <p>or drag and drop it here</p>
@@ -278,7 +281,7 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
           </div>
         </div>
       )}
-      <div className='flex items-center justify-between mb-4 mt-2'>
+      <div className='flex items-center justify-between mb-4 mt-2 font-quicksand text-grey-300'>
         <p className=''>Address List</p>
         <span
           onClick={openExampleCSV}
