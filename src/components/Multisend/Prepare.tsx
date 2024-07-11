@@ -30,7 +30,7 @@ const PrepareComponent = ({ setTokenDetails, setCSVData, setToken }) => {
 
 
   return (
-    <div className='flex flex-col mt-10 max-w-full rounded shadow-sm bg-white-950 w-[600px] font-sans'>
+    <div className='flex flex-col mt-10 max-w-full rounded shadow-sm bg-white-950 w-[650px] font-sans'>
       <div>
         <div className='flex justify-between font-ans-serif'>
           <div className='flex gap-1.5 px-3.5 py-2.5 text-indigo-500 border border-solid border-zinc-400 leading-[1%] max-md:flex-wrap box-border w-[440px] h-10 rounded-full border-1'>
