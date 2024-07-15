@@ -53,7 +53,7 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
   const parsedRecipients = recipients
     ? Object.entries(JSON.parse(recipients)).map(([address, amount]) => ({
         address,
-        amount: parseFloat(amount),
+        amount: parseFloat(amount as string),
       }))
     : [];
   
