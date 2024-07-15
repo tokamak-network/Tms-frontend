@@ -18,7 +18,6 @@ export const useApprove = async (
   const chainId = (await getCurrentNetwork()).chain.id;
   const multisendAddress = contracts.multisend[chainId] as `0x${string}`;
   if (amountType === 'exact-amount') {
-    
     approvalAmount = ethers.parseUnits(amount, decimals);
   } else {
     approvalAmount = ethers.MaxUint256.toString();
@@ -30,7 +29,7 @@ export const useApprove = async (
       address: contractAddress,
       abi: ERC20_INTERFACE,
       functionName: 'approve',
-      args: [multisendAddress, approvalAmount],
+      args: [multisendAddress, approvalAmount]
     });
     return result;
   } catch (error: any) {
