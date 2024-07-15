@@ -4,7 +4,6 @@ import { ethers } from 'ethers';
 import CSVUploader from './csvUploader';
 import NativeETHDetails from '../TokenDetails/NativeETH';
 import { useAccount } from 'wagmi';
-import Image from 'next/image';
 
 interface TokenDetailsState {
   name: string | undefined;
@@ -56,13 +55,13 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
         <div className='flex justify-between font-ans-serif'>
           <div className='flex gap-1.5 px-3.5 py-2.5 text-indigo-500 border border-solid border-zinc-400 leading-[1%] max-md:flex-wrap box-border w-[440px] h-10 rounded-full border-1'>
             <input
-              type='text'
+              type='textarea'
               placeholder='Search Token name or address'
               className='flex-auto my-auto bg-transparent text-gray-600 placeholder-gray-600 focus:outline-none  font-normal text-base leading-[21px] text-cap leading-trim-both pl-2'
               value={tokenAddress}
               onChange={handleInputChange}
             />
-            <Image
+            <img
               loading='lazy'
               src='https://cdn.builder.io/api/v1/image/assets/TEMP/4792370c216477454484b83d83d4e4aaae409419cf9974d042cb7489c6fefe2e?'
               className='shrink-0 aspect-square w-6 '
@@ -87,7 +86,9 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
                   setTokenDetails={setTokenDetails}
                   setshowTokenDetails={setShowTokenDetails}
                 />
-              ) : ''}
+              ) : (
+                ''
+              )}
             </div>
           </div>
         )}
