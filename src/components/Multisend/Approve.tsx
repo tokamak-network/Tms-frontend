@@ -47,20 +47,17 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
     ? parseFloat(ethers.formatEther(BigInt(ethBalance))).toFixed(3)
     : '0';
 
-  const symbol = tokenDetails.symbol;
-  const allowance = parseInt(tokenDetails.allowance);
+  const symbol = tokenDetails ? tokenDetails.symbol : null;
+  const allowance = tokenDetails ? parseInt(tokenDetails.allowance) : null;
+
   const parsedRecipients = recipients
-    ? recipients
-        .split('\n')
-        .map((row: string) => {
-          const [address, amount] = row.split(',');
-          if (address && amount) {
-            return { address, amount: parseFloat(amount) };
-          }
-          return null;
-        })
-        .filter((recipient: Recipient | null) => recipient !== null)
+    ? Object.entries(JSON.parse(recipients)).map(([address, amount]) => ({
+        address,
+        amount: parseFloat(amount),
+      }))
     : [];
+  
+
   const totalTokensToSend = parsedRecipients.reduce(
     (acc: any, current: any) => acc + current.amount,
     0
