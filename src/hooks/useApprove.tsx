@@ -18,13 +18,12 @@ export const useApprove = async (
   const chainId = (await getCurrentNetwork()).chain.id;
   const multisendAddress = contracts.multisend[chainId] as `0x${string}`;
   if (amountType === 'exact-amount') {
+    
     approvalAmount = ethers.parseUnits(amount, decimals);
   } else {
     approvalAmount = ethers.MaxUint256.toString();
   }
-  contractAddress = ethers.getAddress(
-    '0xFF3Ef745D9878AfE5934Ff0b130868AFDDbc58e8'
-  ) as `0x${string}`;
+  contractAddress = ethers.getAddress(contractAddress) as `0x${string}`;
 
   try {
     const result = await writeContract(NetworkConfig, {
@@ -33,9 +32,8 @@ export const useApprove = async (
       functionName: 'approve',
       args: [multisendAddress, approvalAmount],
     });
-    console.log(`Approved ${approvalAmount} tokens for ${contractAddress}`);
     return result;
-  } catch (error:any) {
+  } catch (error: any) {
     console.error(`Error approving tokens: ${error.message}`);
     return null;
   }

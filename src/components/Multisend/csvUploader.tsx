@@ -225,8 +225,6 @@ const CSVUploader: React.FC<CSVDataProps> = ({
     setShowModal(false);
     setFileUrl('');
   };
-  console.log(csvContent, 'csvContent');
-
   return (
     <div className='flex flex-col py-1 mt-1.5 font-quicksand text-xs border-color-red leading-4  max-md:max-w-full '>
       {isExampleCSVOpen && (
