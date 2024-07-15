@@ -8,6 +8,7 @@ import { parseUnits } from 'viem';
 import SuccessCard from '../cards/successCard';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
+import { ethers } from 'ethers';
 
 interface TokenDetailsState {
   name: string | any;
@@ -25,7 +26,7 @@ export function Multisend() {
   const [csvData, setCSVData] = useState<string | undefined>('');
   const [totalAmount, setTotalAmount] = useState<string>('');
   const [amountType, setAmountType] = useState<number | string>('');
-  const [tokenAddress, setTokenAddress] = useState<string>('');
+  const [tokenAddress, setTokenAddress] = useState<string>(ethers.ZeroAddress);
   const [txnHash, setTxnHash] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = React.useState(1);
   const account = useAccount().address;
@@ -33,11 +34,15 @@ export function Multisend() {
   const handleNextClick = () => {
     setCurrentStep((prevStep) => prevStep + 1);
   };
-  useEffect(() => {
-    console.log(account, 'uhgugug');
-    // Any other side effects or cleanup logic
-    return () => {};
-  }, [account]);
+  const showHome = () => {
+    setCurrentStep(1);
+    setCSVData('');
+    setTotalAmount('');
+    setTokenAddress(ethers.ZeroAddress);
+    setTxnHash(null);
+    setAmountType('');
+  };
+  useEffect(() => {}, [account, csvData, tokenAddress]);
 
   let buttonText: string;
   if (currentStep === 1) {
@@ -47,6 +52,9 @@ export function Multisend() {
       buttonText = 'Continue';
     }
   } else if (currentStep === 2) {
+    if (tokenAddress === ethers.ZeroAddress) {
+      handleNextClick();
+    }
     buttonText = 'Approve';
   } else if (currentStep === 3) {
     buttonText = 'MultiSend';
@@ -58,13 +66,11 @@ export function Multisend() {
       const result = await useApprove(
         tokenAddress as `0x${string}`,
         totalAmount,
-        amountType === 'exact' ? 'exact-amount' : 'max',
+        amountType === 'exact-amount' ? 'exact-amount' : 'max',
         tokenDetails ? tokenDetails.decimals : 18
       );
       if (result) {
         setCurrentStep((prevStep) => prevStep + 1);
-        console.log('Approval successful!');
-        // Add your logic here to handle the approve action
       } else {
         console.log('Approval failed');
       }
@@ -74,26 +80,32 @@ export function Multisend() {
   };
   const HandleMultiSend = async () => {
     const data = JSON.parse(csvData as string);
-
     const addresses = Object.keys(data);
-    const amounts = Object.values(data).map(amount => parseUnits(amount as string, tokenDetails ? tokenDetails.decimals : 6));
-    
+    const amounts = Object.values(data).map((amount) =>
+      ethers.parseUnits(
+        amount as string,
+        tokenDetails ? tokenDetails.decimals : 'ether'
+      )
+    );
+    const totalAmount = amounts.reduce(
+      (acc, current) => acc + current,
+      BigInt(0)
+    );
     try {
       const result = await useMultiSend(
         tokenAddress as `0x${string}`,
         addresses,
-        amounts
+        amounts,
+        totalAmount
       );
       if (result) {
-        console.log('txnhash', result);
-
         setTxnHash(result);
         setCurrentStep((prevStep) => prevStep + 1);
       } else {
         console.log('MultiSend failed');
       }
     } catch (error: any) {
-      console.error(`Error handling approval: ${error.message}`);
+      console.error(`Error handling MultiSend: ${error.message}`);
     }
   };
 
@@ -150,6 +162,7 @@ export function Multisend() {
       )}
       {(currentStep === 2 || currentStep === 3) && (
         <ApproveComponent
+          tokenAddress={tokenAddress ? tokenAddress : ethers.ZeroAddress}
           tokenBalance={tokenDetails?.balanceOf.toString()}
           tokenDetails={tokenDetails}
           recipients={csvData}
@@ -168,11 +181,11 @@ export function Multisend() {
                   ? openConnectModal()
                   : currentStep == 1 && account
                   ? handleNextClick()
-                  : currentStep == 2
+                  : buttonText == 'Approve'
                   ? HandleApprove()
-                  : currentStep === 3
+                  : buttonText == 'MultiSend'
                   ? HandleMultiSend()
-                  : setCurrentStep(1);
+                  : showHome();
               }}
               className='  font-ans-serif font-semibold text-s w-[500px] text-center px-16 py-4 mt-5  leading-4 text-white bg-[#007AFF] rounded-3xl'
             >

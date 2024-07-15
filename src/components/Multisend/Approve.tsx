@@ -20,6 +20,7 @@ interface Recipient {
 }
 
 interface ApproveComponentProps {
+  tokenAddress: any;
   tokenBalance: any;
   tokenDetails: ITokenDetails | any;
   recipients: any;
@@ -35,6 +36,7 @@ const StatCard: React.FC<Props> = ({ title, value }) => (
 );
 
 const ApproveComponent: React.FC<ApproveComponentProps> = ({
+  tokenAddress,
   tokenBalance,
   tokenDetails,
   recipients,
@@ -56,7 +58,6 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
         amount: parseFloat(amount as string),
       }))
     : [];
-  
 
   const totalTokensToSend = parsedRecipients.reduce(
     (acc: any, current: any) => acc + current.amount,
@@ -113,28 +114,30 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
           )}
         </div>
       </div>
-      <div className='mt-10'>
-        <div className='flex flex-row gap-4 mt-5 ml-4 text-ans-serif'>
-          <input
-            type='radio'
-            id='exact-amount'
-            name='amount-type'
-            onChange={handleRadioChange}
-          />
-          <label htmlFor='exact-amount' className='text-gray-400  mr-8'>
-            Approve Exact Amount
-          </label>
-          <input
-            type='radio'
-            id='unlimited-amount'
-            name='amount-type'
-            onChange={handleRadioChange}
-          />
-          <label htmlFor='unlimited-amount' className='text-gray-400'>
-            Approve Unlimited Amount
-          </label>
+      {tokenAddress !== ethers.ZeroAddress && (
+        <div className='mt-10'>
+          <div className='flex flex-row gap-4 mt-5 ml-4 text-ans-serif'>
+            <input
+              type='radio'
+              id='exact-amount'
+              name='amount-type'
+              onChange={handleRadioChange}
+            />
+            <label htmlFor='exact-amount' className='text-gray-400  mr-8'>
+              Approve Exact Amount
+            </label>
+            <input
+              type='radio'
+              id='unlimited-amount'
+              name='amount-type'
+              onChange={handleRadioChange}
+            />
+            <label htmlFor='unlimited-amount' className='text-gray-400'>
+              Approve Unlimited Amount
+            </label>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
