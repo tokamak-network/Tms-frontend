@@ -13,7 +13,7 @@ const Home: NextPage = () => {
           content='Tokamak MultiSender App'
           name='description'
         />
-        <link href='/public/favicon.ico' rel='icon' />
+        <link href='/favicon.ico' rel='icon' />
       </Head>
       <Footer />
     </div>
