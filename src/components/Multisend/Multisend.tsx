@@ -9,13 +9,24 @@ import SuccessCard from '../cards/successCard';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 
+interface TokenDetailsState {
+  name: string | any;
+  symbol: string | any;
+  decimals: number | any;
+  totalSupply: string | number | any;
+  balanceOf: string | any;
+  allowance: string | any;
+}
+
 export function Multisend() {
-  const [TokenDetails, setTokenDetails] = useState('');
-  const [csvData, setCSVData] = useState(null);
+  const [tokenDetails, setTokenDetails] = useState<
+    TokenDetailsState | undefined
+  >(undefined);
+  const [csvData, setCSVData] = useState<string | undefined>('');
   const [totalAmount, setTotalAmount] = useState<string>('');
-  const [amountType, setAmountType] = useState<'exact' | 'ax'>('exact');
-  const [tokenAddress, setTokenAddress] = useState('');
-  const [txnHash, setTxnHash] = useState(null);
+  const [amountType, setAmountType] = useState<number | string>('');
+  const [tokenAddress, setTokenAddress] = useState<string>('');
+  const [txnHash, setTxnHash] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = React.useState(1);
   const account = useAccount().address;
 
@@ -25,12 +36,10 @@ export function Multisend() {
   useEffect(() => {
     console.log(account, 'uhgugug');
     // Any other side effects or cleanup logic
-    return () => {
-      // Cleanup logic if needed
-    };
+    return () => {};
   }, [account]);
 
-  let buttonText;
+  let buttonText: string;
   if (currentStep === 1) {
     if (!account) {
       buttonText = 'Connect Wallet';
@@ -44,13 +53,13 @@ export function Multisend() {
   } else if (currentStep === 4) {
     buttonText = 'Prepare New MultiSend';
   }
-  const handleApprove = async () => {
+  const HandleApprove = async () => {
     try {
       const result = await useApprove(
-        tokenAddress,
+        tokenAddress as `0x${string}`,
         totalAmount,
-        amountType,
-        TokenDetails ? TokenDetails.decimals : 18
+        amountType === 'exact' ? 'exact-amount' : 'max',
+        tokenDetails ? tokenDetails.decimals : 18
       );
       if (result) {
         setCurrentStep((prevStep) => prevStep + 1);
@@ -59,28 +68,28 @@ export function Multisend() {
       } else {
         console.log('Approval failed');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error handling approval: ${error.message}`);
     }
   };
-  const handleMultiSend = async () => {
-    
-    const addresses = [];
-    const amounts = [];
+  const HandleMultiSend = async () => {
+    const addresses: string[] = [];
+    const amounts: bigint[] = []; // Change the type to bigint
 
-    const lines = csvData.split('\n');
+    const lines = csvData!.split('\n');
     lines.forEach((line) => {
       const [address, amount] = line.split(',');
       addresses.push(address);
-      amounts.push(parseUnits(amount, TokenDetails.decimals));
+      amounts.push(
+        parseUnits(amount, tokenDetails ? tokenDetails.decimals : 18)
+      );
     });
 
     try {
       const result = await useMultiSend(
-        tokenAddress,
+        tokenAddress as `0x${string}`,
         addresses,
-        amounts,
-        TokenDetails.decimals
+        amounts
       );
       if (result) {
         console.log('txnhash', result);
@@ -90,7 +99,7 @@ export function Multisend() {
       } else {
         console.log('MultiSend failed');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error handling approval: ${error.message}`);
     }
   };
@@ -148,13 +157,14 @@ export function Multisend() {
       )}
       {(currentStep === 2 || currentStep === 3) && (
         <ApproveComponent
-          tokenDetails={TokenDetails}
+          tokenBalance={tokenDetails?.balanceOf.toString()}
+          tokenDetails={tokenDetails}
           recipients={csvData}
           setAmountType={setAmountType}
           setTotalAmount={setTotalAmount}
         />
       )}
-      {currentStep === 4 && <SuccessCard txnHash={txnHash} />}
+      {currentStep === 4 && <SuccessCard txnHash={txnHash as string} />}
 
       {currentStep && (
         <ConnectButton.Custom>
@@ -166,9 +176,9 @@ export function Multisend() {
                   : currentStep == 1 && account
                   ? handleNextClick()
                   : currentStep == 2
-                  ? handleApprove()
+                  ? HandleApprove()
                   : currentStep === 3
-                  ? handleMultiSend()
+                  ? HandleMultiSend()
                   : setCurrentStep(1);
               }}
               className='  font-ans-serif font-semibold text-s w-[500px] text-center px-16 py-4 mt-5  leading-4 text-white bg-[#007AFF] rounded-3xl'

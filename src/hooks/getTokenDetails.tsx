@@ -3,7 +3,7 @@ import { NetworkConfig } from '../config/networks';
 import { ERC20_INTERFACE } from '../config/abi/ERC20';
 import { ethers } from 'ethers';
 
-export const useERC20Contract = async (
+export const getERC20ContractDetails = async (
   contractAddress: `0x${string}`,
   userAddress: string
 ) => {
@@ -71,4 +71,4 @@ export const useERC20Contract = async (
   return { name, symbol, decimals, totalSupply, balanceOf, allowance };
 };
 
-export default useERC20Contract;
+export default getERC20ContractDetails;

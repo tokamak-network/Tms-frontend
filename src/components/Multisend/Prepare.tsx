@@ -4,15 +4,37 @@ import { ethers } from 'ethers';
 import CSVUploader from './csvUploader';
 import NativeETHDetails from '../TokenDetails/NativeETH';
 import { useAccount } from 'wagmi';
+import Image from 'next/image';
 
-const PrepareComponent = ({ setTokenDetails, setCSVData, setToken }) => {
+interface TokenDetailsState {
+  name: string | undefined;
+  symbol: string | undefined;
+  decimals: number | undefined;
+  totalSupply: string | number | undefined;
+  balanceOf: string | undefined;
+  allowance: string | undefined;
+}
+
+interface PrepareComponentProps {
+  setTokenDetails: React.Dispatch<
+    React.SetStateAction<TokenDetailsState | undefined>
+  >;
+  setCSVData: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setToken: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const PrepareComponent: React.FC<PrepareComponentProps> = ({
+  setTokenDetails,
+  setCSVData,
+  setToken,
+}) => {
   const [tokenAddress, setTokenAddress] = useState('');
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [showTokenDetails, setShowTokenDetails] = useState(false); 
+  const [showTokenDetails, setShowTokenDetails] = useState<boolean>(false);
   const account = useAccount().address;
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: any) => {
     const input = e.target.value;
     setTokenAddress(input);
     setToken(input);
@@ -21,13 +43,12 @@ const PrepareComponent = ({ setTokenDetails, setCSVData, setToken }) => {
       setError('');
     } else if (!ethers.isAddress(input)) {
       setError('Invalid address');
-      setShowTokenDetails(false); 
+      setShowTokenDetails(false);
     } else {
       setError('');
       setShowTokenDetails(true);
     }
   };
-
 
   return (
     <div className='flex flex-col mt-10 max-w-full rounded shadow-sm bg-white-950 w-[650px] font-sans'>
@@ -41,7 +62,7 @@ const PrepareComponent = ({ setTokenDetails, setCSVData, setToken }) => {
               value={tokenAddress}
               onChange={handleInputChange}
             />
-            <img
+            <Image
               loading='lazy'
               src='https://cdn.builder.io/api/v1/image/assets/TEMP/4792370c216477454484b83d83d4e4aaae409419cf9974d042cb7489c6fefe2e?'
               className='shrink-0 aspect-square w-6 '
@@ -57,18 +78,16 @@ const PrepareComponent = ({ setTokenDetails, setCSVData, setToken }) => {
         </div>
 
         {error && <div className='mt-2 text-xs text-red-500'>{error}</div>}
-        {showTokenDetails && ( 
+        {showTokenDetails && (
           <div className='modal'>
             <div className='modal-content'>
               {tokenAddress !== '0x0000000000000000000000000000000000000000' ? (
                 <TokenDetails
                   tokenAddress={tokenAddress}
                   setTokenDetails={setTokenDetails}
-                  setshowTokenDetails={setShowTokenDetails} 
+                  setshowTokenDetails={setShowTokenDetails}
                 />
-              ) : (
-                <NativeETHDetails setEthDetails={setTokenDetails} />
-              )}
+              ) : ''}
             </div>
           </div>
         )}

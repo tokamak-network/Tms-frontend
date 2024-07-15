@@ -10,8 +10,8 @@ import { MULTISEND_INTERFACE } from '../config/abi/Multisend';
 
 export const useMultiSend = async (
   tokenAddress: `0x${string}`,
-  addresses: [],
-  amounts: []
+  addresses: any,
+  amounts: any
 ) => {
   tokenAddress = '0xFF3Ef745D9878AfE5934Ff0b130868AFDDbc58e8';
   const chainId = (await getCurrentNetwork()).chain.id;
@@ -33,11 +33,11 @@ export const useMultiSend = async (
         functionName: 'sendERC20',
         args: [tokenAddress, addresses, amounts],
       });
-      console.log(result,'result');
+      console.log(result, 'result');
 
       return result;
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error approving tokens: ${error.message}`);
     return null;
   }
