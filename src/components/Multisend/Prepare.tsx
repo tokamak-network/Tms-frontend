@@ -55,7 +55,7 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
         <div className='flex justify-between font-ans-serif'>
           <div className='flex gap-1.5 px-3.5 py-2.5 text-indigo-500 border border-solid border-zinc-400 leading-[1%] max-md:flex-wrap box-border w-[440px] h-10 rounded-full border-1'>
             <input
-              type='text'
+              type='textarea'
               placeholder='Search Token name or address'
               className='flex-auto my-auto bg-transparent text-gray-600 placeholder-gray-600 focus:outline-none  font-normal text-base leading-[21px] text-cap leading-trim-both pl-2'
               value={tokenAddress}

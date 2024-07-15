@@ -74,8 +74,13 @@ const CSVUploader: React.FC<CSVDataProps> = ({
     const csvData: CSVData = {};
     const lines = content.split('\n');
     lines.forEach((line, index) => {
-      const [address, amount] = line.split(',');
-      csvData[address.trim()] = amount.trim();
+      const parts = line.split(',');
+      if (parts.length === 2) {
+        const [address, amount] = parts;
+        csvData[address.trim()] = amount.trim();
+      } else {
+        console.error(`Invalid line at index ${index}: ${line}`);
+      }
     });
     setCsvContent(content);
     validateCSV(content);
