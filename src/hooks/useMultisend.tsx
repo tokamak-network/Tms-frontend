@@ -9,7 +9,7 @@ export const useMultiSend = async (
   tokenAddress: `0x${string}`,
   addresses: any,
   amounts: any,
-  totalAmount:any
+  totalAmount: any
 ) => {
   const chainId = (await getCurrentNetwork()).chain.id;
   const multisendAddress = contracts.multisend[chainId] as `0x${string}`;
@@ -21,7 +21,7 @@ export const useMultiSend = async (
         abi: MULTISEND_INTERFACE,
         functionName: 'sendETH',
         args: [addresses, amounts],
-        value:totalAmount
+        value: totalAmount
       });
 
       return result;
@@ -30,7 +30,7 @@ export const useMultiSend = async (
         address: multisendAddress,
         abi: MULTISEND_INTERFACE,
         functionName: 'sendERC20',
-        args: [tokenAddress, addresses, amounts],
+        args: [tokenAddress, addresses, amounts]
       });
       return result;
     }

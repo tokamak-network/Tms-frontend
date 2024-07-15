@@ -12,7 +12,7 @@ interface EthDetailsState {
 const NativeETHDetails: React.FC<NativeETHDetailsProps> = ({ setEthDetails }) => {
   const { address: userAddress } = useAccount();
   const { data, isError, isLoading } = useBalance({
-    address: userAddress,
+    address: userAddress
   });
 
   useEffect(() => {

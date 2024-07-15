@@ -20,9 +20,7 @@ interface TokenDetailsState {
 }
 
 export function Multisend() {
-  const [tokenDetails, setTokenDetails] = useState<
-    TokenDetailsState | undefined
-  >(undefined);
+  const [tokenDetails, setTokenDetails] = useState<TokenDetailsState | undefined>(undefined);
   const [csvData, setCSVData] = useState<string | undefined>('');
   const [totalAmount, setTotalAmount] = useState<string>('');
   const [amountType, setAmountType] = useState<number | string>('');
@@ -82,15 +80,9 @@ export function Multisend() {
     const data = JSON.parse(csvData as string);
     const addresses = Object.keys(data);
     const amounts = Object.values(data).map((amount) =>
-      ethers.parseUnits(
-        amount as string,
-        tokenDetails ? tokenDetails.decimals : 'ether'
-      )
+      ethers.parseUnits(amount as string, tokenDetails ? tokenDetails.decimals : 'ether')
     );
-    const totalAmount = amounts.reduce(
-      (acc, current) => acc + current,
-      BigInt(0)
-    );
+    const totalAmount = amounts.reduce((acc, current) => acc + current, BigInt(0));
     try {
       const result = await useMultiSend(
         tokenAddress as `0x${string}`,
@@ -110,46 +102,40 @@ export function Multisend() {
   };
 
   return (
-    <div className='flex flex-col items-center pt-8'>
-      <div className='flex items-center gap-40 text-l text-grey-400'>
-        <div className='flex items-center gap-1.5 relative'>
+    <div className="flex flex-col items-center pt-8">
+      <div className="flex items-center gap-40 text-l text-grey-400">
+        <div className="flex items-center gap-1.5 relative">
           <span
             className={`flex justify-center items-center ${
-              currentStep === 1
-                ? 'bg-[#007AFF] text-white'
-                : 'bg-[#F0F2F7] text-[#007AFF]'
+              currentStep === 1 ? 'bg-[#007AFF] text-white' : 'bg-[#F0F2F7] text-[#007AFF]'
             }  w-6 h-6 rounded-full text-sm`}
           >
             1
           </span>
-          <div className='text-grey-500'>Prepare</div>
-          <div className='flex-1 h-0.5 bg-gray-300 ml-6'></div>
+          <div className="text-grey-500">Prepare</div>
+          <div className="flex-1 h-0.5 bg-gray-300 ml-6"></div>
         </div>
 
-        <div className='flex items-center gap-1.5 relative'>
+        <div className="flex items-center gap-1.5 relative">
           <span
             className={`flex justify-center items-center ${
-              currentStep === 2
-                ? 'bg-[#007AFF] text-white'
-                : 'bg-[#F0F2F7] text-[#007AFF]'
+              currentStep === 2 ? 'bg-[#007AFF] text-white' : 'bg-[#F0F2F7] text-[#007AFF]'
             }  w-6 h-6 border-2 rounded-full text-sm`}
           >
             2
           </span>
-          <div className='text-grey-500'>Approve</div>
-          <div className='flex-1 h-0.5 bg-gray-300 ml-6'></div>
+          <div className="text-grey-500">Approve</div>
+          <div className="flex-1 h-0.5 bg-gray-300 ml-6"></div>
         </div>
-        <div className='flex items-center gap-1.5 relative'>
+        <div className="flex items-center gap-1.5 relative">
           <span
             className={`flex justify-center items-center ${
-              currentStep === 4
-                ? 'bg-[#007AFF] text-white'
-                : 'bg-[#F0F2F7] text-[#007AFF]'
+              currentStep === 4 ? 'bg-[#007AFF] text-white' : 'bg-[#F0F2F7] text-[#007AFF]'
             } w-6 h-6 rounded-full text-sm`}
           >
             3
           </span>
-          <div className='text-500'>Multisend</div>
+          <div className="text-500">Multisend</div>
         </div>
       </div>
 
@@ -180,14 +166,14 @@ export function Multisend() {
                 currentStep == 1 && !account
                   ? openConnectModal()
                   : currentStep == 1 && account
-                  ? handleNextClick()
-                  : buttonText == 'Approve'
-                  ? HandleApprove()
-                  : buttonText == 'MultiSend'
-                  ? HandleMultiSend()
-                  : showHome();
+                    ? handleNextClick()
+                    : buttonText == 'Approve'
+                      ? HandleApprove()
+                      : buttonText == 'MultiSend'
+                        ? HandleMultiSend()
+                        : showHome();
               }}
-              className='  font-ans-serif font-semibold text-s w-[500px] text-center px-16 py-4 mt-5  leading-4 text-white bg-[#007AFF] rounded-3xl'
+              className="  font-ans-serif font-semibold text-s w-[500px] text-center px-16 py-4 mt-5  leading-4 text-white bg-[#007AFF] rounded-3xl"
             >
               {buttonText}
             </button>

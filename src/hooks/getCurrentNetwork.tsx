@@ -5,7 +5,7 @@ const getCurrentNetwork = async () => {
   const { chain } = getClient(NetworkConfig);
 
   return {
-    chain,
+    chain
   };
 };
 

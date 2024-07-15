@@ -9,11 +9,8 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       <Head>
         <title>MultiSender App</title>
-        <meta
-          content='Tokamak MultiSender App'
-          name='description'
-        />
-        <link href='/favicon.ico' rel='icon' />
+        <meta content="Tokamak MultiSender App" name="description" />
+        <link href="/favicon.ico" rel="icon" />
       </Head>
       <Footer />
     </div>

@@ -10,7 +10,7 @@ export const getERC20ContractDetails = async (
   let name, symbol, decimals, totalSupply, balanceOf, allowance;
   const erc20contract = {
     address: contractAddress,
-    abi: ERC20_INTERFACE,
+    abi: ERC20_INTERFACE
   };
   try {
     const result = await readContracts(NetworkConfig, {
@@ -19,36 +19,36 @@ export const getERC20ContractDetails = async (
         {
           ...erc20contract,
           functionName: 'name',
-          args: [],
+          args: []
         },
         {
           ...erc20contract,
           functionName: 'symbol',
-          args: [],
+          args: []
         },
         {
           ...erc20contract,
           functionName: 'decimals',
-          args: [],
+          args: []
         },
         {
           ...erc20contract,
           functionName: 'totalSupply',
-          args: [],
+          args: []
         },
         {
           ...erc20contract,
           functionName: 'balanceOf',
-          args: [userAddress as `0x${string}`],
+          args: [userAddress as `0x${string}`]
         },
         {
           ...erc20contract,
           functionName: 'allowance',
-          args: [userAddress as `0x${string}`, contractAddress],
-        },
-      ],
+          args: [userAddress as `0x${string}`, contractAddress]
+        }
+      ]
     });
-  
+
     (name = result[0].result as string),
       (symbol = result[1].result as string),
       (decimals = result[2].result as number),
@@ -65,7 +65,6 @@ export const getERC20ContractDetails = async (
       result[5].result !== undefined
         ? ethers.formatUnits(result[5].result.toString(), decimals)
         : '';
-
   } catch (error) {}
 
   return { name, symbol, decimals, totalSupply, balanceOf, allowance };
