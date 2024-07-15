@@ -83,7 +83,7 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
       <div className='flex justify-between w-full'>
         {tokenDetails && (
           <StatCard
-            title={`${symbol ? symbol : 'TON'} Balance`}
+            title={`${symbol ? symbol : 'ETH'} Balance`}
             value={tokenBalance}
           />
         )}
@@ -100,7 +100,7 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
                   <div key={index} className='flex justify-between'>
                     <p className='text-[#007AFF] text-m'>{recipient.address}</p>
                     <p className='font-medium'>
-                      {recipient.amount} {symbol ? symbol : 'TON'}
+                      {recipient.amount} {symbol ? symbol : 'ETH'}
                     </p>
                   </div>
                 );
