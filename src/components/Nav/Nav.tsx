@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import getCurrentNetwork from '../../hooks/getCurrentNetwork';
 import { ConnectWallet } from '../Button/ConnectWallet';
+import Image from 'next/image';
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -42,7 +43,7 @@ const Navbar = () => {
       <div className='bg-white py-4'>
         <div className='container mx-auto flex justify-between items-center'>
           <div className='flex items-center'>
-            <img
+            <Image
               src='https://www.tokamak.network/img/tokamak-symbol.42cbe8cc.svg'
               alt='https://www.tokamak.network/img/tokamak-symbol.42cbe8cc.svg'
               className='h-8 w-8 mr-2'

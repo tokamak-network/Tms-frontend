@@ -2,16 +2,39 @@ import React from 'react';
 import { useBalance, useAccount } from 'wagmi';
 import { ethers } from 'ethers';
 
-const StatCard = ({ title, value }) => (
-  <div
-    className={`h-10 rounded-md flex flex-col items-start justify-center`}
-  >
+interface Props {
+  title: string;
+  value: number | any;
+}
+
+interface ITokenDetails {
+  symbol: string;
+  allowance: string;
+  balanceOf: number;
+  decimals: any;
+}
+
+interface Recipient {
+  address: string | any;
+  amount: number;
+}
+
+interface ApproveComponentProps {
+  tokenBalance: any;
+  tokenDetails: ITokenDetails | any;
+  recipients: any;
+  setAmountType: (amountType: string) => void;
+  setTotalAmount: (totalAmount: string) => void;
+}
+
+const StatCard: React.FC<Props> = ({ title, value }) => (
+  <div className={`h-10 rounded-md flex flex-col items-start justify-center`}>
     <h1 className='text-xs text-gray-400'>{title}</h1>
     <h1 className={`font-bold text-2xl`}>{value ? value : 0}</h1>
   </div>
 );
 
-const ApproveComponent = ({
+const ApproveComponent: React.FC<ApproveComponentProps> = ({
   tokenBalance,
   tokenDetails,
   recipients,
@@ -26,25 +49,34 @@ const ApproveComponent = ({
 
   const symbol = tokenDetails.symbol;
   const allowance = parseInt(tokenDetails.allowance);
-  tokenBalance = tokenDetails.balanceOf;
   const parsedRecipients = recipients
     ? recipients
         .split('\n')
-        .map((row) => {
+        .map((row: string) => {
           const [address, amount] = row.split(',');
           if (address && amount) {
             return { address, amount: parseFloat(amount) };
           }
           return null;
         })
-        .filter((recipient) => recipient !== null)
+        .filter((recipient: Recipient | null) => recipient !== null)
     : [];
   const totalTokensToSend = parsedRecipients.reduce(
-    (acc, current) => acc + current.amount,
+    (acc: any, current: any) => acc + current.amount,
     0
   );
-  const handleRadioChange = (e) => {
-    const amountType = e.target.id;
+  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let amountType: 'exact-amount' | 'max';
+    switch (e.target.id) {
+      case 'exact-amount':
+        amountType = 'exact-amount';
+        break;
+      case 'unlimited-amount':
+        amountType = 'max';
+        break;
+      default:
+        throw new Error(`Invalid amount type: ${e.target.id}`);
+    }
     const totalAmount = totalTokensToSend.toFixed(3);
     setAmountType(amountType);
     setTotalAmount(totalAmount);
@@ -52,7 +84,7 @@ const ApproveComponent = ({
   return (
     <div className='flex flex-col mt-12 mb-10 w-[650px]  rounded   font-ans-serif'>
       <div className='flex justify-between w-full'>
-      {tokenDetails && (
+        {tokenDetails && (
           <StatCard
             title={`${symbol ? symbol : 'TON'} Balance`}
             value={tokenBalance}
@@ -63,19 +95,25 @@ const ApproveComponent = ({
       </div>
       <div className='mt-5 text-ans-serif'>
         <p className='flex justify-between text-gray-400 mb-2'>Address List</p>
-        <div className="scrollable">
-        {parsedRecipients.length > 0 ? (
-          parsedRecipients.map((recipient, index) => (
-            <div key={index} className='flex justify-between'>
-              <p className='text-[#007AFF] text-m'>{recipient.address}</p>
-              <p className='font-medium'>
-                {recipient.amount} {symbol ? symbol : 'TON'}
-              </p>
-            </div>
-          ))
-        ) : (
-          <p>No recipients found</p>
-        )}
+        <div className='scrollable'>
+          {parsedRecipients.length > 0 ? (
+            parsedRecipients.map((recipient: any, index: any) => {
+              if (recipient) {
+                return (
+                  <div key={index} className='flex justify-between'>
+                    <p className='text-[#007AFF] text-m'>{recipient.address}</p>
+                    <p className='font-medium'>
+                      {recipient.amount} {symbol ? symbol : 'TON'}
+                    </p>
+                  </div>
+                );
+              } else {
+                return null;
+              }
+            })
+          ) : (
+            <p>No recipients found</p>
+          )}
         </div>
       </div>
       <div className='mt-10'>

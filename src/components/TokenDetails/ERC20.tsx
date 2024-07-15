@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import useERC20Contract from '../../hooks/getTokenDetails';
+import React, { useState, useEffect, useCallback } from 'react';
+import getERC20ContractDetails from '../../hooks/getTokenDetails';
 import { useAccount } from 'wagmi';
 
 interface TokenDetailsProps {
@@ -7,6 +7,7 @@ interface TokenDetailsProps {
   setTokenDetails: React.Dispatch<
     React.SetStateAction<TokenDetailsState | undefined>
   >;
+  setshowTokenDetails: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface TokenDetailsState {
@@ -28,38 +29,38 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({
     TokenDetailsState | undefined
   >(undefined);
 
-  useEffect(() => {
-    const fetchTokenDetails = async () => {
-      if (!tokenAddress || !userAddress) return;
-      try {
-        const formattedTokenAddress = tokenAddress.startsWith('0x')
-          ? tokenAddress
-          : `0x${tokenAddress}`;
-        const { name, symbol, decimals, totalSupply, balanceOf, allowance } =
-          await useERC20Contract(formattedTokenAddress, userAddress);
-        setTokenDetails({
-          name,
-          symbol,
-          decimals,
-          totalSupply,
-          balanceOf,
-          allowance,
-        });
-        setTokenDetailsState({
-          name,
-          symbol,
-          decimals,
-          totalSupply,
-          balanceOf,
-          allowance,
-        });
-      } catch (error) {
-        console.error('Failed to fetch token details', error);
-      }
-    };
+  const fetchTokenDetails = useCallback(async () => {
+    if (!tokenAddress || !userAddress) return;
+    try {
+      const formattedTokenAddress = tokenAddress.startsWith('0x')
+        ? tokenAddress
+        : `0x${tokenAddress}`;
+      const { name, symbol, decimals, totalSupply, balanceOf, allowance } =
+        await getERC20ContractDetails(formattedTokenAddress as `0x${string}`, userAddress);
+      setTokenDetails({
+        name,
+        symbol,
+        decimals,
+        totalSupply,
+        balanceOf,
+        allowance,
+      });
+      setTokenDetailsState({
+        name,
+        symbol,
+        decimals,
+        totalSupply,
+        balanceOf,
+        allowance,
+      });
+    } catch (error) {
+      console.error('Failed to fetch token details', error);
+    }
+  }, [tokenAddress, userAddress, setTokenDetails]);
 
+  useEffect(() => {
     fetchTokenDetails();
-  }, [tokenAddress, userAddress]);
+  }, [fetchTokenDetails]);
 
   const handleClose = () => {
     setshowTokenDetails(false);

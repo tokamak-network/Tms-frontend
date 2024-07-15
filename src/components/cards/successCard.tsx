@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import getCurrentNetwork from '../../hooks/getCurrentNetwork';
 
-const SuccessCard = ({ txnHash }) => {
+interface Props {
+  txnHash: string;
+}
+
+const SuccessCard: React.FC<Props> = ({ txnHash }) => {
   const [explorerUrl, setExplorerUrl] = useState('');
 
   useEffect(() => {
     async function fetchCurrentNetwork() {
       const currentNetwork = await getCurrentNetwork();
       const explorerUrl = currentNetwork.chain.blockExplorers.default.url;
-  
+
       setExplorerUrl(explorerUrl);
     }
     fetchCurrentNetwork();

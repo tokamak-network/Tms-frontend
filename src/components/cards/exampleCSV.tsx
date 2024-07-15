@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
-const ExampleCSV = ({setIsExampleCSVOpen}) => {
+interface Props {
+  setIsExampleCSVOpen: (isOpen: boolean) => void;
+}
+
+const ExampleCSV: React.FC<Props> = ({ setIsExampleCSVOpen }) => {
   const [showPopup, setShowPopup] = useState(true);
   const csvContent = `0x48a38c840DF7761D8b42BA233a3548b0daC3926E,1
 pavlik.eth,12
@@ -10,7 +14,7 @@ pavlik.eth,12
 
   const handleClose = () => {
     setShowPopup(false);
-    setIsExampleCSVOpen(false)
+    setIsExampleCSVOpen(false);
   };
 
   return (
@@ -48,7 +52,7 @@ pavlik.eth,12
                   className='w-full h-full p-4 scroll-none text-base font-normal text-gray-600  bg-white rounded-r-lg focus:outline-none'
                   rows={
                     csvContent.split('\n').length > 6
-                      ? csvContent.split('\n').length
+                     ? csvContent.split('\n').length
                       : 6
                   }
                   defaultValue={csvContent}

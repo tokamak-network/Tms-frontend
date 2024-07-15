@@ -2,14 +2,27 @@ import React, { useState, ChangeEvent, useRef } from 'react';
 import { isAddress } from '@ethersproject/address';
 import axios from 'axios';
 import ExampleCSV from '../cards/exampleCSV';
-import UploadIcon from '../../../images/upload_icon.png'
+import UploadIcon from '../../../images/upload_icon.png';
+import Image from 'next/image';
 
 interface Error {
   line: number;
   message: string;
 }
 
-const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
+interface CSVData {
+  [key: string]: string;
+}
+interface CSVDataProps {
+  setCSVData: React.Dispatch<React.SetStateAction<string | undefined>>;
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+interface DynamicMessage {
+  [key: string]: string;
+}
+
+const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowModal }) => {
   const [csvContent, setCsvContent] = useState<string>('');
   const [errors, setErrors] = useState<Error[]>([]);
   const [dynamicMessage, setDynamicMessage] = useState<string>('');
@@ -36,9 +49,15 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
       reader.onload = (e: ProgressEvent<FileReader>) => {
         if (e.target) {
           const content = e.target.result as string;
+          const csvData: CSVData = {};
+          const lines = content.split('\n');
+          lines.forEach((line, index) => {
+            const [address, amount] = line.split(',');
+            csvData[address.trim()] = amount.trim();
+          });
           setCsvContent(content);
           validateCSV(content);
-          setCSVData(content);
+          setCSVData(JSON.stringify(csvData));;
           setUploadSuccess(true);
           setUploading(false);
         }
@@ -49,9 +68,15 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
 
   const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const content = event.target.value;
+    const csvData: CSVData = {};
+    const lines = content.split('\n');
+    lines.forEach((line, index) => {
+      const [address, amount] = line.split(',');
+      csvData[address.trim()] = amount.trim();
+    });
     setCsvContent(content);
     validateCSV(content);
-    setCSVData(content);
+    setCSVData(JSON.stringify(csvData));;
   };
   const openExampleCSV = () => {
     setIsExampleCSVOpen(!isExampleCSVOpen);
@@ -173,12 +198,15 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     if (file) {
-      handleFileUpload({
+      // Create a synthetic event
+      const syntheticEvent = {
         target: { files: [file] },
-      } as ChangeEvent<HTMLInputElement>);
+      } as unknown as ChangeEvent<HTMLInputElement>;
+      handleFileUpload(syntheticEvent);
     }
   };
-  const handleUpload = (event: React.DragEvent<HTMLDivElement>) => {
+
+  const handleUpload = () => {
     setUploading(false);
     setUploadProgress(0);
     setUploadSuccess(false);
@@ -241,7 +269,7 @@ const CSVUploader: React.FC = ({ setCSVData, showModal, setShowModal }) => {
                 </div>
               ) : (
                 <div className='text-center font-quicksand my-2'>
-                  <img
+                  <Image
                     loading='lazy'
                     src={UploadIcon.src}
                     className='w-10 ml-52'
