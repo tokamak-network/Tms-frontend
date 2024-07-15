@@ -3,7 +3,6 @@ import { isAddress } from '@ethersproject/address';
 import axios from 'axios';
 import ExampleCSV from '../cards/exampleCSV';
 import UploadIcon from '../../../images/upload_icon.png';
-import Image from 'next/image';
 
 interface Error {
   line: number;
@@ -22,7 +21,11 @@ interface DynamicMessage {
   [key: string]: string;
 }
 
-const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowModal }) => {
+const CSVUploader: React.FC<CSVDataProps> = ({
+  setCSVData,
+  showModal,
+  setShowModal,
+}) => {
   const [csvContent, setCsvContent] = useState<string>('');
   const [errors, setErrors] = useState<Error[]>([]);
   const [dynamicMessage, setDynamicMessage] = useState<string>('');
@@ -57,7 +60,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
           });
           setCsvContent(content);
           validateCSV(content);
-          setCSVData(JSON.stringify(csvData));;
+          setCSVData(JSON.stringify(csvData));
           setUploadSuccess(true);
           setUploading(false);
         }
@@ -76,7 +79,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
     });
     setCsvContent(content);
     validateCSV(content);
-    setCSVData(JSON.stringify(csvData));;
+    setCSVData(JSON.stringify(csvData));
   };
   const openExampleCSV = () => {
     setIsExampleCSVOpen(!isExampleCSVOpen);
@@ -269,7 +272,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
                 </div>
               ) : (
                 <div className='text-center font-quicksand my-2'>
-                  <Image
+                  <img
                     loading='lazy'
                     src={UploadIcon.src}
                     className='w-10 ml-52'

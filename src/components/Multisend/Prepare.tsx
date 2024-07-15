@@ -4,7 +4,6 @@ import { ethers } from 'ethers';
 import CSVUploader from './csvUploader';
 import NativeETHDetails from '../TokenDetails/NativeETH';
 import { useAccount } from 'wagmi';
-import Image from 'next/image';
 
 interface TokenDetailsState {
   name: string | undefined;
@@ -62,7 +61,7 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
               value={tokenAddress}
               onChange={handleInputChange}
             />
-            <Image
+            <img
               loading='lazy'
               src='https://cdn.builder.io/api/v1/image/assets/TEMP/4792370c216477454484b83d83d4e4aaae409419cf9974d042cb7489c6fefe2e?'
               className='shrink-0 aspect-square w-6 '
@@ -87,7 +86,9 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
                   setTokenDetails={setTokenDetails}
                   setshowTokenDetails={setShowTokenDetails}
                 />
-              ) : ''}
+              ) : (
+                ''
+              )}
             </div>
           </div>
         )}
