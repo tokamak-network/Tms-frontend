@@ -203,7 +203,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
       uniqueErrorLinesArray.length > 0
         ? `Line ${uniqueErrorLinesArray.join(
             ', '
-          )}: Please provide a corresponding amount for each address. Click 'Show CSV Example' for more details.`
+          )}: Please provide a corresponding amount for each address. Click 'CSV Example' for more details.`
         : '';
 
     setDynamicMessage(dynamicMessage);
