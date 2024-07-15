@@ -7,7 +7,6 @@ interface Props {
 const ExampleCSV: React.FC<Props> = ({ setIsExampleCSVOpen }) => {
   const [showPopup, setShowPopup] = useState(true);
   const csvContent = `0x48a38c840DF7761D8b42BA233a3548b0daC3926E,1
-pavlik.eth,12
 0xC8c30Fa803833dD1Fd6DBCDd91Ed0b301EFf87cF,13.45
 0x7D52422D3A5fE9bC92D3aE8167097eE09F1b347d,1.049
 0x64c9525A3c3a65Ea88b06f184F074C2499578A7E,1 `;
@@ -56,6 +55,7 @@ pavlik.eth,12
                       : 6
                   }
                   defaultValue={csvContent}
+                  readOnly
                 />
               </div>
             </div>
