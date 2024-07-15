@@ -73,18 +73,11 @@ export function Multisend() {
     }
   };
   const HandleMultiSend = async () => {
-    const addresses: string[] = [];
-    const amounts: bigint[] = []; // Change the type to bigint
+    const data = JSON.parse(csvData as string);
 
-    const lines = csvData!.split('\n');
-    lines.forEach((line) => {
-      const [address, amount] = line.split(',');
-      addresses.push(address);
-      amounts.push(
-        parseUnits(amount, tokenDetails ? tokenDetails.decimals : 18)
-      );
-    });
-
+    const addresses = Object.keys(data);
+    const amounts = Object.values(data).map(amount => parseUnits(amount as string, tokenDetails ? tokenDetails.decimals : 6));
+    
     try {
       const result = await useMultiSend(
         tokenAddress as `0x${string}`,
