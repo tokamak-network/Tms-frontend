@@ -103,7 +103,7 @@ export function Multisend() {
 
   return (
     <div className="flex flex-col items-center pt-8">
-      <div className="flex items-center gap-40 text-l text-grey-400">
+      <div className="flex items-center gap-2 text-l text-grey-400 w-[650px] justify-between">
         <div className="flex items-center gap-1.5 relative">
           <span
             className={`flex justify-center items-center ${
@@ -113,9 +113,8 @@ export function Multisend() {
             1
           </span>
           <div className="text-grey-500">Prepare</div>
-          <div className="flex-1 h-0.5 bg-gray-300 ml-6"></div>
         </div>
-
+        <div className="flex-grow h-px bg-black"></div>
         <div className="flex items-center gap-1.5 relative">
           <span
             className={`flex justify-center items-center ${
@@ -125,8 +124,8 @@ export function Multisend() {
             2
           </span>
           <div className="text-grey-500">Approve</div>
-          <div className="flex-1 h-0.5 bg-gray-300 ml-6"></div>
         </div>
+        <div className="flex-grow h-px bg-black"></div>
         <div className="flex items-center gap-1.5 relative">
           <span
             className={`flex justify-center items-center ${
