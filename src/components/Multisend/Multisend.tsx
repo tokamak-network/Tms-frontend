@@ -129,7 +129,7 @@ export function Multisend() {
         <div className="flex items-center gap-1.5 relative">
           <span
             className={`flex justify-center items-center ${
-              currentStep === 4 ? 'bg-[#007AFF] text-white' : 'bg-[#F0F2F7] text-[#007AFF]'
+              (currentStep === 3 ||currentStep === 4) ? 'bg-[#007AFF] text-white' : 'bg-[#F0F2F7] text-[#007AFF]'
             } w-6 h-6 rounded-full text-sm`}
           >
             3
