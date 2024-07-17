@@ -114,7 +114,7 @@ export function Multisend() {
           </span>
           <div className="text-grey-500">Prepare</div>
         </div>
-        <div className="flex-grow h-px bg-black"></div>
+        <div className={`flex-grow h-px  ${currentStep === 1 ? 'bg-gray-300' : 'bg-black'} `}></div>
         <div className="flex items-center gap-1.5 relative">
           <span
             className={`flex justify-center items-center ${
@@ -125,7 +125,7 @@ export function Multisend() {
           </span>
           <div className="text-grey-500">Approve</div>
         </div>
-        <div className="flex-grow h-px bg-black"></div>
+        <div className={`flex-grow h-px  ${(currentStep === 3 ||currentStep === 4) ? 'bg-black' : 'bg-gray-300'} `}></div>
         <div className="flex items-center gap-1.5 relative">
           <span
             className={`flex justify-center items-center ${
