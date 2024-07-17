@@ -35,7 +35,7 @@ export const useMultiSend = async (
       return result;
     }
   } catch (error: any) {
-    console.error(`Error approving tokens: ${error.message}`);
+    console.error(`Error MultoSending tokens: ${error.message}`);
     return null;
   }
 };
