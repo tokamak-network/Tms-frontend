@@ -4,7 +4,7 @@ export const NetworkConfig = getDefaultConfig({
   appName: 'RainbowKit App',
   projectId: 'YOUR_PROJECT_ID',
   chains: [
-    titan,
+    //titan,
     sepolia_titan,
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [sepolia_titan] : [])
   ],
