@@ -2,6 +2,8 @@ import { readContracts } from '@wagmi/core';
 import { NetworkConfig } from '../config/networks';
 import { ERC20_INTERFACE } from '../config/abi/ERC20';
 import { ethers } from 'ethers';
+import contracts from '../config/constants/contracts';
+import getCurrentNetwork from './getCurrentNetwork';
 
 export const getERC20ContractDetails = async (
   contractAddress: `0x${string}`,
@@ -12,6 +14,8 @@ export const getERC20ContractDetails = async (
     address: contractAddress,
     abi: ERC20_INTERFACE
   };
+  const chainId = (await getCurrentNetwork()).chain.id;
+  const multisendAddress = contracts.multisend[chainId] as `0x${string}`;
   try {
     const result = await readContracts(NetworkConfig, {
       allowFailure: true,
@@ -44,7 +48,7 @@ export const getERC20ContractDetails = async (
         {
           ...erc20contract,
           functionName: 'allowance',
-          args: [userAddress as `0x${string}`, contractAddress]
+          args: [userAddress as `0x${string}`, multisendAddress]
         }
       ]
     });

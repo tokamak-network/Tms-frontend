@@ -9,14 +9,14 @@ import emailLogo from '../../images/emailLogo.webp';
 
 const Footer = () => {
   return (
-    <footer className="fixed bottom-0 left-0 right-0 p-4 flex justify-between items-center ml-5 mr-10">
-      <div className="text-left flex items-center space-x-2">
-        <img src={emailLogo.src} alt="Email Logo" className="h-7 w- 7inline" />
+    <footer className="fixed bottom-0 left-0 right-0 p-4 flex flex-wrap justify-between items-center ml-5 mr-10">
+      <div className="text-left flex items-center space-x-2 mb-4 md:mb-0">
+        <img src={emailLogo.src} alt="Email Logo" className="h-7 w-7 inline" />
         <a href="mailto:hello@tokamak.network" className="text-grey-600 hover:text-blue-800">
           hello@tokamak.network
         </a>
       </div>
-      <div className="text-center">
+      <div className="text-center mb-4 md:mb-0">
         Copyright © 2024{' '}
         <a
           href="https://www.tokamak.network/"
@@ -28,7 +28,7 @@ const Footer = () => {
         </a>{' '}
         All Rights Reserved.
       </div>
-      <div className="flex space-x-5">
+      <div className="flex flex-wrap justify-center space-x-5 mb-4 md:mb-0">
         <a href="https://x.com/tokamak_network" target="_blank" rel="noopener noreferrer">
           <img src={XLogo.src} alt="Twitter Logo" className="h-4 w-4 inline" />
         </a>
