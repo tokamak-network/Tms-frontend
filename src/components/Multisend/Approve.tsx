@@ -44,6 +44,7 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
   setTotalAmount
 }) => {
   const account = useAccount().address;
+  let totalTokensToSend = 0;
   const ethBalance = useBalance({ address: account }).data?.value;
   const ethBalanceFormatted = ethBalance
     ? parseFloat(ethers.formatEther(BigInt(ethBalance))).toFixed(3)
@@ -59,13 +60,13 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
       }))
     : [];
 
-  const totalTokensToSend = parsedRecipients.reduce(
-    (acc: any, current: any) => acc + current.amount,
-    0
-  );
+  if (parsedRecipients.length > 0) {
+    totalTokensToSend = parsedRecipients.reduce((acc, current) => acc + current.amount, 0);
+  }
+
   useEffect(() => {
-    setTotalAmount(totalTokensToSend.toFixed(3));
-  }, [totalTokensToSend]);
+    setTotalAmount(totalTokensToSend.toFixed(3).toString());
+  }, [totalTokensToSend, setTotalAmount]);
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let amountType: 'exact-amount' | 'max';
