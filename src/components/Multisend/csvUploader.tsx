@@ -3,6 +3,7 @@ import { isAddress } from '@ethersproject/address';
 import axios from 'axios';
 import ExampleCSV from '../cards/exampleCSV';
 import UploadIcon from '../../../images/upload_icon.png';
+import { useAccount } from 'wagmi';
 
 interface Error {
   line: number;
@@ -32,6 +33,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
   const [errorMessage, setErrorMessage] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isExampleCSVOpen, setIsExampleCSVOpen] = useState(false);
+  const account = useAccount().address;
 
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -79,8 +81,11 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
       }
     });
     setCsvContent(content);
-    validateCSV(content);
-    setCSVData(JSON.stringify(csvData));
+    if (validateCSV(content)) {
+      setCSVData(JSON.stringify(csvData));
+    } else {
+      setCSVData('');
+    }
   };
   const openExampleCSV = () => {
     setIsExampleCSVOpen(!isExampleCSVOpen);
@@ -148,12 +153,22 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
           line: index + 1,
           message: 'Too many columns within the line'
         });
+        uniqueErrorLines.add(index + 1);
       } else {
         const [address, amount] = columns;
         const trimmedAddress = address.trim();
+  
+        if (trimmedAddress === account) {
+          newErrors.push({
+            line: index + 1,
+            message: 'Cannot use your own account address'
+          });
+          uniqueErrorLines.add(index + 1);
+        }
+  
         // Check for invalid, dead, or zero address
         if (
-          !isAddress(trimmedAddress) ||
+         !isAddress(trimmedAddress) ||
           trimmedAddress === '0x0000000000000000000000000000000000000000'
         ) {
           let errorMessage = 'Invalid address format';
@@ -187,26 +202,34 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
     });
 
     // Check for duplicate addresses
-    Object.entries(addressCountMap).forEach(([address, count]) => {
-      if (count > 1) {
-        newErrors.push({
-          line: -1,
-          message: `Duplicate address found: ${address}. Please use a unique address for each row.`
-        });
+    Object.keys(addressCountMap).forEach((address, index) => {
+      if (addressCountMap[address] > 1) {
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          const columns = line.split(',');
+          if (columns[0].trim() === address) {
+            newErrors.push({
+              line: i + 1,
+              message: `Duplicate address found: ${address}. Please use a unique address for each row.`
+            });
+            uniqueErrorLines.add(i + 1);
+          }
+        }
       }
     });
-
+  
     setErrors(newErrors);
-
+  
     const uniqueErrorLinesArray = Array.from(uniqueErrorLines);
     const dynamicMessage =
       uniqueErrorLinesArray.length > 0
-        ? `Line ${uniqueErrorLinesArray.join(
+       ? `Line ${uniqueErrorLinesArray.join(
             ', '
-          )}: Please provide a corresponding amount for each address. Click 'CSV Example' for more details.`
+          )}: Please provide a valid Input, Click 'CSV Example' for more details.`
         : '';
-
+  
     setDynamicMessage(dynamicMessage);
+    return newErrors.length === 0;
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
