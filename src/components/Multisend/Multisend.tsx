@@ -52,6 +52,9 @@ export function Multisend() {
     if (tokenAddress === ethers.ZeroAddress) {
       handleNextClick();
     }
+    if(tokenDetails?.allowance>totalAmount){
+      handleNextClick();
+    }
     buttonText = 'Approve';
   } else if (currentStep === 3) {
     buttonText = 'MultiSend';
@@ -124,7 +127,9 @@ export function Multisend() {
           </span>
           <div className="text-grey-500">Approve</div>
         </div>
-        <div className={`flex-grow h-px  ${(currentStep === 3 ||currentStep === 4) ? 'bg-black' : 'bg-gray-300'} `}></div>
+        <div
+          className={`flex-grow h-px  ${currentStep === 3 || currentStep === 4 ? 'bg-black' : 'bg-gray-300'} `}
+        ></div>
         <div className="flex items-center gap-1.5 relative">
           <span
             className={`flex justify-center items-center ${
