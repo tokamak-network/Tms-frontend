@@ -21,7 +21,7 @@ interface TokenDetailsState {
 export function Multisend() {
   const [tokenDetails, setTokenDetails] = useState<TokenDetailsState | undefined>(undefined);
   const [csvData, setCSVData] = useState<string | undefined>('');
-  const [totalAmount, setTotalAmount] = useState<string>('');
+  const [totalAmount, setTotalAmount] = useState<string>('0');
   const [amountType, setAmountType] = useState<number | string>('');
   const [tokenAddress, setTokenAddress] = useState<string>(ethers.ZeroAddress);
   const [txnHash, setTxnHash] = useState<string | null>(null);
@@ -32,14 +32,16 @@ export function Multisend() {
     setCurrentStep((prevStep) => prevStep + 1);
   };
   const showHome = () => {
+    console.log('show home');
+    setTokenDetails(undefined);
     setCurrentStep(1);
     setCSVData('');
-    setTotalAmount('');
+    setTotalAmount('0');
     setTokenAddress(ethers.ZeroAddress);
     setTxnHash(null);
     setAmountType('');
   };
-  useEffect(() => {}, [account, csvData, tokenAddress]);
+  useEffect(() => {}, [account, csvData, tokenAddress, totalAmount]);
 
   let buttonText: string;
   if (currentStep === 1) {
@@ -52,7 +54,10 @@ export function Multisend() {
     if (tokenAddress === ethers.ZeroAddress) {
       handleNextClick();
     }
-    if(tokenDetails?.allowance>totalAmount){
+    console.log('tokenDetails?.allowance', tokenDetails?.allowance);
+    console.log('totalAmount', totalAmount);
+    console.log('tokenDetails?.allowance > totalAmount', parseFloat(tokenDetails?.allowance) > parseFloat(totalAmount));
+    if (totalAmount !== '0' && parseFloat(tokenDetails?.allowance) > parseFloat(totalAmount)) {
       handleNextClick();
     }
     buttonText = 'Approve';
