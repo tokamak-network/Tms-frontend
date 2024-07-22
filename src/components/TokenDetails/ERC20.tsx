@@ -86,7 +86,13 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({
       <div className="grid grid-cols-2 gap-4 ">
         <div className="flex flex-row items-center mt-4">
           <span className="text-gray-700">Balance :</span>
-          <span className="font-sans text-gray-900 ml-2">{tokenDetails.balanceOf}</span>
+          <span className="font-sans text-gray-900 ml-2">
+            {tokenDetails.balanceOf
+              ? Number(tokenDetails.balanceOf) > 100000
+                ? `${Number(tokenDetails.balanceOf).toExponential(2)}`
+                : `${Number(tokenDetails.balanceOf).toFixed(2)}`
+              : '0'}
+          </span>
         </div>
         <div className="flex flex-row items-center mt-4">
           <span className="text-gray-700">Decimals :</span>
@@ -94,12 +100,22 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({
         </div>
         <div className="flex flex-row items-center mt-4">
           <span className="text-gray-700">Supply :</span>
-          <span className="font-sans text-gray-900 ml-2">{tokenDetails.totalSupply}</span>
+          <span className="font-sans text-gray-900 ml-2">
+            {tokenDetails.totalSupply
+              ? Number(tokenDetails.totalSupply) > 1000000
+                ? `${Number(tokenDetails.totalSupply).toExponential(2)}`
+                : `${Number(tokenDetails.totalSupply)}`
+              : '0'}
+          </span>
         </div>
         <div className="flex flex-row items-center mt-4 mb-2">
           <span className="text-gray-700">Allowance :</span>
           <span className="font-sans text-gray-900 ml-2">
-            {tokenDetails.allowance ? Number(tokenDetails.allowance).toExponential(2) : '0'}
+            {tokenDetails.allowance
+              ? Number(tokenDetails.allowance) > 1000000
+                ? `${Number(tokenDetails.allowance).toExponential(2)}`
+                : `${Number(tokenDetails.allowance)}`
+              : '0'}
           </span>
         </div>
       </div>

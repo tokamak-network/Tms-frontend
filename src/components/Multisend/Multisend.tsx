@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import PrepareComponent from './Prepare';
-import ApproveComponent from './Approve'; // Import the Approve component
+import ApproveComponent from './Approve';
 import { useApprove } from '../../hooks/useApprove';
 import { useMultiSend } from '../../hooks/useMultisend';
-import { parseUnits } from 'viem';
 import SuccessCard from '../cards/successCard';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
@@ -51,6 +50,9 @@ export function Multisend() {
     }
   } else if (currentStep === 2) {
     if (tokenAddress === ethers.ZeroAddress) {
+      handleNextClick();
+    }
+    if(tokenDetails?.allowance>totalAmount){
       handleNextClick();
     }
     buttonText = 'Approve';
@@ -125,11 +127,15 @@ export function Multisend() {
           </span>
           <div className="text-grey-500">Approve</div>
         </div>
-        <div className={`flex-grow h-px  ${(currentStep === 3 ||currentStep === 4) ? 'bg-black' : 'bg-gray-300'} `}></div>
+        <div
+          className={`flex-grow h-px  ${currentStep === 3 || currentStep === 4 ? 'bg-black' : 'bg-gray-300'} `}
+        ></div>
         <div className="flex items-center gap-1.5 relative">
           <span
             className={`flex justify-center items-center ${
-              (currentStep === 3 ||currentStep === 4) ? 'bg-[#007AFF] text-white' : 'bg-[#F0F2F7] text-[#007AFF]'
+              currentStep === 3 || currentStep === 4
+                ? 'bg-[#007AFF] text-white'
+                : 'bg-[#F0F2F7] text-[#007AFF]'
             } w-6 h-6 rounded-full text-sm`}
           >
             3
@@ -172,7 +178,10 @@ export function Multisend() {
                         ? HandleMultiSend()
                         : showHome();
               }}
-              className="  font-ans-serif font-semibold text-s w-[500px] text-center px-16 py-4 mt-5  leading-4 text-white bg-[#007AFF] rounded-3xl"
+              disabled={buttonText == 'Continue' && csvData == ''}
+              className={`font-ans-serif font-semibold text-s w-[500px] text-center px-16 py-4 mt-5 leading-4 text-white ${
+                buttonText == 'Continue' && csvData == '' ? 'bg-[#80b4ee] ' : 'bg-[#007AFF]'
+              } rounded-3xl`}
             >
               {buttonText}
             </button>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useBalance, useAccount } from 'wagmi';
 import { ethers } from 'ethers';
 
@@ -63,6 +63,10 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
     (acc: any, current: any) => acc + current.amount,
     0
   );
+  useEffect(() => {
+    setTotalAmount(totalTokensToSend.toFixed(3));
+  }, [totalTokensToSend]);
+
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let amountType: 'exact-amount' | 'max';
     switch (e.target.id) {
@@ -111,7 +115,7 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
           )}
         </div>
       </div>
-      {tokenAddress !== ethers.ZeroAddress && (
+      {tokenAddress !== ethers.ZeroAddress && tokenDetails?.allowance < totalTokensToSend && (
         <div className="mt-10">
           <div className="flex flex-row gap-4 mt-5 ml-4 text-ans-serif">
             <input type="radio" id="exact-amount" name="amount-type" onChange={handleRadioChange} />
