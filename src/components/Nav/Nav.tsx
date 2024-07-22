@@ -11,43 +11,43 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex flex-col">
-      <div className="bg-[#2775FF]">
-        <div className="container mx-auto flex justify-center items-center text-white font-semibold">
-          <div className="flex space-x-5 text-bold">
+    <nav className="flex flex-col font-titillium text-[15px] font-semibold  leading-[1.53] ">
+      <div className="bg-[#2775FF] h-[45px]">
+        <div className="container mx-auto flex justify-center items-center text-white ">
+          <div className="flex space-x-5 ">
             <a
               href="https://www.tokamak.network/#/"
-              className="nav-item hover:bg-white hover:text-black transition duration-300 ease-in-out py-2 px-1"
+              className="nav-item hover:bg-white hover:text-black transition duration-300 ease-in-out py-3 px-2"
             >
               Tokamak Network
             </a>
             <a
               href="https://titan.tokamak.network/"
-              className="nav-item hover:bg-white hover:text-black transition duration-300 ease-in-out py-2 px-1"
+              className="nav-item hover:bg-white hover:text-black transition duration-300 ease-in-out py-3 px-2"
             >
               L2 Mainnet
             </a>
             <a
               href="https://bridge.tokamak.network/#/"
-              className="nav-item hover:bg-white hover:text-black transition duration-300 ease-in-out py-2 px-1"
+              className="nav-item hover:bg-white hover:text-black transition duration-300 ease-in-out py-3 px-2"
             >
               Bridge & Swap
             </a>
             <a
               href="https://simple.staking.tokamak.network/home"
-              className="nav-item hover:bg-white hover:text-black transition duration-300 ease-in-out py-2 px-1"
+              className="nav-item hover:bg-white hover:text-black transition duration-300 ease-in-out py-3 px-2"
             >
               Staking
             </a>
             <a
               href="https://dao.tokamak.network/#/"
-              className="nav-item hover:bg-white hover:text-black transition duration-300 ease-in-out py-2 px-1"
+              className="nav-item hover:bg-white hover:text-black transition duration-300 ease-in-out py-3 px-2"
             >
               DAO
             </a>
             <a
               href="https://tonstarter.tokamak.network/"
-              className="nav-item hover:bg-white hover:text-black transition duration-300 ease-in-out py-2 px-1"
+              className="nav-item hover:bg-white hover:text-black transition duration-300 ease-in-out py-3 px-2"
             >
               Launchpad
             </a>
