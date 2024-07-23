@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import TokenDetails from '../TokenDetails/ERC20';
 import { ethers } from 'ethers';
+import contracts from '../../config/constants/contracts';
+import getCurrentNetwork from '../../hooks/getCurrentNetwork';
 import CSVUploader from './csvUploader';
-import NativeETHDetails from '../TokenDetails/NativeETH';
 import { useAccount } from 'wagmi';
 
 interface TokenDetailsState {
@@ -25,20 +26,31 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
   setCSVData,
   setToken
 }) => {
+  const [searchQuery, setSearchQuery] = useState(''); // new state variable for search query
   const [tokenAddress, setTokenAddress] = useState('');
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showTokenDetails, setShowTokenDetails] = useState<boolean>(false);
   const account = useAccount().address;
+  const chainId = getCurrentNetwork().chain.id;
 
   const handleInputChange = (e: any) => {
     const input = e.target.value;
-    setTokenAddress(input);
-    setToken(input);
+    setSearchQuery(input); // update search query state
+    let address;
+    let text = input.toLowerCase() as keyof typeof contracts;
 
-    if (!input) {
+    if (contracts[text] && contracts[text][chainId]) {
+      address = contracts[text][chainId];
+    } else {
+      address = input;
+    }
+    setTokenAddress(address);
+    setToken(address);
+
+    if (!address) {
       setError('');
-    } else if (!ethers.isAddress(input)) {
+    } else if (!ethers.isAddress(address)) {
       setError('Invalid address');
       setShowTokenDetails(false);
     } else {
@@ -56,7 +68,7 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
               type="textarea"
               placeholder="Search Token name or address"
               className="flex-auto my-auto bg-transparent text-gray-600 placeholder-gray-600 focus:outline-none  font-normal text-base leading-[21px] text-cap leading-trim-both pl-2"
-              value={tokenAddress}
+              value={searchQuery} // use searchQuery for input value
               onChange={handleInputChange}
             />
             <img
@@ -96,5 +108,4 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
     </div>
   );
 };
-
 export default PrepareComponent;
