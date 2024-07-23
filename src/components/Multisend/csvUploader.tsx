@@ -140,6 +140,11 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
   };
 
   const validateCSV = (content: string) => {
+    if (!content.trim()) {
+      setErrors([]);
+      setDynamicMessage('');
+      return false;
+    }
     const lines = content.split('\n');
     const newErrors: Error[] = [];
     const uniqueErrorLines = new Set<number>();
@@ -172,7 +177,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
   
         // Check for invalid, dead, or zero address
         if (
-         !isAddress(trimmedAddress) ||
+          !isAddress(trimmedAddress) ||
           trimmedAddress === '0x0000000000000000000000000000000000000000'
         ) {
           let errorMessage = 'Invalid address format';
@@ -204,7 +209,6 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
         }
       }
     });
-
     // Check for duplicate addresses
     Object.keys(addressCountMap).forEach((address, index) => {
       if (addressCountMap[address] > 1) {
@@ -221,17 +225,17 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
         }
       }
     });
-  
+
     setErrors(newErrors);
-  
+
     const uniqueErrorLinesArray = Array.from(uniqueErrorLines);
     const dynamicMessage =
       uniqueErrorLinesArray.length > 0
-       ? `Line ${uniqueErrorLinesArray.join(
+        ? `Line ${uniqueErrorLinesArray.join(
             ', '
           )}: Please provide a valid Input, Click 'CSV Example' for more details.`
         : '';
-  
+
     setDynamicMessage(dynamicMessage);
     return newErrors.length === 0;
   };
