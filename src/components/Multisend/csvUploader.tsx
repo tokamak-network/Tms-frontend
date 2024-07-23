@@ -351,8 +351,12 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
           CSV Example
         </span>
       </div>
-      <div className="container h-400 w-800 bg-white rounded-lg p-0 border border-gray-300  overflow-y-scroll always-scrollable">
-        <div className="flex h-full">
+      <div
+        className={`container  bg-white rounded-lg p-0 border border-gray-300 ${
+          csvContent.split('\n').length > 7 ? 'always-scrollable' : ''
+        }`}
+      >
+        <div className="flex ">
           <div className="w-12 bg-[#F0F2F7] rounded-l-lg p-2">
             <ul className="list-none m-0 p-0">
               {[...Array(csvContent.split('\n').length).keys()].map((i) => (
