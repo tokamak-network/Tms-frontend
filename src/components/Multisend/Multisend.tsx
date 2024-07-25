@@ -105,7 +105,7 @@ export function Multisend() {
   };
 
   return (
-    <div className="flex flex-col items-center pt-4 sm:pt-6 md:pt-8 sm:px-4">
+    <div className="flex flex-col items-center pt-4 sm:pt-6 md:pt-8 sm:px-4 mb-[15%]">
       <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-l text-grey-400 w-full max-w-[650px] px-4 sm:px-0 justify-between">
         <div className="flex items-center gap-1 sm:gap-1.5 relative">
           <span

@@ -14,7 +14,7 @@ export const getERC20ContractDetails = async (
     address: contractAddress,
     abi: ERC20_INTERFACE
   };
-  const chainId = (await getCurrentNetwork()).chain.id;
+  const chainId = getCurrentNetwork().chain.id;
   const multisendAddress = contracts.multisend[chainId] as `0x${string}`;
   try {
     const result = await readContracts(NetworkConfig, {
