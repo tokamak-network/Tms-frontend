@@ -45,7 +45,9 @@ const Navbar = () => {
               alt=""
               className="h-8 w-8 mr-2"
             />
-            <h2 className="text-xl font-bold">Tokamak Multisender</h2>
+            <a href="/">
+              <h2 className="text-xl font-bold">Tokamak Multisender</h2>
+            </a>
           </div>
           <div className="cursor-pointer md:ml-auto hidden md:block">
             <ConnectWallet />
