@@ -166,7 +166,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
       } else {
         const [address, amount] = columns;
         const trimmedAddress = address.trim();
-  
+
         if (trimmedAddress === account) {
           newErrors.push({
             line: index + 1,
@@ -174,7 +174,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
           });
           uniqueErrorLines.add(index + 1);
         }
-  
+
         // Check for invalid, dead, or zero address
         if (
           !isAddress(trimmedAddress) ||
@@ -268,11 +268,11 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
     setFileUrl('');
   };
   return (
-    <div className="flex flex-col py-1 mt-1.5 font-quicksand text-xs border-color-red leading-4  max-md:max-w-full ">
+    <div className="flex flex-col py-1 mt-1.5 font-quicksand text-xs border-color-red leading-4 max-w-full">
       {isExampleCSVOpen && <ExampleCSV setIsExampleCSVOpen={setIsExampleCSVOpen} />}
       {showModal && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
-          <div className="bg-white p-6 rounded shadow-md w-1/3 relative">
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4">
+          <div className="bg-white p-6 rounded shadow-md w-full max-w-2xl relative">
             <button
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl"
               onClick={handleCloseModal}
@@ -308,7 +308,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
                   <div>Uploading file...</div>
                   <button
                     onClick={handleUpload}
-                    className="mt-2 bg-red-500 text-white px-4 py-2 rounded"
+                    className="mt-2 bg-red-500 text-white px-4 py-2 rounded text-sm"
                   >
                     Cancel
                   </button>
@@ -318,49 +318,51 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
                   <img
                     loading="lazy"
                     src={UploadIcon.src}
-                    className="w-10 ml-52"
+                    className="w-10 mx-auto"
                     alt="upload_icon"
                   />
-                  <p className="font-bold my-2">Click to Upload CSV</p>
-                  <p>or drag and drop it here</p>
+                  <p className="font-bold my-2 text-base">Click to Upload CSV</p>
+                  <p className="text-sm">or drag and drop it here</p>
                 </div>
               )}
             </div>
-            <div className="text-center mb-4">Or upload from URL</div>
+            <div className="text-center mb-4 text-base">Or upload from URL</div>
             <div className="flex mb-4">
               <input
                 type="text"
                 placeholder="Add file URL"
                 value={fileUrl}
                 onChange={(e) => setFileUrl(e.target.value)}
-                className="flex-grow p-2 border border-gray-400 rounded-l"
+                className="flex-grow p-2 border border-gray-400 rounded-l text-sm"
                 disabled={uploading}
               />
               <button
                 onClick={handleUrlUpload}
-                className="bg-blue-500 text-white px-4 py-2 rounded-r"
+                className="bg-blue-500 text-white px-4 py-2 rounded-r text-sm"
                 disabled={uploading}
               >
                 Upload
               </button>
             </div>
-            {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
-            {uploadSuccess && <div className="text-green-500 mb-4">CSV uploaded successfully!</div>}
+            {errorMessage && <div className="text-red-500 mb-4 text-sm">{errorMessage}</div>}
+            {uploadSuccess && (
+              <div className="text-green-500 mb-4 text-sm">CSV uploaded successfully!</div>
+            )}
           </div>
         </div>
       )}
-      <div className="flex items-center justify-between mb-4 mt-2 font-quicksand text-grey-300">
-        <p className="">Address List</p>
+      <div className="flex items-center justify-between mb-4 mt-2 font-quicksand text-grey-300 text-sm">
+        <p>Address List</p>
         <span onClick={openExampleCSV} className="text-blue-500 font-medium cursor-pointer">
           CSV Example
         </span>
       </div>
       <div
-        className={`container  bg-white rounded-lg p-0 border border-gray-300 ${
+        className={`container bg-white rounded-lg p-0 border border-gray-300 ${
           csvContent.split('\n').length > 7 ? 'always-scrollable' : ''
         }`}
       >
-        <div className="flex ">
+        <div className="flex">
           <div className="w-12 bg-[#F0F2F7] rounded-l-lg p-2">
             <ul className="list-none m-0 p-0">
               {[...Array(csvContent.split('\n').length).keys()].map((i) => (
@@ -374,7 +376,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
             </ul>
           </div>
           <textarea
-            className="w-full h-full p-4 text-base font-normal text-gray-600  bg-white rounded-r-lg focus:outline-none"
+            className="w-full h-full p-4 text-base font-normal text-gray-600 bg-white rounded-r-lg focus:outline-none"
             rows={csvContent.split('\n').length > 6 ? csvContent.split('\n').length : 6}
             value={csvContent}
             onChange={handleTextareaChange}
@@ -383,8 +385,8 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
       </div>
       {errors.length > 0 && (
         <div
-          className="mt-4 p-2 items-center bg-white text-red-800 rounded space-y-2"
-          style={{ maxHeight: '200px', overflowY: 'auto' }}
+          className="mt-4 p-2 items-center bg-white text-red-800 rounded space-y-2 text-sm"
+          style={{ maxHeight: '150px', overflowY: 'auto' }}
         >
           {errors.map((error) => (
             <div key={error.line}>

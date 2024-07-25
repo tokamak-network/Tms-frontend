@@ -32,7 +32,6 @@ export function Multisend() {
     setCurrentStep((prevStep) => prevStep + 1);
   };
   const showHome = () => {
-    console.log('show home');
     setTokenDetails(undefined);
     setCurrentStep(1);
     setCSVData('');
@@ -54,9 +53,6 @@ export function Multisend() {
     if (tokenAddress === ethers.ZeroAddress) {
       handleNextClick();
     }
-    console.log('tokenDetails?.allowance', tokenDetails?.allowance);
-    console.log('totalAmount', totalAmount);
-    console.log('tokenDetails?.allowance > totalAmount', parseFloat(tokenDetails?.allowance) > parseFloat(totalAmount));
     if (totalAmount !== '0' && parseFloat(tokenDetails?.allowance) > parseFloat(totalAmount)) {
       handleNextClick();
     }
@@ -109,43 +105,43 @@ export function Multisend() {
   };
 
   return (
-    <div className="flex flex-col items-center pt-8">
-      <div className="flex items-center gap-2 text-l text-grey-400 w-[650px] justify-between">
-        <div className="flex items-center gap-1.5 relative">
+    <div className="flex flex-col items-center pt-4 sm:pt-6 md:pt-8 sm:px-4">
+      <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-l text-grey-400 w-full max-w-[650px] px-4 sm:px-0 justify-between">
+        <div className="flex items-center gap-1 sm:gap-1.5 relative">
           <span
             className={`flex justify-center items-center ${
               currentStep === 1 ? 'bg-[#007AFF] text-white' : 'bg-[#F0F2F7] text-[#007AFF]'
-            }  w-6 h-6 rounded-full text-sm`}
+            } w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full text-xs sm:text-sm`}
           >
             1
           </span>
-          <div className="text-grey-500">Prepare</div>
+          <div className="text-grey-500 text-xs sm:text-sm">Prepare</div>
         </div>
-        <div className={`flex-grow h-px  ${currentStep === 1 ? 'bg-gray-300' : 'bg-black'} `}></div>
-        <div className="flex items-center gap-1.5 relative">
+        <div className={`flex-grow h-px ${currentStep === 1 ? 'bg-gray-300' : 'bg-black'}`}></div>
+        <div className="flex items-center gap-1 sm:gap-1.5 relative">
           <span
             className={`flex justify-center items-center ${
               currentStep === 2 ? 'bg-[#007AFF] text-white' : 'bg-[#F0F2F7] text-[#007AFF]'
-            }  w-6 h-6 border-2 rounded-full text-sm`}
+            } w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 border-2 rounded-full text-xs sm:text-sm`}
           >
             2
           </span>
-          <div className="text-grey-500">Approve</div>
+          <div className="text-grey-500 text-xs sm:text-sm">Approve</div>
         </div>
         <div
-          className={`flex-grow h-px  ${currentStep === 3 || currentStep === 4 ? 'bg-black' : 'bg-gray-300'} `}
+          className={`flex-grow h-px ${currentStep === 3 || currentStep === 4 ? 'bg-black' : 'bg-gray-300'}`}
         ></div>
-        <div className="flex items-center gap-1.5 relative">
+        <div className="flex items-center gap-1 sm:gap-1.5 relative">
           <span
             className={`flex justify-center items-center ${
               currentStep === 3 || currentStep === 4
                 ? 'bg-[#007AFF] text-white'
                 : 'bg-[#F0F2F7] text-[#007AFF]'
-            } w-6 h-6 rounded-full text-sm`}
+            } w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full text-xs sm:text-sm`}
           >
             3
           </span>
-          <div className="text-500">Multisend</div>
+          <div className="text-500 text-xs sm:text-sm">Multisend</div>
         </div>
       </div>
 
@@ -184,9 +180,9 @@ export function Multisend() {
                         : showHome();
               }}
               disabled={buttonText == 'Continue' && csvData == ''}
-              className={`font-ans-serif font-semibold text-s w-[500px] text-center px-16 py-4 mt-5 leading-4 text-white ${
+              className={`font-ans-serif font-semibold text-xs sm:text-sm md:text-s w-[70%] md:w-[500px] text-center px-4 sm:px-8 md:px-16 py-2 sm:py-3 md:py-4 mt-3 sm:mt-4 md:mt-5 leading-4 text-white ${
                 buttonText == 'Continue' && csvData == '' ? 'bg-[#80b4ee] ' : 'bg-[#007AFF]'
-              } rounded-3xl`}
+              } rounded-2xl sm:rounded-3xl`}
             >
               {buttonText}
             </button>

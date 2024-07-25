@@ -23,7 +23,7 @@ const ExampleCSV: React.FC<Props> = ({ setIsExampleCSVOpen }) => {
           className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center"
           style={{ width: '100%' }}
         >
-          <div className="bg-white p-6 rounded shadow-md w-1/3 relative">
+          <div className="bg-white p-6 rounded shadow-md w-[90%] lg:w-1/3 md:w-1/2 relative">
             <button
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-2xl"
               onClick={handleClose}
@@ -31,8 +31,12 @@ const ExampleCSV: React.FC<Props> = ({ setIsExampleCSVOpen }) => {
               &times;
             </button>
             <h2 className="text-lg font-bold mb-4">Example CSV</h2>
-            <div className="container h-400 w-800 bg-white rounded-lg p-0 border border-gray-300 ">
-              <div className="flex h-full">
+            <div
+              className={`container bg-white rounded-lg p-0 border border-gray-300 ${
+                csvContent.split('\n').length > 7 ? 'always-scrollable' : ''
+              }`}
+            >
+              <div className="flex">
                 <div className="w-12 bg-[#F0F2F7] rounded-l-lg p-2">
                   <ul className="list-none m-0 p-0">
                     {[...Array(csvContent.split('\n').length).keys()].map((i) => (
@@ -46,9 +50,9 @@ const ExampleCSV: React.FC<Props> = ({ setIsExampleCSVOpen }) => {
                   </ul>
                 </div>
                 <textarea
-                  className="w-full h-full p-4 scroll-none text-base font-normal text-gray-600  bg-white rounded-r-lg focus:outline-none"
+                  className="w-full h-full p-4 text-base font-normal text-gray-600 bg-white rounded-r-lg focus:outline-none"
                   rows={csvContent.split('\n').length > 6 ? csvContent.split('\n').length : 6}
-                  defaultValue={csvContent}
+                  value={csvContent}
                   readOnly
                 />
               </div>
