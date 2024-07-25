@@ -32,7 +32,7 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
   const [showModal, setShowModal] = useState(false);
   const [showTokenDetails, setShowTokenDetails] = useState<boolean>(false);
   const account = useAccount().address;
-  const chainId = getCurrentNetwork().chain.id;
+  const chainId = getCurrentNetwork()?.chain.id;
 
   const handleInputChange = (e: any) => {
     const input = e.target.value;
