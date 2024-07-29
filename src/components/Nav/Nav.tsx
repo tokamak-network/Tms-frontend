@@ -46,7 +46,6 @@ const Navbar = () => {
               className="h-8 w-8 mr-2"
             />
             <Link href="/">
-              Home
               <h2 className="text-xl font-bold">Tokamak Multisender</h2>
             </Link>
           </div>
