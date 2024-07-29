@@ -30,7 +30,8 @@ module.exports = {
         ],
         poppins: ['Poppins', 'ans-serif'],
         titillium: ['"Titillium Web"', 'sans-serif'],
-        quicksand: ['Quicksand', 'sans-serif']
+        quicksand: ['Quicksand', 'sans-serif'],
+        nanumsquare: ['NanumSquare', 'sans-serif']
       }
     }
   },
