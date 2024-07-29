@@ -5,6 +5,10 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Titillium+Web&family=Quicksand&display=swap"
+          rel="stylesheet"
+        />
         <body>
           <Main />
           <NextScript />

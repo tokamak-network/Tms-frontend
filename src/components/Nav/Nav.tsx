@@ -17,7 +17,6 @@ const Navbar = () => {
     { href: 'https://dao.tokamak.network/#/', text: 'DAO' },
     { href: 'https://tonstarter.tokamak.network/', text: 'Launchpad' }
   ];
-
   return (
     <nav className="font-titillium text-[15px] font-semibold leading-[1.53]">
       {/* Top blue bar - hidden on mobile */}
@@ -29,6 +28,8 @@ const Navbar = () => {
                 key={index}
                 href={item.href}
                 className="nav-item hover:bg-white hover:text-black transition duration-300 ease-in-out py-3 px-2"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 {item.text}
               </a>
@@ -46,7 +47,7 @@ const Navbar = () => {
               className="h-8 w-8 mr-2"
             />
             <Link href="/">
-              <h2 className="text-xl font-bold">Tokamak Multisender</h2>
+              <h2 className="text-xl font-nanumsquare font-bold">Tokamak Multisender</h2>
             </Link>
           </div>
           <div className="cursor-pointer md:ml-auto hidden md:block">
@@ -101,6 +102,8 @@ const Navbar = () => {
                 key={index}
                 href={item.href}
                 className="nav-item hover:bg-gray-100 transition duration-300 ease-in-out py-2 px-4"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 {item.text}
               </a>
