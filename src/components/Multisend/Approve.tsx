@@ -138,14 +138,7 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
               Unlimited Amount
             </label>
           </div>
-          {tokenDetails?.allowance < totalTokensToSend && (
-            <button
-              className="bg-[#007AFF] hover:bg-[#0067ce] text-white font-bold py-2 px-4 rounded mt-4"
-              onClick={() => console.log('Approve button clicked')}
-            >
-              Approve
-            </button>
-          )}
+      
         </div>
       )}
     </div>
