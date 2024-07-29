@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ConnectWallet } from '../Button/ConnectWallet';
+import Link from 'next/link';
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -36,7 +37,6 @@ const Navbar = () => {
         </div>
       </div>
 
-
       <div className="bg-white lg:py-2 mt-4 mb-4">
         <div className="container mx-4 md:mx-4 lg:mx-auto flex justify-between items-center">
           <div className="flex items-center">
@@ -45,14 +45,15 @@ const Navbar = () => {
               alt=""
               className="h-8 w-8 mr-2"
             />
-            <a href="/">
+            <Link href="/">
+              Home
               <h2 className="text-xl font-bold">Tokamak Multisender</h2>
-            </a>
+            </Link>
           </div>
           <div className="cursor-pointer md:ml-auto hidden md:block">
             <ConnectWallet />
           </div>
-        
+
           <div className="md:hidden">
             <button onClick={toggleSidebar} className="p-2">
               <svg
