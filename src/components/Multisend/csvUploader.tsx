@@ -326,8 +326,8 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
                 </div>
               )}
             </div>
-            <div className="text-center mb-4 text-base">Or upload from URL</div>
-            <div className="flex mb-4">
+            {/* <div className="text-center mb-4 text-base">Or upload from URL</div> */}
+            {/* <div className="flex mb-4">
               <input
                 type="text"
                 placeholder="Add file URL"
@@ -343,7 +343,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
               >
                 Upload
               </button>
-            </div>
+            </div> */}
             {errorMessage && <div className="text-red-500 mb-4 text-sm">{errorMessage}</div>}
             {uploadSuccess && (
               <div className="text-green-500 mb-4 text-sm">CSV uploaded successfully!</div>

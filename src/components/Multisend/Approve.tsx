@@ -1,10 +1,17 @@
 import React, { useEffect } from 'react';
 import { useBalance, useAccount } from 'wagmi';
 import { ethers } from 'ethers';
+import TONIcon from '../../../images/icons/TON.svg';
+import TOSIcon from '../../../images/icons/TOS.svg';
+import WETHIcon from '../../../images/icons/WETH.svg';
+import USDTIcon from '../../../images/icons/USDT.svg';
+import USDCIcon from '../../../images/icons/USDC.svg';
+import ETHIcon from '../../../images/icons/ETH.svg';
 
 interface Props {
   title: string;
   value: number | any;
+  icon: any;
 }
 
 interface ITokenDetails {
@@ -27,12 +34,32 @@ interface ApproveComponentProps {
   setAmountType: (amountType: string) => void;
   setTotalAmount: (totalAmount: string) => void;
 }
+const getTokenIcon = (symbol: string): string | null => {
+  const iconMap: { [key: string]: string } = {
+    TON: TONIcon.src,
+    TOS: TOSIcon.src,
+    WETH: WETHIcon.src,
+    USDT: USDTIcon.src,
+    USDC: USDCIcon.src,
+    ETH: ETHIcon.src
+  };
 
-const StatCard: React.FC<Props> = ({ title, value }) => (
+  return iconMap[symbol] || null;
+};
+
+const StatCard: React.FC<Props> = ({ title, value, icon = '' }) => (
   <div className="h-10 rounded-md flex flex-col items-start justify-center">
-    <h1 className="text-xs  text-gray-400 ">
-      {title}
-    </h1>
+    <div className="flex items-center">
+      {icon && (
+        <img
+          src={icon}
+          alt=""
+          className="mr-2 w-4 h-4"
+          onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}
+        />
+      )}
+      <h1 className="text-xs text-gray-400">{title}</h1>
+    </div>
     <h1 className="text-sm sm:text-base md:text-xl lg:text-xl xl:text-2xl font-semibold md:font-bold lg:font-bold xl:font-bold">
       {value ? value : 0}
     </h1>
@@ -96,10 +123,14 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
     <div className="lg:w-[650px] xl:[650px] md:w-3/4 w-[85%] flex flex-col mt-12 mb-10 rounded font-sans-serif">
       <div className="flex justify-between w-full">
         {tokenDetails && (
-          <StatCard title={`${symbol ? symbol : 'ETH'} Balance`} value={tokenBalance} />
+          <StatCard
+            title={`${symbol ? symbol : 'ETH'} Balance`}
+            value={tokenBalance}
+            icon={symbol ? getTokenIcon(symbol) : ''}
+          />
         )}
-        <StatCard title="Send Amount" value={totalTokensToSend.toFixed(3)} />
-        <StatCard title="ETH balance" value={ethBalanceFormatted} />
+        <StatCard title="Send Amount" value={totalTokensToSend.toFixed(3)} icon={null} />
+        <StatCard title="ETH balance" value={ethBalanceFormatted} icon={ETHIcon.src} />
       </div>
       <div className="mt-5 text-sans-serif">
         <p className="flex justify-between text-gray-400 mb-2">Address List</p>
@@ -138,7 +169,6 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
               Unlimited Amount
             </label>
           </div>
-      
         </div>
       )}
     </div>

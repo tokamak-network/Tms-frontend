@@ -8,6 +8,8 @@ import SuccessCard from '../cards/successCard';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 import { ethers } from 'ethers';
+import contracts from '../../config/constants/contracts';
+import getCurrentNetwork from '../../hooks/getCurrentNetwork';
 
 interface TokenDetailsState {
   name: string | any;
@@ -27,6 +29,9 @@ export function Multisend() {
   const [txnHash, setTxnHash] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = React.useState(1);
   const account = useAccount().address;
+  const currentNetwork = getCurrentNetwork();
+  const chainId = currentNetwork?.chain.id;
+  const explorerUrl = currentNetwork.chain.blockExplorers.default.url;
 
   const handleNextClick = () => {
     setCurrentStep((prevStep) => prevStep + 1);
@@ -189,6 +194,17 @@ export function Multisend() {
           )}
         </ConnectButton.Custom>
       )}
+      <div className="text-center mb-2 py-4 lg:mb-0">
+        Tokamak MultiSender Address :
+        <a
+          href={`${explorerUrl}/address/${contracts.multisend[chainId]}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:text-blue-800"
+        >
+          {` ${contracts.multisend[chainId]}`}
+        </a>{' '}
+      </div>
     </div>
   );
 }
