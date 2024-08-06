@@ -185,8 +185,8 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
 
         {error && <div className="mt-2 text-xs text-red-500">{error}</div>}
         {showTokenDetails && account && (
-          <div className="modal">
-            <div className="modal-content">
+          <div className="modal relative ">
+            <div className="modal-content ">
               {tokenAddress !== '0x0000000000000000000000000000000000000000' ? (
                 <TokenDetails
                   tokenAddress={tokenAddress}
