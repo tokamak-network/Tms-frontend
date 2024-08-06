@@ -194,7 +194,7 @@ export function Multisend() {
           )}
         </ConnectButton.Custom>
       )}
-      <div className="text-center mb-2 py-4 lg:mb-0">
+      <div className="text-center mb-2 py-4 lg:mb-0 text-xs lg:text-base md:text-base ">
         Tokamak MultiSender Address :
         <a
           href={`${explorerUrl}/address/${contracts.multisend[chainId]}`}

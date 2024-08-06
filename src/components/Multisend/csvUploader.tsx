@@ -61,8 +61,11 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
             }
           });
           setCsvContent(content);
-          validateCSV(content);
-          setCSVData(JSON.stringify(csvData));
+          if (validateCSV(content)) {
+            setCSVData(JSON.stringify(csvData));
+          } else {
+            setCSVData('');
+          }
           setUploadSuccess(true);
           setUploading(false);
         }
@@ -113,10 +116,13 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
       const content = response.data; // Get response data directly
 
       setCsvContent(content);
-      validateCSV(content);
-      setCSVData(content);
-      simulateProgress();
-      setUploadSuccess(true);
+      if (validateCSV(content)) {
+        setCSVData(content);
+        simulateProgress();
+        setUploadSuccess(true);
+      } else {
+        setCSVData('');
+      }
     } catch (error) {
       console.error('Error fetching the CSV file:', error);
       setErrorMessage('Failed to fetch the CSV file. Please check the URL and try again.');
@@ -265,6 +271,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
 
   const handleCloseModal = () => {
     setShowModal(false);
+    setUploadSuccess(false);
     setFileUrl('');
   };
   return (
