@@ -9,8 +9,8 @@ import emailLogo from '../../images/emailLogo.webp';
 
 const Footer = () => {
   return (
-    <footer className="   w-full py-4 px-2 lg:px-4  mt-auto relative">
-      <div className="container mx-auto flex flex-col lg:flex-row justify-between items-center text-xs sm:text-sm lg:text-base">
+    <footer className="   w-full py-4 px-2 lg:px-4  mt-auto relative mix-blend-multiply">
+      <div className="container mx-auto flex flex-col lg:flex-row justify-between items-center text-xs sm:text-sm lg:text-base ">
         <div className="text-left flex items-center space-x-1 lg:space-x-2 mb-2 lg:mb-0">
           <img
             src={emailLogo.src}
