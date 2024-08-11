@@ -383,7 +383,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
             </ul>
           </div>
           <textarea
-            className="w-full h-full p-4 text-base font-normal text-gray-600 bg-white rounded-r-lg focus:outline-none"
+            className="w-full h-full p-4 text-sm lg:text-base font-normal text-gray-600 bg-white rounded-r-lg focus:outline-none text-nowrap line-h-1.5rem"
             rows={csvContent.split('\n').length > 6 ? csvContent.split('\n').length : 6}
             value={csvContent}
             onChange={handleTextareaChange}

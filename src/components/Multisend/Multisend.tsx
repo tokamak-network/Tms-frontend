@@ -108,11 +108,23 @@ export function Multisend() {
       console.error(`Error handling MultiSend: ${error.message}`);
     }
   };
-
+  const handlePrepareClick = () => {
+    if (currentStep !== 1) {
+      setCurrentStep(1);
+      setTotalAmount('0');
+      setTokenAddress(ethers.ZeroAddress);
+      setTokenDetails(undefined);
+      setAmountType('');
+      setTxnHash(null);
+    }
+  };
   return (
-    <div className="flex flex-col items-center pt-4 sm:pt-6 md:pt-8 sm:px-4 mb-[15%]">
+    <div className="flex flex-col items-center pt-4 sm:pt-6 md:pt-8 sm:px-4 mb-[12%]">
       <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-l text-grey-400 w-full max-w-[650px] px-4 sm:px-0 justify-between">
-        <div className="flex items-center gap-1 sm:gap-1.5 relative">
+        <div
+          className="flex items-center gap-1 sm:gap-1.5 relative cursor-pointer hover:opacity-80 transition-opacity duration-200 hover:col-span-8"
+          onClick={handlePrepareClick}
+        >
           <span
             className={`flex justify-center items-center ${
               currentStep === 1 ? 'bg-[#007AFF] text-white' : 'bg-[#F0F2F7] text-[#007AFF]'

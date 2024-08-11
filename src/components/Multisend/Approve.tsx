@@ -77,7 +77,7 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
   let totalTokensToSend = 0;
   const ethBalance = useBalance({ address: account }).data?.value;
   const ethBalanceFormatted = ethBalance
-    ? parseFloat(ethers.formatEther(BigInt(ethBalance))).toFixed(3)
+    ? parseFloat(ethers.formatEther(BigInt(ethBalance))).toFixed(2)
     : '0';
 
   const symbol = tokenDetails ? tokenDetails.symbol : null;
@@ -125,11 +125,11 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
         {tokenDetails && (
           <StatCard
             title={`${symbol ? symbol : 'ETH'} Balance`}
-            value={tokenBalance}
+            value={tokenBalance ? parseFloat(tokenBalance).toFixed(2) : 0}
             icon={symbol ? getTokenIcon(symbol) : ''}
           />
         )}
-        <StatCard title="Send Amount" value={totalTokensToSend.toFixed(3)} icon={null} />
+        <StatCard title="Send Amount" value={totalTokensToSend.toFixed(2)} icon={null} />
         <StatCard title="ETH balance" value={ethBalanceFormatted} icon={ETHIcon.src} />
       </div>
       <div className="mt-5 text-sans-serif">
@@ -143,7 +143,7 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
                   <span className="inline sm:hidden">{trimAddress(recipient.address)}</span>
                 </p>
                 <p className="text-xs sm:text-sm md:text-base lg:text-base xl:text-base ml-2">
-                  {recipient.amount} {symbol ? symbol : 'ETH'}
+                  {recipient.amount.toFixed(2)} {symbol ? symbol : 'ETH'}
                 </p>
               </div>
             ))
