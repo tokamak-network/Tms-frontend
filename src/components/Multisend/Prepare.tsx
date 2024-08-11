@@ -169,7 +169,9 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
                       <span className="font-medium">{token.name}</span>
                       <span className="text-gray-500 ml-2 text-sm">{token.symbol}</span>
                     </div>
-                    <span className="text-gray-700">{tokenBalances[token.symbol] || '0.00'}</span>
+                    <span className="text-gray-700">
+                      {Number(tokenBalances[token.symbol] || 0).toFixed(2)}
+                    </span>
                   </div>
                 ))}
               </div>
