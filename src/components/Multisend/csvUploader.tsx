@@ -17,12 +17,18 @@ interface CSVDataProps {
   setCSVData: React.Dispatch<React.SetStateAction<string | undefined>>;
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 interface DynamicMessage {
   [key: string]: string;
 }
 
-const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowModal }) => {
+const CSVUploader: React.FC<CSVDataProps> = ({
+  setCSVData,
+  showModal,
+  setShowModal,
+  setIsDropdownOpen
+}) => {
   const [csvContent, setCsvContent] = useState<string>('');
   const [errors, setErrors] = useState<Error[]>([]);
   const [dynamicMessage, setDynamicMessage] = useState<string>('');
@@ -360,7 +366,14 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
       )}
       <div className="flex items-center justify-between mb-4 mt-2 font-quicksand text-grey-300 text-sm">
         <p>Address List</p>
-        <span onClick={openExampleCSV} className="text-blue-500 font-medium cursor-pointer">
+        <span
+          onClick={() => {
+            setIsDropdownOpen(false);
+            openExampleCSV();
+            // Close the dropdown when opening the modal
+          }}
+          className="text-blue-500 font-medium cursor-pointer"
+        >
           CSV Example
         </span>
       </div>
@@ -383,7 +396,8 @@ const CSVUploader: React.FC<CSVDataProps> = ({ setCSVData, showModal, setShowMod
             </ul>
           </div>
           <textarea
-            className="w-full h-full p-4 text-sm lg:text-base font-normal text-gray-600 bg-white rounded-r-lg focus:outline-none text-nowrap line-h-1.5rem"
+            className="w-full h-full p-4 text-sm lg:text-base font-normal text-gray-600 bg-white rounded-r-lg focus:outline-none text-nowrap "
+            style={{ lineHeight: '1.5rem' }}
             rows={csvContent.split('\n').length > 6 ? csvContent.split('\n').length : 6}
             value={csvContent}
             onChange={handleTextareaChange}

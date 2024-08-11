@@ -178,7 +178,10 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
             )}
           </div>
           <button
-            onClick={() => setShowModal(true)}
+            onClick={() => {
+              setShowModal(true);
+              setIsDropdownOpen(false);
+            }}
             className="bg-gray-200 text-center text-black rounded-full py-2 px-6 hover:bg-gray-300 transition duration-300 w-full md:w-auto"
           >
             Upload CSV
@@ -203,7 +206,12 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
         )}
       </div>
 
-      <CSVUploader setCSVData={setCSVData} showModal={showModal} setShowModal={setShowModal} />
+      <CSVUploader
+        setCSVData={setCSVData}
+        showModal={showModal}
+        setShowModal={setShowModal}
+        setIsDropdownOpen={setIsDropdownOpen}
+      />
     </div>
   );
 };
