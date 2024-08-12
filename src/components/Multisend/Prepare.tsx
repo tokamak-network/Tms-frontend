@@ -36,8 +36,8 @@ interface PrepareComponentProps {
   setTokenDetails: React.Dispatch<React.SetStateAction<TokenDetailsState | undefined>>;
   setCSVData: React.Dispatch<React.SetStateAction<string | undefined>>;
   setToken: React.Dispatch<React.SetStateAction<string>>;
-  csvContent: string | undefined;
   setCsvContent: React.Dispatch<React.SetStateAction<string | undefined>>;
+  csvContent: string | undefined;
 }
 
 const PrepareComponent: React.FC<PrepareComponentProps> = ({
@@ -216,7 +216,7 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
         showModal={showModal}
         setShowModal={setShowModal}
         setIsDropdownOpen={setIsDropdownOpen}
-        csvContent={csvContent}
+        csvContent={csvContent || ''}
         setCsvContent={setCsvContent}
       />
     </div>
