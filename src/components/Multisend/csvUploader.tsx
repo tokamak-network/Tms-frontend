@@ -18,6 +18,8 @@ interface CSVDataProps {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  csvContent: string;
+  setCsvContent: React.Dispatch<React.SetStateAction<string>>;
 }
 interface DynamicMessage {
   [key: string]: string;
@@ -27,9 +29,10 @@ const CSVUploader: React.FC<CSVDataProps> = ({
   setCSVData,
   showModal,
   setShowModal,
-  setIsDropdownOpen
+  setIsDropdownOpen,
+  csvContent,
+  setCsvContent
 }) => {
-  const [csvContent, setCsvContent] = useState<string>('');
   const [errors, setErrors] = useState<Error[]>([]);
   const [dynamicMessage, setDynamicMessage] = useState<string>('');
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -82,6 +85,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({
 
   const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const content = event.target.value;
+    
     const csvData: CSVData = {};
     const lines = content.split('\n');
     lines.forEach((line, index) => {

@@ -36,12 +36,16 @@ interface PrepareComponentProps {
   setTokenDetails: React.Dispatch<React.SetStateAction<TokenDetailsState | undefined>>;
   setCSVData: React.Dispatch<React.SetStateAction<string | undefined>>;
   setToken: React.Dispatch<React.SetStateAction<string>>;
+  csvContent: string | undefined;
+  setCsvContent: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const PrepareComponent: React.FC<PrepareComponentProps> = ({
   setTokenDetails,
   setCSVData,
-  setToken
+  setToken,
+  csvContent,
+  setCsvContent
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [tokenAddress, setTokenAddress] = useState('');
@@ -51,6 +55,7 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
   const [tokenBalances, setTokenBalances] = useState<TokenBalances>({});
+
   const account = useAccount().address;
   const chainId = getCurrentNetwork()?.chain.id;
 
@@ -211,6 +216,8 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
         showModal={showModal}
         setShowModal={setShowModal}
         setIsDropdownOpen={setIsDropdownOpen}
+        csvContent={csvContent}
+        setCsvContent={setCsvContent}
       />
     </div>
   );
