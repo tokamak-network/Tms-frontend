@@ -27,6 +27,7 @@ export function Multisend() {
   const [amountType, setAmountType] = useState<number | string>('');
   const [tokenAddress, setTokenAddress] = useState<string>(ethers.ZeroAddress);
   const [txnHash, setTxnHash] = useState<string | null>(null);
+  const [csvContent, setCsvContent] = useState<string | undefined>('');
   const [currentStep, setCurrentStep] = React.useState(1);
   const account = useAccount().address;
   const currentNetwork = getCurrentNetwork();
@@ -44,6 +45,7 @@ export function Multisend() {
     setTokenAddress(ethers.ZeroAddress);
     setTxnHash(null);
     setAmountType('');
+    setCsvContent('');
   };
   useEffect(() => {}, [account, csvData, tokenAddress, totalAmount]);
 
@@ -167,6 +169,8 @@ export function Multisend() {
           setTokenDetails={setTokenDetails}
           setCSVData={setCSVData}
           setToken={setTokenAddress}
+          csvContent={csvContent}
+          setCsvContent={setCsvContent}
         />
       )}
       {(currentStep === 2 || currentStep === 3) && (
