@@ -19,7 +19,7 @@ interface CSVDataProps {
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
   csvContent: string;
-  setCsvContent: React.Dispatch<React.SetStateAction<string>>;
+  setCsvContent: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 interface DynamicMessage {
   [key: string]: string;
