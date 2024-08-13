@@ -114,8 +114,6 @@ export function Multisend() {
     if (currentStep !== 1) {
       setCurrentStep(1);
       setTotalAmount('0');
-      setTokenAddress(ethers.ZeroAddress);
-      setTokenDetails(undefined);
       setAmountType('');
       setTxnHash(null);
     }
