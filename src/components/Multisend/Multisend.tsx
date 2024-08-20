@@ -29,6 +29,7 @@ export function Multisend() {
   const [txnHash, setTxnHash] = useState<string | null>(null);
   const [csvContent, setCsvContent] = useState<string | undefined>('');
   const [currentStep, setCurrentStep] = React.useState(1);
+  const [searchQuery, setSearchQuery] = useState<string | undefined>('');
   const account = useAccount().address;
   const currentNetwork = getCurrentNetwork();
   const chainId = currentNetwork?.chain.id;
@@ -169,6 +170,8 @@ export function Multisend() {
           setToken={setTokenAddress}
           csvContent={csvContent}
           setCsvContent={setCsvContent}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
         />
       )}
       {(currentStep === 2 || currentStep === 3) && (
