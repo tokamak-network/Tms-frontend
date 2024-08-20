@@ -38,6 +38,8 @@ interface PrepareComponentProps {
   setToken: React.Dispatch<React.SetStateAction<string>>;
   setCsvContent: React.Dispatch<React.SetStateAction<string | undefined>>;
   csvContent: string | undefined;
+  searchQuery: string | undefined;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const PrepareComponent: React.FC<PrepareComponentProps> = ({
@@ -45,26 +47,27 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
   setCSVData,
   setToken,
   csvContent,
-  setCsvContent
+  setCsvContent,
+
+  searchQuery,
+  setSearchQuery
 }) => {
-  const [searchQuery, setSearchQuery] = useState('');
   const [tokenAddress, setTokenAddress] = useState('');
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showTokenDetails, setShowTokenDetails] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedToken, setSelectedToken] = useState<string | null>(null);
   const [tokenBalances, setTokenBalances] = useState<TokenBalances>({});
 
   const account = useAccount().address;
   const chainId = getCurrentNetwork()?.chain.id;
 
   const tokens: Token[] = [
-    { symbol: 'TON', name: 'TON', address: contracts.ton[chainId], icon: TONIcon },
-    { symbol: 'TOS', name: 'TOS', address: contracts.tos[chainId], icon: TOSIcon },
-    { symbol: 'WETH', name: 'Wrapped Ethereum', address: contracts.weth[chainId], icon: WETHIcon },
+    { symbol: 'TON', name: 'Tokamak Network', address: contracts.ton[chainId], icon: TONIcon },
+    { symbol: 'TOS', name: ' TONStarter', address: contracts.tos[chainId], icon: TOSIcon },
+    { symbol: 'WETH', name: 'Wrapped Ether', address: contracts.weth[chainId], icon: WETHIcon },
     { symbol: 'USDC', name: 'USD Coin', address: contracts.usdc[chainId], icon: USDCIcon },
-    { symbol: 'USDT', name: 'Tether', address: contracts.usdt[chainId], icon: USDTIcon }
+    { symbol: 'USDT', name: 'Tether USD', address: contracts.usdt[chainId], icon: USDTIcon }
   ];
 
   useEffect(() => {
@@ -76,7 +79,7 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
           if (balance !== undefined) {
             balances[token.symbol] = balance;
           } else {
-            balances[token.symbol] = '0'; // or some other default value
+            balances[token.symbol] = '0';
           }
         }
       }
