@@ -174,8 +174,8 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
                   >
                     <div className="flex items-center">
                       <img src={token.icon.src} alt={token.symbol} className="w-6 h-6 mr-2" />
-                      <span className="font-medium">{token.name}</span>
-                      <span className="text-gray-500 ml-2 text-sm">{token.symbol}</span>
+                      <span className="font-medium">{token.symbol}</span>
+                      <span className="text-gray-500 ml-2 text-sm">{token.name}</span>
                     </div>
                     <span className="text-gray-700">
                       {Number(tokenBalances[token.symbol] || 0).toFixed(2)}
