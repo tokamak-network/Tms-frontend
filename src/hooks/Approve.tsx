@@ -8,7 +8,7 @@ import contracts from '../config/constants/contracts';
 // usdc = await ethers.getContractAt("ERC20", "0xFF3Ef745D9878AfE5934Ff0b130868AFDDbc58e8", owner)
 // ton = await ethers.getContractAt("ERC20", "0x7c6b91D9Be155A6Db01f749217d76fF02A7227F2", owner)
 
-export const useApprove = async (
+export const Approve = async (
   contractAddress: `0x${string}`,
   amount: string,
   amountType: 'exact-amount' | 'max',

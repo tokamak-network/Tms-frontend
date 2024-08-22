@@ -2,8 +2,8 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import PrepareComponent from './Prepare';
 import ApproveComponent from './Approve';
-import { useApprove } from '../../hooks/useApprove';
-import { useMultiSend } from '../../hooks/useMultisend';
+import { Approve } from '../../hooks/Approve';
+import { MultiSend } from '../../hooks/Multisend';
 import SuccessCard from '../cards/successCard';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useBalance } from 'wagmi';
@@ -91,7 +91,7 @@ export function Multisend() {
         return;
       }
 
-      const result = await useApprove(
+      const result = await Approve(
         tokenAddress as `0x${string}`,
         totalAmount,
         amountType === 'exact-amount' ? 'exact-amount' : 'max',
@@ -205,7 +205,7 @@ export function Multisend() {
         }
       }
 
-      const result = await useMultiSend(
+      const result = await MultiSend(
         tokenAddress as `0x${string}`,
         addresses,
         amounts,
@@ -228,7 +228,7 @@ export function Multisend() {
       }
     } catch (error: any) {
       console.log(error);
-      
+
       console.error(`Error handling MultiSend: ${error.message}`);
       toast.error(`Error: ${error.message}`, {
         position: 'top-right',

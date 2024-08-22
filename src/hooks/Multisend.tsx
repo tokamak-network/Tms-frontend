@@ -5,7 +5,7 @@ import contracts from '../config/constants/contracts';
 import getCurrentNetwork from './getCurrentNetwork';
 import { MULTISEND_INTERFACE } from '../config/abi/Multisend';
 
-export const useMultiSend = async (
+export const MultiSend = async (
   tokenAddress: `0x${string}`,
   addresses: any,
   amounts: any,
