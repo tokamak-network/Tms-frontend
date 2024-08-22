@@ -11,6 +11,7 @@ import WETHIcon from '../../../images/icons/WETH.svg';
 import USDTIcon from '../../../images/icons/USDT.svg';
 import USDCIcon from '../../../images/icons/USDC.svg';
 import getTokenBalance from '../../hooks/getTokenBalance';
+import getTokenSymbol from '../../hooks/getTokenSymbol';
 
 interface TokenBalances {
   [key: string]: string;
@@ -91,7 +92,7 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
     }
   }, [account, chainId]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     setSearchQuery(input);
 
@@ -101,10 +102,14 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
     if (contracts[text] && contracts[text][chainId]) {
       address = contracts[text][chainId];
     } else {
+      try {
+        let tokenName = await getTokenSymbol(input as `0x${string}`);
+        setSearchQuery(tokenName);
+      } catch (error) {}
       address = input;
     }
-    setTokenAddress(address);
-    setToken(address);
+    setTokenAddress(address as string);
+    setToken(address as string);
 
     if (!address) {
       setError('');
