@@ -121,7 +121,7 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
   const handleTokenSelect = (token: Token) => {
     setTokenAddress(token.address);
     setToken(token.address);
-    setSearchQuery(token.name);
+    setSearchQuery(token.symbol);
     setIsDropdownOpen(false);
     setShowTokenDetails(true);
     setError('');
