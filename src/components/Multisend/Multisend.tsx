@@ -190,19 +190,6 @@ export function Multisend() {
           });
           return;
         }
-
-        if (Number(tokenDetails.allowance) < totalAmount) {
-          toast.error('Approved amount is less than the total amount to send', {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined
-          });
-          return;
-        }
       }
 
       const result = await MultiSend(
