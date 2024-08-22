@@ -6,10 +6,12 @@ import { useApprove } from '../../hooks/useApprove';
 import { useMultiSend } from '../../hooks/useMultisend';
 import SuccessCard from '../cards/successCard';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount } from 'wagmi';
+import { useAccount, useBalance } from 'wagmi';
 import { ethers } from 'ethers';
 import contracts from '../../config/constants/contracts';
 import getCurrentNetwork from '../../hooks/getCurrentNetwork';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface TokenDetailsState {
   name: string | any;
@@ -34,6 +36,9 @@ export function Multisend() {
   const currentNetwork = getCurrentNetwork();
   const chainId = currentNetwork?.chain.id;
   const explorerUrl = currentNetwork.chain.blockExplorers.default.url;
+  const { data: ethBalance } = useBalance({
+    address: account
+  });
 
   const handleNextClick = () => {
     setCurrentStep((prevStep) => prevStep + 1);
@@ -47,6 +52,7 @@ export function Multisend() {
     setTxnHash(null);
     setAmountType('');
     setCsvContent('');
+    setSearchQuery('');
   };
   useEffect(() => {}, [account, csvData, tokenAddress, totalAmount]);
 
@@ -72,6 +78,19 @@ export function Multisend() {
   }
   const HandleApprove = async () => {
     try {
+      if (parseFloat(tokenDetails?.balanceOf) < parseFloat(totalAmount)) {
+        toast.error('Not enough balance', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        });
+        return;
+      }
+
       const result = await useApprove(
         tokenAddress as `0x${string}`,
         totalAmount,
@@ -82,19 +101,110 @@ export function Multisend() {
         setCurrentStep((prevStep) => prevStep + 1);
       } else {
         console.log('Approval failed');
+        toast.error('Approval failed', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        });
       }
     } catch (error: any) {
       console.error(`Error handling approval: ${error.message}`);
+      toast.error(`Error: ${error.message}`, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
     }
   };
   const HandleMultiSend = async () => {
     const data = JSON.parse(csvData as string);
     const addresses = Object.keys(data);
     const amounts = Object.values(data).map((amount) =>
-      ethers.parseUnits(amount as string, tokenDetails ? tokenDetails.decimals : 'ether')
+      ethers.parseUnits(amount as string, tokenDetails ? tokenDetails.decimals : 18)
     );
     const totalAmount = amounts.reduce((acc, current) => acc + current, BigInt(0));
+
     try {
+      const isEthTransfer = tokenAddress === ethers.ZeroAddress;
+      if (!account) {
+        toast.error('Please connect your wallet', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        });
+        return;
+      }
+      if (isEthTransfer) {
+        if (!ethBalance || ethBalance.value < totalAmount) {
+          toast.error('Not enough ETH balance for MultiSend', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          });
+          return;
+        }
+      } else {
+        if (!tokenDetails) {
+          toast.error('Token details not available', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          });
+          return;
+        }
+        const tokenBalance = tokenDetails.balanceOf;
+        const totalAmountFormatted = ethers.formatUnits(
+          totalAmount.toString(),
+          tokenDetails.decimals
+        );
+
+        if (Number(tokenBalance) < Number(totalAmountFormatted)) {
+          toast.error('Not enough token balance for MultiSend', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          });
+          return;
+        }
+
+        if (Number(tokenDetails.allowance) < totalAmount) {
+          toast.error('Approved amount is less than the total amount to send', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          });
+          return;
+        }
+      }
+
       const result = await useMultiSend(
         tokenAddress as `0x${string}`,
         addresses,
@@ -106,9 +216,29 @@ export function Multisend() {
         setCurrentStep((prevStep) => prevStep + 1);
       } else {
         console.log('MultiSend failed');
+        toast.error('MultiSend failed', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        });
       }
     } catch (error: any) {
+      console.log(error);
+      
       console.error(`Error handling MultiSend: ${error.message}`);
+      toast.error(`Error: ${error.message}`, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
     }
   };
   const handlePrepareClick = () => {
@@ -222,6 +352,7 @@ export function Multisend() {
           {` ${contracts.multisend[chainId]}`}
         </a>{' '}
       </div>
+      <ToastContainer />
     </div>
   );
 }
