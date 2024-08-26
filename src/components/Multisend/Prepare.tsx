@@ -66,9 +66,9 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
   const tokens: Token[] = [
     { symbol: 'TON', name: 'Tokamak Network', address: contracts.ton[chainId], icon: TONIcon },
     { symbol: 'TOS', name: ' TONStarter', address: contracts.tos[chainId], icon: TOSIcon },
-    { symbol: 'WETH', name: 'Wrapped Ether', address: contracts.weth[chainId], icon: WETHIcon },
     { symbol: 'USDC', name: 'USD Coin', address: contracts.usdc[chainId], icon: USDCIcon },
-    { symbol: 'USDT', name: 'Tether USD', address: contracts.usdt[chainId], icon: USDTIcon }
+    { symbol: 'USDT', name: 'Tether USD', address: contracts.usdt[chainId], icon: USDTIcon },
+    { symbol: 'ETH', name: 'Ethereum', address: ethers.ZeroAddress, icon: WETHIcon }
   ];
 
   useEffect(() => {
@@ -124,7 +124,7 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
   };
 
   const handleTokenSelect = (token: Token) => {
-    setTokenAddress(token.address);
+     setTokenAddress(token.address);
     setToken(token.address);
     setSearchQuery(token.symbol);
     setIsDropdownOpen(false);

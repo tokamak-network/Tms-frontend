@@ -9,6 +9,18 @@ export const getTokenBalance = async (contractAddress: `0x${string}`, userAddres
     address: contractAddress,
     abi: ERC20_INTERFACE
   };
+  if (contractAddress === ethers.ZeroAddress) {
+    try {
+      const provider = new ethers.JsonRpcProvider(
+        NetworkConfig.getClient().chain.rpcUrls.default.http[0]
+      );
+      const balance = await provider.getBalance(userAddress);
+      return ethers.formatEther(balance);
+    } catch (error) {
+      console.error('Error fetching native token balance:', error);
+      return '0';
+    }
+  }
   try {
     const result = await readContracts(NetworkConfig, {
       allowFailure: true,

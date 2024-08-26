@@ -157,7 +157,7 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
           <div className="flex flex-row gap-4 mt-5 ml-4 text-sans-serif">
             <input type="radio" id="exact-amount" name="amount-type" onChange={handleRadioChange} />
             <label htmlFor="exact-amount" className="text-gray-400">
-              Exact Amount
+              Approve Exact Amount
             </label>
             <input
               type="radio"
@@ -166,7 +166,7 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
               onChange={handleRadioChange}
             />
             <label htmlFor="unlimited-amount" className="text-gray-400">
-              Unlimited Amount
+              Approve Unlimited Amount
             </label>
           </div>
         </div>

@@ -27,7 +27,7 @@ export function Multisend() {
   const [csvData, setCSVData] = useState<string | undefined>('');
   const [totalAmount, setTotalAmount] = useState<string>('0');
   const [amountType, setAmountType] = useState<number | string>('');
-  const [tokenAddress, setTokenAddress] = useState<string>(ethers.ZeroAddress);
+  const [tokenAddress, setTokenAddress] = useState<string>('');
   const [txnHash, setTxnHash] = useState<string | null>(null);
   const [csvContent, setCsvContent] = useState<string | undefined>('');
   const [currentStep, setCurrentStep] = React.useState(1);
@@ -48,7 +48,7 @@ export function Multisend() {
     setCurrentStep(1);
     setCSVData('');
     setTotalAmount('0');
-    setTokenAddress(ethers.ZeroAddress);
+    setTokenAddress('');
     setTxnHash(null);
     setAmountType('');
     setCsvContent('');
@@ -100,7 +100,6 @@ export function Multisend() {
       if (result) {
         setCurrentStep((prevStep) => prevStep + 1);
       } else {
-        console.log('Approval failed');
         toast.error('Approval failed', {
           position: 'top-right',
           autoClose: 5000,
@@ -124,6 +123,8 @@ export function Multisend() {
       });
     }
   };
+
+
   const HandleMultiSend = async () => {
     const data = JSON.parse(csvData as string);
     const addresses = Object.keys(data);
@@ -202,7 +203,7 @@ export function Multisend() {
         setTxnHash(result);
         setCurrentStep((prevStep) => prevStep + 1);
       } else {
-        console.log('MultiSend failed');
+
         toast.error('MultiSend failed', {
           position: 'top-right',
           autoClose: 5000,
@@ -318,10 +319,30 @@ export function Multisend() {
                         ? HandleMultiSend()
                         : showHome();
               }}
-              disabled={buttonText == 'Continue' && csvData == ''}
-              className={`font-ans-serif font-semibold text-xs sm:text-sm md:text-s w-[70%] md:w-[500px] text-center px-4 sm:px-8 md:px-16 py-2 sm:py-3 md:py-4 mt-3 sm:mt-4 md:mt-5 leading-4 text-white ${
-                buttonText == 'Continue' && csvData == '' ? 'bg-[#80b4ee] ' : 'bg-[#007AFF]'
-              } rounded-2xl sm:rounded-3xl`}
+              disabled={
+                buttonText === 'Continue'
+                  ? tokenAddress === '' || csvData === ''
+                  : buttonText === 'Approve'
+                    ? Number(tokenDetails?.balanceOf) < Number(totalAmount)
+                    : buttonText === 'MultiSend'
+                      ? tokenAddress === ethers.ZeroAddress
+                        ? Number(ethers.parseEther(ethBalance?.value.toString() as string)) >
+                          Number(totalAmount)
+                        : Number(tokenDetails?.balanceOf) < Number(totalAmount)
+                      : false
+              }
+              className={`font-ans-serif font-semibold text-xs sm:text-sm md:text-s w-[70%] md:w-[500px] text-center px-4 sm:px-8 md:px-16 py-2 sm:py-3 md:py-4 mt-3 sm:mt-4 md:mt-5 leading-4 text-white rounded-2xl sm:rounded-3xl ${
+                (buttonText === 'Continue' && (tokenAddress === '' || csvData === '')) ||
+                (buttonText === 'Approve' &&
+                  Number(tokenDetails?.balanceOf) < Number(totalAmount)) ||
+                (buttonText === 'MultiSend' &&
+                  (tokenAddress === ethers.ZeroAddress
+                    ? Number(ethers.parseEther(ethBalance?.value.toString() as string)) >
+                      Number(totalAmount)
+                    : Number(tokenDetails?.balanceOf) < Number(totalAmount)))
+                  ? 'bg-[#80b4ee]' // Disabled color
+                  : 'bg-[#007AFF]' // Active color
+              }`}
             >
               {buttonText}
             </button>

@@ -173,60 +173,77 @@ const CSVUploader: React.FC<CSVDataProps> = ({
       }
       const columns = trimmedLine.split(',');
 
-      if (columns.length !== 2) {
+      if (columns.length > 2) {
         newErrors.push({
           line: index + 1,
           message: 'Too many columns within the line'
         });
         uniqueErrorLines.add(index + 1);
+      } else if (columns.length < 2) {
+        if (!columns[0].trim()) {
+          newErrors.push({
+            line: index + 1,
+            message: 'No address provided'
+          });
+        } else {
+          newErrors.push({
+            line: index + 1,
+            message: 'No amount provided'
+          });
+        }
+        uniqueErrorLines.add(index + 1);
       } else {
         const [address, amount] = columns;
         const trimmedAddress = address.trim();
 
-        if (trimmedAddress === account) {
+        if (!trimmedAddress) {
           newErrors.push({
             line: index + 1,
-            message: 'Cannot use your own account address'
-          });
-          uniqueErrorLines.add(index + 1);
-        }
-
-        // Check for invalid, dead, or zero address
-        if (
-          !isAddress(trimmedAddress) ||
-          trimmedAddress === '0x0000000000000000000000000000000000000000'
-        ) {
-          let errorMessage = 'Invalid address format';
-          if (trimmedAddress === '0x0000000000000000000000000000000000000000') {
-            errorMessage = 'Dead or zero address is not allowed';
-          }
-          newErrors.push({
-            line: index + 1,
-            message: errorMessage
+            message: 'No address provided'
           });
           uniqueErrorLines.add(index + 1);
         } else {
-          // Increment the count for the address
-          addressCountMap[address.trim()] = (addressCountMap[address.trim()] || 0) + 1;
+          if (trimmedAddress === account) {
+            newErrors.push({
+              line: index + 1,
+              message: 'Cannot use your own account address'
+            });
+            uniqueErrorLines.add(index + 1);
+          }
+
+          // Check for invalid, dead, or zero address
+          if (
+            !isAddress(trimmedAddress) ||
+            trimmedAddress === '0x0000000000000000000000000000000000000000'
+          ) {
+            let errorMessage = 'Invalid address format';
+            if (trimmedAddress === '0x0000000000000000000000000000000000000000') {
+              errorMessage = 'Dead or zero address is not allowed';
+            }
+            newErrors.push({
+              line: index + 1,
+              message: errorMessage
+            });
+            uniqueErrorLines.add(index + 1);
+          } else {
+            // Increment the count for the address
+            addressCountMap[trimmedAddress] = (addressCountMap[trimmedAddress] || 0) + 1;
+          }
         }
 
         // Check for invalid amount
-        if (isNaN(parseFloat(amount.trim())) || parseFloat(amount.trim()) <= 0) {
-          newErrors.push({ line: index + 1, message: 'Wrong amount' });
+        if (!amount.trim()) {
+          newErrors.push({ line: index + 1, message: 'No amount provided' });
           uniqueErrorLines.add(index + 1);
-        }
-
-        if (!address.trim() && !isNaN(parseFloat(amount.trim())) && parseFloat(amount.trim()) > 0) {
-          newErrors.push({
-            line: index + 1,
-            message: 'Both address and amount are incorrect'
-          });
+        } else if (isNaN(parseFloat(amount.trim())) || parseFloat(amount.trim()) <= 0) {
+          newErrors.push({ line: index + 1, message: 'Invalid amount' });
           uniqueErrorLines.add(index + 1);
         }
       }
     });
+
     // Check for duplicate addresses
-    Object.keys(addressCountMap).forEach((address, index) => {
+    Object.keys(addressCountMap).forEach((address) => {
       if (addressCountMap[address] > 1) {
         for (let i = 0; i < lines.length; i++) {
           const line = lines[i];
