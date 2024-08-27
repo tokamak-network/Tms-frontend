@@ -55,6 +55,16 @@ export function Multisend() {
     setSearchQuery('');
   };
   useEffect(() => {}, [account, csvData, tokenAddress, totalAmount]);
+  useEffect(() => {
+    if (csvData) {
+      const parsedCsvData = JSON.parse(csvData as string);
+      const totalAmount: any = Object.values(parsedCsvData).reduce((sum: any, value) => {
+        const parsedValue = parseFloat(value as string);
+        return !isNaN(parsedValue) ? sum + parsedValue : sum;
+      }, 0);
+      setTotalAmount(totalAmount.toString());
+    }
+  }, [csvData]);
 
   let buttonText: string;
   if (currentStep === 1) {
@@ -203,7 +213,6 @@ export function Multisend() {
         setTxnHash(result);
         setCurrentStep((prevStep) => prevStep + 1);
       } else {
-
         toast.error('MultiSend failed', {
           position: 'top-right',
           autoClose: 5000,
@@ -321,7 +330,12 @@ export function Multisend() {
               }}
               disabled={
                 buttonText === 'Continue'
-                  ? tokenAddress === '' || csvData === ''
+                  ? tokenAddress === '' ||
+                    csvData === '' ||
+                    (tokenAddress === ethers.ZeroAddress
+                      ? Number(ethers.parseEther(ethBalance?.value.toString() as string)) >
+                        Number(totalAmount)
+                      : Number(tokenDetails?.balanceOf) < Number(totalAmount))
                   : buttonText === 'Approve'
                     ? Number(tokenDetails?.balanceOf) < Number(totalAmount)
                     : buttonText === 'MultiSend'
@@ -333,6 +347,10 @@ export function Multisend() {
               }
               className={`font-ans-serif font-semibold text-xs sm:text-sm md:text-s w-[70%] md:w-[500px] text-center px-4 sm:px-8 md:px-16 py-2 sm:py-3 md:py-4 mt-3 sm:mt-4 md:mt-5 leading-4 text-white rounded-2xl sm:rounded-3xl ${
                 (buttonText === 'Continue' && (tokenAddress === '' || csvData === '')) ||
+                (tokenAddress === ethers.ZeroAddress
+                  ? Number(ethers.parseEther(ethBalance?.value.toString() as string)) >
+                    Number(totalAmount)
+                  : Number(tokenDetails?.balanceOf) < Number(totalAmount)) ||
                 (buttonText === 'Approve' &&
                   Number(tokenDetails?.balanceOf) < Number(totalAmount)) ||
                 (buttonText === 'MultiSend' &&
