@@ -85,7 +85,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({
 
   const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const content = event.target.value;
-    
+
     const csvData: CSVData = {};
     const lines = content.split('\n');
     lines.forEach((line, index) => {
@@ -188,7 +188,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({
         } else {
           newErrors.push({
             line: index + 1,
-            message: 'No amount provided'
+            message: 'No amount given,add amount with a comma after the address'
           });
         }
         uniqueErrorLines.add(index + 1);
@@ -199,7 +199,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({
         if (!trimmedAddress) {
           newErrors.push({
             line: index + 1,
-            message: 'No address provided'
+            message: 'No address given,add address with a comma before the amount'
           });
           uniqueErrorLines.add(index + 1);
         } else {
@@ -233,7 +233,10 @@ const CSVUploader: React.FC<CSVDataProps> = ({
 
         // Check for invalid amount
         if (!amount.trim()) {
-          newErrors.push({ line: index + 1, message: 'No amount provided' });
+          newErrors.push({
+            line: index + 1,
+            message: 'No amount given,add amount with a comma after the address'
+          });
           uniqueErrorLines.add(index + 1);
         } else if (isNaN(parseFloat(amount.trim())) || parseFloat(amount.trim()) <= 0) {
           newErrors.push({ line: index + 1, message: 'Invalid amount' });
@@ -386,7 +389,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({
         </div>
       )}
       <div className="flex items-center justify-between mb-4 mt-2 font-quicksand text-grey-300 text-sm">
-        <p>Address List</p>
+        <p>Address List, Amount (comma seperated)</p>
         <span
           onClick={() => {
             setIsDropdownOpen(false);
