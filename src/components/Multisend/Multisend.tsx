@@ -352,30 +352,30 @@ export function Multisend() {
                   ? tokenAddress === '' ||
                     csvData === '' ||
                     (tokenAddress === ethers.ZeroAddress
-                      ? Number(ethers.parseEther(ethBalance?.value.toString() as string)) >
-                        Number(totalAmount)
+                      ? Number(ethBalance?.value.toString() as string) <
+                        Number(ethers.parseEther(totalAmount))
                       : Number(tokenDetails?.balanceOf) < Number(totalAmount))
                   : buttonText === 'Approve'
                     ? Number(tokenDetails?.balanceOf) < Number(totalAmount)
                     : buttonText === 'MultiSend'
                       ? tokenAddress === ethers.ZeroAddress
-                        ? Number(ethers.parseEther(ethBalance?.value.toString() as string)) >
-                          Number(totalAmount)
+                        ? Number(ethBalance?.value.toString() as string) <
+                          Number(ethers.parseEther(totalAmount))
                         : Number(tokenDetails?.balanceOf) < Number(totalAmount)
                       : false
               }
               className={`font-ans-serif font-semibold text-xs sm:text-sm md:text-s w-[70%] md:w-[500px] text-center px-4 sm:px-8 md:px-16 py-2 sm:py-3 md:py-4 mt-3 sm:mt-4 md:mt-5 leading-4 text-white rounded-2xl sm:rounded-3xl ${
                 (buttonText === 'Continue' && (tokenAddress === '' || csvData === '')) ||
                 (tokenAddress === ethers.ZeroAddress
-                  ? Number(ethers.parseEther(ethBalance?.value.toString() as string)) >
-                    Number(totalAmount)
+                  ? Number(ethBalance?.value.toString() as string) <
+                    Number(ethers.parseEther(totalAmount))
                   : Number(tokenDetails?.balanceOf) < Number(totalAmount)) ||
                 (buttonText === 'Approve' &&
                   Number(tokenDetails?.balanceOf) < Number(totalAmount)) ||
                 (buttonText === 'MultiSend' &&
                   (tokenAddress === ethers.ZeroAddress
-                    ? Number(ethers.parseEther(ethBalance?.value.toString() as string)) >
-                      Number(totalAmount)
+                    ? Number(ethBalance?.value.toString() as string) <
+                      Number(ethers.parseEther(totalAmount))
                     : Number(tokenDetails?.balanceOf) < Number(totalAmount)))
                   ? 'bg-[#80b4ee]' // Disabled color
                   : 'bg-[#007AFF]' // Active color
