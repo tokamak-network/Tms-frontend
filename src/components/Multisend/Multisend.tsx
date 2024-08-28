@@ -30,6 +30,7 @@ export function Multisend() {
   const [tokenAddress, setTokenAddress] = useState<string>('');
   const [txnHash, setTxnHash] = useState<string | null>(null);
   const [csvContent, setCsvContent] = useState<string | undefined>('');
+  const [warningMessage, setWarningMessage] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = React.useState(1);
   const [searchQuery, setSearchQuery] = useState<string | undefined>('');
   const account = useAccount().address;
@@ -65,6 +66,25 @@ export function Multisend() {
       setTotalAmount(totalAmount.toString());
     }
   }, [csvData]);
+  useEffect(() => {
+    if (tokenAddress && totalAmount) {
+      if (tokenAddress === ethers.ZeroAddress) {
+        if (ethBalance && ethBalance.value < ethers.parseEther(totalAmount)) {
+          setWarningMessage('Insufficient ETH balance for MultiSend');
+        } else {
+          setWarningMessage(null);
+        }
+      } else if (tokenDetails) {
+        if (Number(tokenDetails.balanceOf) < Number(totalAmount)) {
+          setWarningMessage(`Insufficient ${tokenDetails.symbol} balance for MultiSend`);
+        } else {
+          setWarningMessage(null);
+        }
+      }
+    } else {
+      setWarningMessage(null);
+    }
+  }, [tokenAddress, totalAmount, ethBalance, tokenDetails]);
 
   let buttonText: string;
   if (currentStep === 1) {
@@ -133,7 +153,6 @@ export function Multisend() {
       });
     }
   };
-
 
   const HandleMultiSend = async () => {
     const data = JSON.parse(csvData as string);
@@ -366,6 +385,14 @@ export function Multisend() {
             </button>
           )}
         </ConnectButton.Custom>
+      )}
+      {warningMessage && (
+        <div
+          className="mt-4 p-2 items-center bg-white text-red-800 rounded space-y-2 text-sm"
+          style={{ maxHeight: '150px', overflowY: 'auto' }}
+        >
+          Warning : {warningMessage}
+        </div>
       )}
       <div className="text-center mb-2 py-4 lg:mb-0 text-xs lg:text-base md:text-base ">
         Tokamak MultiSender Address :

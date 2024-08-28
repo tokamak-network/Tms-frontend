@@ -176,7 +176,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({
       if (columns.length > 2) {
         newErrors.push({
           line: index + 1,
-          message: 'Too many columns within the line'
+          message: 'Too many columns'
         });
         uniqueErrorLines.add(index + 1);
       } else if (columns.length < 2) {
@@ -188,7 +188,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({
         } else {
           newErrors.push({
             line: index + 1,
-            message: 'No amount given,add amount with a comma after the address'
+            message: 'No amount given. Add amount with a comma after the address'
           });
         }
         uniqueErrorLines.add(index + 1);
@@ -199,7 +199,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({
         if (!trimmedAddress) {
           newErrors.push({
             line: index + 1,
-            message: 'No address given,add address with a comma before the amount'
+            message: 'No address given. Add address with a comma before the amount'
           });
           uniqueErrorLines.add(index + 1);
         } else {
@@ -211,7 +211,6 @@ const CSVUploader: React.FC<CSVDataProps> = ({
             uniqueErrorLines.add(index + 1);
           }
 
-          // Check for invalid, dead, or zero address
           if (
             !isAddress(trimmedAddress) ||
             trimmedAddress === '0x0000000000000000000000000000000000000000'
@@ -226,16 +225,14 @@ const CSVUploader: React.FC<CSVDataProps> = ({
             });
             uniqueErrorLines.add(index + 1);
           } else {
-            // Increment the count for the address
             addressCountMap[trimmedAddress] = (addressCountMap[trimmedAddress] || 0) + 1;
           }
         }
 
-        // Check for invalid amount
         if (!amount.trim()) {
           newErrors.push({
             line: index + 1,
-            message: 'No amount given,add amount with a comma after the address'
+            message: 'No amount given. Add amount with a comma after the address'
           });
           uniqueErrorLines.add(index + 1);
         } else if (isNaN(parseFloat(amount.trim())) || parseFloat(amount.trim()) <= 0) {
@@ -245,7 +242,6 @@ const CSVUploader: React.FC<CSVDataProps> = ({
       }
     });
 
-    // Check for duplicate addresses
     Object.keys(addressCountMap).forEach((address) => {
       if (addressCountMap[address] > 1) {
         for (let i = 0; i < lines.length; i++) {
@@ -254,7 +250,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({
           if (columns[0].trim() === address) {
             newErrors.push({
               line: i + 1,
-              message: `Duplicate address found: ${address}. Please use a unique address for each row.`
+              message: `Duplicate address: ${address}. Use unique addresses`
             });
             uniqueErrorLines.add(i + 1);
           }
@@ -266,11 +262,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({
 
     const uniqueErrorLinesArray = Array.from(uniqueErrorLines);
     const dynamicMessage =
-      uniqueErrorLinesArray.length > 0
-        ? `Line ${uniqueErrorLinesArray.join(
-            ', '
-          )}: Please provide a valid Input, Click 'CSV Example' for more details.`
-        : '';
+      uniqueErrorLinesArray.length > 0 ? "(Click 'CSV Example' for more details.)" : '';
 
     setDynamicMessage(dynamicMessage);
     return newErrors.length === 0;
@@ -429,18 +421,18 @@ const CSVUploader: React.FC<CSVDataProps> = ({
         </div>
       </div>
       {errors.length > 0 && (
-        <div
-          className="mt-4 p-2 items-center bg-white text-red-800 rounded space-y-2 text-sm"
-          style={{ maxHeight: '150px', overflowY: 'auto' }}
-        >
-          {errors.map((error) => (
-            <div key={error.line}>
-              Line {error.line}: {error.message}
-            </div>
-          ))}
-          {dynamicMessage && <div>{dynamicMessage}</div>}
-        </div>
-      )}
+      <div
+        className="mt-4 p-2 items-center bg-white text-red-800 rounded space-y-2 text-sm"
+        style={{ maxHeight: '150px', overflowY: 'auto' }}
+      >
+        {errors.map((error) => (
+          <div key={error.line}>
+            Line {error.line}: {error.message}
+          </div>
+        ))}
+        {dynamicMessage && <div>{dynamicMessage}</div>}
+      </div>
+    )}
     </div>
   );
 };
