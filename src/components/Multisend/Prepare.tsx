@@ -8,6 +8,7 @@ import CSVUploader from './csvUploader';
 import TONIcon from '../../../images/icons/TON.svg';
 import TOSIcon from '../../../images/icons/TOS.svg';
 import WETHIcon from '../../../images/icons/WETH.svg';
+import ETHIcon from '../../../images/icons/ETH.svg';
 import USDTIcon from '../../../images/icons/USDT.svg';
 import USDCIcon from '../../../images/icons/USDC.svg';
 import getTokenBalance from '../../hooks/getTokenBalance';
@@ -68,7 +69,8 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
     { symbol: 'TOS', name: ' TONStarter', address: contracts.tos[chainId], icon: TOSIcon },
     { symbol: 'USDC', name: 'USD Coin', address: contracts.usdc[chainId], icon: USDCIcon },
     { symbol: 'USDT', name: 'Tether USD', address: contracts.usdt[chainId], icon: USDTIcon },
-    { symbol: 'ETH', name: 'Ethereum', address: ethers.ZeroAddress, icon: WETHIcon }
+    { symbol: 'WETH', name: 'Wrapped Ether', address: contracts.weth[chainId], icon: WETHIcon },
+    { symbol: 'ETH', name: 'Ethereum', address: ethers.ZeroAddress, icon: ETHIcon }
   ];
 
   useEffect(() => {
@@ -124,7 +126,7 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
   };
 
   const handleTokenSelect = (token: Token) => {
-     setTokenAddress(token.address);
+    setTokenAddress(token.address);
     setToken(token.address);
     setSearchQuery(token.symbol);
     setIsDropdownOpen(false);

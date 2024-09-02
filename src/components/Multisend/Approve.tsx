@@ -166,7 +166,7 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
               onChange={handleRadioChange}
             />
             <label htmlFor="unlimited-amount" className="text-gray-400">
-              Approve Unlimited Amount
+              Approve Max Amount
             </label>
           </div>
         </div>

@@ -69,13 +69,14 @@ export function Multisend() {
   useEffect(() => {
     if (tokenAddress && totalAmount) {
       if (tokenAddress === ethers.ZeroAddress) {
-        if (ethBalance && ethBalance.value < ethers.parseEther(totalAmount)) {
+        if (ethBalance && ethBalance.value <= ethers.parseEther(totalAmount)) {
           setWarningMessage('Insufficient ETH balance for MultiSend');
         } else {
           setWarningMessage(null);
         }
       } else if (tokenDetails) {
-        if (Number(tokenDetails.balanceOf) < Number(totalAmount)) {
+        
+        if (Number(tokenDetails.balanceOf) <= Number(totalAmount)) {
           setWarningMessage(`Insufficient ${tokenDetails.symbol} balance for MultiSend`);
         } else {
           setWarningMessage(null);
