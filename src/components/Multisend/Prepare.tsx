@@ -185,7 +185,9 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
                       <span className="text-gray-500 ml-2 text-sm">{token.name}</span>
                     </div>
                     <span className="text-gray-700">
-                      {Number(tokenBalances[token.symbol] || 0).toFixed(2)}
+                      {Number(
+                        Math.floor(Number(tokenBalances[token.symbol] || 0) * 100) / 100
+                      ).toFixed(2)}
                     </span>
                   </div>
                 ))}

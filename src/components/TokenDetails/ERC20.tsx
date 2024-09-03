@@ -33,6 +33,7 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({
         : `0x${tokenAddress}`;
       const { name, symbol, decimals, totalSupply, balanceOf, allowance } =
         await getERC20ContractDetails(formattedTokenAddress as `0x${string}`, userAddress);
+
       setTokenDetails({
         name,
         symbol,
@@ -90,7 +91,7 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({
             {tokenDetails.balanceOf
               ? Number(tokenDetails.balanceOf) > 100000
                 ? `${Number(tokenDetails.balanceOf).toExponential(2)}`
-                : `${Number(tokenDetails.balanceOf).toFixed(2)}`
+                : `${Number(Math.floor(Number(tokenDetails.balanceOf) * 100) / 100).toFixed(2)}`
               : '0'}
           </span>
         </div>

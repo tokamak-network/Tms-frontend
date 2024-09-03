@@ -129,7 +129,11 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
             icon={symbol ? getTokenIcon(symbol) : ''}
           />
         )}
-        <StatCard title="Send Amount" value={totalTokensToSend.toFixed(2)} icon={null} />
+        <StatCard
+          title="Send Amount"
+          value={Number(Math.floor(Number(totalTokensToSend) * 100) / 100).toFixed(2)}
+          icon={null}
+        />
         <StatCard title="ETH balance" value={ethBalanceFormatted} icon={ETHIcon.src} />
       </div>
       <div className="mt-5 text-sans-serif">
@@ -143,7 +147,8 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
                   <span className="inline sm:hidden">{trimAddress(recipient.address)}</span>
                 </p>
                 <p className="text-xs sm:text-sm md:text-base lg:text-base xl:text-base ml-2">
-                  {recipient.amount.toFixed(2)} {symbol ? symbol : 'ETH'}
+                  {Number(Math.floor(Number(recipient.amount) * 100) / 100).toFixed(2)}
+                  {symbol ? symbol : 'ETH'}
                 </p>
               </div>
             ))
