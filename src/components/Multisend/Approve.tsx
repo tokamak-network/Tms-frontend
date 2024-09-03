@@ -125,7 +125,9 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
         {tokenDetails && (
           <StatCard
             title={`${symbol ? symbol : 'ETH'} Balance`}
-            value={tokenBalance ? parseFloat(tokenBalance).toFixed(2) : 0}
+            value={
+              tokenBalance ? Number(Math.floor(Number(tokenBalance) * 100) / 100).toFixed(2) : 0
+            }
             icon={symbol ? getTokenIcon(symbol) : ''}
           />
         )}
