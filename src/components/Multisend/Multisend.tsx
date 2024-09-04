@@ -12,6 +12,7 @@ import contracts from '../../config/constants/contracts';
 import getCurrentNetwork from '../../hooks/getCurrentNetwork';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import getERC20ContractDetails from '../../hooks/getTokenDetails';
 
 interface TokenDetailsState {
   name: string | any;
@@ -33,6 +34,7 @@ export function Multisend() {
   const [warningMessage, setWarningMessage] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = React.useState(1);
   const [searchQuery, setSearchQuery] = useState<string | undefined>('');
+  const [allowance, setAllowance] = useState<any | undefined>('');
   const account = useAccount().address;
   const currentNetwork = getCurrentNetwork();
   const chainId = currentNetwork?.chain.id;
@@ -55,7 +57,18 @@ export function Multisend() {
     setCsvContent('');
     setSearchQuery('');
   };
-  useEffect(() => {}, [account, csvData, tokenAddress, totalAmount]);
+  useEffect(() => {
+    (async () => {
+      if (account && tokenAddress) {
+        const data = await getERC20ContractDetails(
+          tokenAddress as `0x${string}`,
+          account as `0x${string}`
+        );
+        const currentAllowance = data.allowance;
+        setAllowance(currentAllowance);
+      }
+    })();
+  });
   useEffect(() => {
     if (csvData) {
       const parsedCsvData = JSON.parse(csvData as string);
@@ -97,7 +110,7 @@ export function Multisend() {
     if (tokenAddress === ethers.ZeroAddress) {
       handleNextClick();
     }
-    if (totalAmount !== '0' && parseFloat(tokenDetails?.allowance) > parseFloat(totalAmount)) {
+    if (totalAmount !== '0' && parseFloat(allowance) >= parseFloat(totalAmount)) {
       handleNextClick();
     }
     buttonText = 'Approve';
@@ -128,8 +141,16 @@ export function Multisend() {
         tokenDetails ? tokenDetails.decimals : 18
       );
       if (result) {
-        setCurrentStep((prevStep) => prevStep + 1);
-      } else {
+        const data = await getERC20ContractDetails(
+          tokenAddress as `0x${string}`,
+          account as `0x${string}`
+        );
+
+        const currentAllowance: any = data.allowance;
+        if (currentAllowance >= totalAmount) {
+          setCurrentStep((prevStep) => prevStep + 1);
+        }
+      } else if (!result) {
         toast.error('Approval failed', {
           position: 'top-right',
           autoClose: 5000,
@@ -243,8 +264,6 @@ export function Multisend() {
         });
       }
     } catch (error: any) {
-      console.log(error);
-
       console.error(`Error handling MultiSend: ${error.message}`);
       toast.error(`Error: ${error.message}`, {
         position: 'top-right',
@@ -260,10 +279,12 @@ export function Multisend() {
   const handlePrepareClick = () => {
     if (currentStep !== 1) {
       setCurrentStep(1);
-      setTotalAmount('0');
       setAmountType('');
       setTxnHash(null);
     }
+  };
+  const roundToDecimals = (number: any, decimals: any) => {
+    return Number(number.toFixed(decimals));
   };
   return (
     <div className="flex flex-col items-center pt-4 sm:pt-6 md:pt-8 sm:px-4 mb-[12%]">
@@ -318,6 +339,7 @@ export function Multisend() {
           setCsvContent={setCsvContent}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
+          currentStep={currentStep}
         />
       )}
       {(currentStep === 2 || currentStep === 3) && (

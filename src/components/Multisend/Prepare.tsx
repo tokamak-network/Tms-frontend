@@ -42,6 +42,7 @@ interface PrepareComponentProps {
   csvContent: string | undefined;
   searchQuery: string | undefined;
   setSearchQuery: React.Dispatch<React.SetStateAction<string | undefined>>;
+  currentStep: any;
 }
 
 const PrepareComponent: React.FC<PrepareComponentProps> = ({
@@ -50,9 +51,9 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
   setToken,
   csvContent,
   setCsvContent,
-
   searchQuery,
-  setSearchQuery
+  setSearchQuery,
+  currentStep
 }) => {
   const [tokenAddress, setTokenAddress] = useState('');
   const [error, setError] = useState('');
@@ -92,7 +93,7 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
     if (account && chainId) {
       fetchBalances();
     }
-  }, [account, chainId]);
+  }, [account, chainId,currentStep]);
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
@@ -214,6 +215,7 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
                   tokenAddress={tokenAddress}
                   setTokenDetails={setTokenDetails}
                   setshowTokenDetails={setShowTokenDetails}
+                  currentStep={currentStep}
                 />
               ) : (
                 ''
