@@ -361,7 +361,7 @@ export function Multisend() {
           recipients={csvData}
           setAmountType={setAmountType}
           setTotalAmount={setTotalAmount}
-          buttonText={getButtonText()}
+          buttonText={getButtonText() as string}
         />
       )}
       {currentStep === 4 && <SuccessCard txnHash={txnHash as string} />}
