@@ -34,6 +34,7 @@ interface ApproveComponentProps {
   recipients: any;
   setAmountType: (amountType: string) => void;
   setTotalAmount: (totalAmount: string) => void;
+  buttonText: string;
 }
 const getTokenIcon = (symbol: string): string | null => {
   const iconMap: { [key: string]: string } = {
@@ -72,8 +73,11 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
   tokenDetails,
   recipients,
   setAmountType,
-  setTotalAmount
+  setTotalAmount,
+  buttonText
 }) => {
+
+
   const [currentAllowance, setAllowance] = useState<any | undefined>('');
   const account = useAccount().address;
   let totalTokensToSend = 0;
@@ -89,17 +93,20 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
   const allowance = tokenDetails ? parseInt(tokenDetails.allowance) : null;
 
   useEffect(() => {
-    (async () => {
-      if (account && tokenAddress) {
-        const data = await getERC20ContractDetails(
-          tokenAddress as `0x${string}`,
-          account as `0x${string}`
-        );
-        const currentAllowance = data.allowance;
-        setAllowance(currentAllowance);
-      }
-    })();
-  });
+    if (account && tokenAddress) {
+      updateAllowance();
+    }
+  }, [account, tokenAddress]);
+
+  const updateAllowance = async () => {
+    if (tokenAddress !== ethers.ZeroAddress) {
+      const data = await getERC20ContractDetails(
+        tokenAddress as `0x${string}`,
+        account as `0x${string}`
+      );
+      setAllowance(data.allowance);
+    }
+  };
 
   const parsedRecipients = recipients
     ? Object.entries(JSON.parse(recipients)).map(([address, amount]) => ({
@@ -167,7 +174,7 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
                   <span className="inline sm:hidden">{trimAddress(recipient.address)}</span>
                 </p>
                 <p className="text-xs sm:text-sm md:text-base lg:text-base xl:text-base ml-2">
-                  {`${symbol ? (symbol === 'ETH' || symbol === 'WETH' ? Number(Math.floor(Number(recipient.amount) * 1000) / 1000).toFixed(3) : Number(Math.floor(Number(recipient.amount) * 100) / 100).toFixed(2)) : ''} `}
+                  {`${symbol ? (symbol === 'ETH' || symbol === 'WETH' ? Number(Math.floor(Number(recipient.amount) * 1000) / 1000).toFixed(3) : Number(Math.floor(Number(recipient.amount) * 100) / 100).toFixed(2)) : Number(Math.floor(Number(recipient.amount) * 1000) / 1000).toFixed(3)} `}
                   {symbol ? symbol : 'ETH'}
                 </p>
               </div>
@@ -177,25 +184,32 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
           )}
         </div>
       </div>
-      {tokenAddress !== ethers.ZeroAddress && currentAllowance < totalTokensToSend && (
-        <div className="mt-10">
-          <div className="flex flex-row gap-4 mt-5 ml-4 text-sans-serif">
-            <input type="radio" id="exact-amount" name="amount-type" onChange={handleRadioChange} />
-            <label htmlFor="exact-amount" className="text-gray-400">
-              Approve Exact Amount
-            </label>
-            <input
-              type="radio"
-              id="unlimited-amount"
-              name="amount-type"
-              onChange={handleRadioChange}
-            />
-            <label htmlFor="unlimited-amount" className="text-gray-400">
-              Approve Max Amount
-            </label>
+      {tokenAddress !== ethers.ZeroAddress &&
+        currentAllowance < totalTokensToSend &&
+        buttonText === 'Approve' && (
+          <div className="mt-10">
+            <div className="flex flex-row gap-4 mt-5 ml-4 text-sans-serif">
+              <input
+                type="radio"
+                id="exact-amount"
+                name="amount-type"
+                onChange={handleRadioChange}
+              />
+              <label htmlFor="exact-amount" className="text-gray-400">
+                Approve Exact Amount
+              </label>
+              <input
+                type="radio"
+                id="unlimited-amount"
+                name="amount-type"
+                onChange={handleRadioChange}
+              />
+              <label htmlFor="unlimited-amount" className="text-gray-400">
+                Approve Max Amount
+              </label>
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 };

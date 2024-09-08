@@ -73,7 +73,7 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({
   }
 
   return (
-    <div className="flex flex-col w-full max-w-md p-4 border border-gray-200 rounded-lg bg-white shadow-sm relative left-0 ">
+    <div className="flex flex-col w-full max-w-md p-4 border border-gray-200 rounded-lg bg-white shadow-sm relative left-0 transition-colors duration-100 ">
       <button
         className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-xl sm:text-2xl"
         onClick={handleClose}

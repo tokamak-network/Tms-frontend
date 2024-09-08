@@ -35,7 +35,8 @@ export function Multisend() {
   const [currentStep, setCurrentStep] = React.useState(1);
   const [searchQuery, setSearchQuery] = useState<string | undefined>('');
   const [allowance, setAllowance] = useState<any | undefined>('');
-  const account = useAccount().address;
+
+  const { address: account, isConnected } = useAccount();
   const currentNetwork = getCurrentNetwork();
   const chainId = currentNetwork?.chain.id;
   const explorerUrl = currentNetwork.chain.blockExplorers.default.url;
@@ -46,6 +47,7 @@ export function Multisend() {
   const handleNextClick = () => {
     setCurrentStep((prevStep) => prevStep + 1);
   };
+
   const showHome = () => {
     setTokenDetails(undefined);
     setCurrentStep(1);
@@ -57,18 +59,13 @@ export function Multisend() {
     setCsvContent('');
     setSearchQuery('');
   };
+
   useEffect(() => {
-    (async () => {
-      if (account && tokenAddress) {
-        const data = await getERC20ContractDetails(
-          tokenAddress as `0x${string}`,
-          account as `0x${string}`
-        );
-        const currentAllowance = data.allowance;
-        setAllowance(currentAllowance);
-      }
-    })();
-  });
+    if (account && tokenAddress) {
+      updateAllowance();
+    }
+  }, [account, tokenAddress, totalAmount]);
+
   useEffect(() => {
     if (csvData) {
       const parsedCsvData = JSON.parse(csvData as string);
@@ -79,6 +76,7 @@ export function Multisend() {
       setTotalAmount(totalAmount.toString());
     }
   }, [csvData]);
+
   useEffect(() => {
     if (tokenAddress && totalAmount) {
       if (tokenAddress === ethers.ZeroAddress) {
@@ -99,26 +97,38 @@ export function Multisend() {
     }
   }, [tokenAddress, totalAmount, ethBalance, tokenDetails]);
 
-  let buttonText: string;
-  if (currentStep === 1) {
-    if (!account) {
-      buttonText = 'Connect Wallet';
+  const updateAllowance = async () => {
+    if (tokenAddress !== ethers.ZeroAddress) {
+      const data = await getERC20ContractDetails(
+        tokenAddress as `0x${string}`,
+        account as `0x${string}`
+      );
+      setAllowance(data.allowance);
+    }
+  };
+
+  const getButtonText = () => {
+    if (!isConnected) {
+      return 'Connect Wallet';
+    }
+
+    if (currentStep === 1) {
+      return 'Continue';
+    } else if (currentStep === 2) {
+      if (tokenAddress === ethers.ZeroAddress) {
+        handleNextClick();
+      }
+      if (totalAmount !== '0' && parseFloat(allowance) >= parseFloat(totalAmount)) {
+        handleNextClick();
+      }
+      return 'Approve';
+    } else if (currentStep === 3) {
+      return 'MultiSend';
     } else {
-      buttonText = 'Continue';
+      return 'Prepare New MultiSend';
     }
-  } else if (currentStep === 2) {
-    if (tokenAddress === ethers.ZeroAddress) {
-      handleNextClick();
-    }
-    if (totalAmount !== '0' && parseFloat(allowance) >= parseFloat(totalAmount)) {
-      handleNextClick();
-    }
-    buttonText = 'Approve';
-  } else if (currentStep === 3) {
-    buttonText = 'MultiSend';
-  } else if (currentStep === 4) {
-    buttonText = 'Prepare New MultiSend';
-  }
+  };
+
   const HandleApprove = async () => {
     try {
       if (parseFloat(tokenDetails?.balanceOf) < parseFloat(totalAmount)) {
@@ -140,17 +150,13 @@ export function Multisend() {
         amountType === 'exact-amount' ? 'exact-amount' : 'max',
         tokenDetails ? tokenDetails.decimals : 18
       );
-      if (result) {
-        const data = await getERC20ContractDetails(
-          tokenAddress as `0x${string}`,
-          account as `0x${string}`
-        );
 
-        const currentAllowance: any = data.allowance;
-        if (currentAllowance >= totalAmount) {
-          setCurrentStep((prevStep) => prevStep + 1);
+      if (result) {
+        await updateAllowance();
+        if (parseFloat(allowance) >= parseFloat(totalAmount)) {
+          setCurrentStep(3);
         }
-      } else if (!result) {
+      } else {
         toast.error('Approval failed', {
           position: 'top-right',
           autoClose: 5000,
@@ -276,22 +282,29 @@ export function Multisend() {
       });
     }
   };
-  const handlePrepareClick = () => {
-    if (currentStep !== 1) {
-      setCurrentStep(1);
-      setAmountType('');
-      setTxnHash(null);
+
+  const handleButtonClick = () => {
+    if (!isConnected) {
+      return;
+    }
+
+    if (currentStep === 1) {
+      handleNextClick();
+    } else if (getButtonText() === 'Approve') {
+      HandleApprove();
+    } else if (getButtonText() === 'MultiSend') {
+      HandleMultiSend();
+    } else {
+      showHome();
     }
   };
-  const roundToDecimals = (number: any, decimals: any) => {
-    return Number(number.toFixed(decimals));
-  };
+
   return (
     <div className="flex flex-col items-center pt-4 sm:pt-6 md:pt-8 sm:px-4 mb-[12%]">
       <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-l text-grey-400 w-full max-w-[650px] px-4 sm:px-0 justify-between">
         <div
           className="flex items-center gap-1 sm:gap-1.5 relative cursor-pointer hover:opacity-80 transition-opacity duration-200 hover:col-span-8"
-          onClick={handlePrepareClick}
+          onClick={() => setCurrentStep(1)}
         >
           <span
             className={`flex justify-center items-center ${
@@ -307,7 +320,7 @@ export function Multisend() {
           <span
             className={`flex justify-center items-center ${
               currentStep === 2 ? 'bg-[#007AFF] text-white' : 'bg-[#F0F2F7] text-[#007AFF]'
-            } w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 border-2 rounded-full text-xs sm:text-sm`}
+            } w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 border-2 rounded-full text-xs sm:text-sm transition-colors duration-300`}
           >
             2
           </span>
@@ -322,7 +335,7 @@ export function Multisend() {
               currentStep === 3 || currentStep === 4
                 ? 'bg-[#007AFF] text-white'
                 : 'bg-[#F0F2F7] text-[#007AFF]'
-            } w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full text-xs sm:text-sm`}
+            } w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full text-xs sm:text-sm transition-colors duration-300`}
           >
             3
           </span>
@@ -350,6 +363,7 @@ export function Multisend() {
           recipients={csvData}
           setAmountType={setAmountType}
           setTotalAmount={setTotalAmount}
+          buttonText={getButtonText()}
         />
       )}
       {currentStep === 4 && <SuccessCard txnHash={txnHash as string} />}
@@ -359,27 +373,19 @@ export function Multisend() {
           {({ openConnectModal }) => (
             <button
               onClick={() => {
-                currentStep == 1 && !account
-                  ? openConnectModal()
-                  : currentStep == 1 && account
-                    ? handleNextClick()
-                    : buttonText == 'Approve'
-                      ? HandleApprove()
-                      : buttonText == 'MultiSend'
-                        ? HandleMultiSend()
-                        : showHome();
+                isConnected ? handleButtonClick() : openConnectModal();
               }}
               disabled={
-                buttonText === 'Continue'
+                getButtonText() === 'Continue'
                   ? tokenAddress === '' ||
                     csvData === '' ||
                     (tokenAddress === ethers.ZeroAddress
                       ? Number(ethBalance?.value.toString() as string) <
                         Number(ethers.parseEther(totalAmount))
                       : Number(tokenDetails?.balanceOf) < Number(totalAmount))
-                  : buttonText === 'Approve'
+                  : getButtonText() === 'Approve'
                     ? Number(tokenDetails?.balanceOf) < Number(totalAmount)
-                    : buttonText === 'MultiSend'
+                    : getButtonText() === 'MultiSend'
                       ? tokenAddress === ethers.ZeroAddress
                         ? Number(ethBalance?.value.toString() as string) <
                           Number(ethers.parseEther(totalAmount))
@@ -387,14 +393,14 @@ export function Multisend() {
                       : false
               }
               className={`font-ans-serif font-semibold text-xs sm:text-sm md:text-s w-[70%] md:w-[500px] text-center px-4 sm:px-8 md:px-16 py-2 sm:py-3 md:py-4 mt-3 sm:mt-4 md:mt-5 leading-4 text-white rounded-2xl sm:rounded-3xl ${
-                (buttonText === 'Continue' && (tokenAddress === '' || csvData === '')) ||
+                (getButtonText() === 'Continue' && (tokenAddress === '' || csvData === '')) ||
                 (tokenAddress === ethers.ZeroAddress
                   ? Number(ethBalance?.value.toString() as string) <
                     Number(ethers.parseEther(totalAmount))
                   : Number(tokenDetails?.balanceOf) < Number(totalAmount)) ||
-                (buttonText === 'Approve' &&
+                (getButtonText() === 'Approve' &&
                   Number(tokenDetails?.balanceOf) < Number(totalAmount)) ||
-                (buttonText === 'MultiSend' &&
+                (getButtonText() === 'MultiSend' &&
                   (tokenAddress === ethers.ZeroAddress
                     ? Number(ethBalance?.value.toString() as string) <
                       Number(ethers.parseEther(totalAmount))
@@ -403,14 +409,14 @@ export function Multisend() {
                   : 'bg-[#007AFF]' // Active color
               }`}
             >
-              {buttonText}
+              {getButtonText()}
             </button>
           )}
         </ConnectButton.Custom>
       )}
       {warningMessage && (
         <div
-          className="mt-4 p-2 items-center bg-white text-red-800 rounded space-y-2 text-sm"
+          className="mt-4 p-2 items-center bg-white text-red-800 rounded space-y-2 text-sm transition-all duration-300 ease-in-out"
           style={{ maxHeight: '150px', overflowY: 'auto' }}
         >
           Warning : {warningMessage}
@@ -422,7 +428,7 @@ export function Multisend() {
           href={`${explorerUrl}/address/${contracts.multisend[chainId]}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-600 hover:text-blue-800"
+          className="text-blue-600 hover:text-blue-800 transition-colors duration-300"
         >
           {` ${contracts.multisend[chainId]}`}
         </a>{' '}
