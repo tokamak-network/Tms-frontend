@@ -117,11 +117,12 @@ export function Multisend() {
     } else if (currentStep === 2) {
       if (tokenAddress === ethers.ZeroAddress) {
         handleNextClick();
+        return 'MultiSend';
       }
       if (totalAmount !== '0' && parseFloat(allowance) >= parseFloat(totalAmount)) {
         handleNextClick();
+        return 'Approve';
       }
-      return 'Approve';
     } else if (currentStep === 3) {
       return 'MultiSend';
     } else {
