@@ -115,8 +115,12 @@ export function Multisend() {
     if (currentStep === 1) {
       return 'Continue';
     } else if (currentStep === 2) {
-      if (tokenAddress === ethers.ZeroAddress || parseFloat(allowance) >= parseFloat(totalAmount)) {
+      if (tokenAddress === ethers.ZeroAddress) {
         handleNextClick();
+        return 'MultiSend';
+      } else if (parseFloat(allowance) >= parseFloat(totalAmount)) {
+        handleNextClick();
+        return 'MultiSend';
       } else {
         return 'Approve';
       }
