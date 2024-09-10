@@ -33,7 +33,6 @@ interface ApproveComponentProps {
   tokenDetails: ITokenDetails | any;
   recipients: any;
   setAmountType: (amountType: string) => void;
-  setTotalAmount: (totalAmount: string) => void;
   buttonText: string;
 }
 const getTokenIcon = (symbol: string): string | null => {
@@ -73,11 +72,8 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
   tokenDetails,
   recipients,
   setAmountType,
-  setTotalAmount,
   buttonText
 }) => {
-
-
   const [currentAllowance, setAllowance] = useState<any | undefined>('');
   const account = useAccount().address;
   let totalTokensToSend = 0;
@@ -119,10 +115,6 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
     totalTokensToSend = parsedRecipients.reduce((acc, current) => acc + current.amount, 0);
   }
 
-  useEffect(() => {
-    setTotalAmount(totalTokensToSend.toFixed(3).toString());
-  }, [totalTokensToSend, setTotalAmount]);
-
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let amountType: 'exact-amount' | 'max';
     switch (e.target.id) {
@@ -137,7 +129,6 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
     }
     const totalAmount = totalTokensToSend.toFixed(3);
     setAmountType(amountType);
-    setTotalAmount(totalAmount);
   };
 
   const trimAddress = (address: string) => {

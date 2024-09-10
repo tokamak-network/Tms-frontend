@@ -116,7 +116,7 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({
             {tokenDetails.allowance
               ? Number(tokenDetails.allowance) > 1000000
                 ? `${Number(tokenDetails.allowance).toExponential(2)}`
-                : `${Number(tokenDetails.allowance)}`
+                : `${Number(Math.floor(Number(tokenDetails.allowance) * 100) / 100).toFixed(2)}`
               : '0'}
           </span>
         </div>

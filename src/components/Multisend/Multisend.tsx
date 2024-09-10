@@ -364,7 +364,6 @@ export function Multisend() {
           tokenDetails={tokenDetails}
           recipients={csvData}
           setAmountType={setAmountType}
-          setTotalAmount={setTotalAmount}
           buttonText={getButtonText() as string}
         />
       )}
@@ -391,7 +390,8 @@ export function Multisend() {
                       ? tokenAddress === ethers.ZeroAddress
                         ? Number(ethBalance?.value.toString() as string) <
                           Number(ethers.parseEther(totalAmount))
-                        : Number(tokenDetails?.balanceOf) < Number(totalAmount)
+                        : Number(tokenDetails?.balanceOf) < Number(totalAmount) ||
+                          parseFloat(allowance) < parseFloat(totalAmount)
                       : false
               }
               className={`font-ans-serif font-semibold text-xs sm:text-sm md:text-s w-[70%] md:w-[500px] text-center px-4 sm:px-8 md:px-16 py-2 sm:py-3 md:py-4 mt-3 sm:mt-4 md:mt-5 leading-4 text-white rounded-2xl sm:rounded-3xl ${
@@ -406,7 +406,8 @@ export function Multisend() {
                   (tokenAddress === ethers.ZeroAddress
                     ? Number(ethBalance?.value.toString() as string) <
                       Number(ethers.parseEther(totalAmount))
-                    : Number(tokenDetails?.balanceOf) < Number(totalAmount)))
+                    : Number(tokenDetails?.balanceOf) < Number(totalAmount) ||
+                      parseFloat(allowance) < parseFloat(totalAmount)))
                   ? 'bg-[#80b4ee]' // Disabled color
                   : 'bg-[#007AFF]' // Active color
               }`}
