@@ -149,7 +149,7 @@ const ApproveComponent: React.FC<ApproveComponentProps> = ({
         )}
         <StatCard
           title="Send Amount"
-          value={Number(Math.floor(Number(totalTokensToSend) * 100) / 100).toFixed(2)}
+          value={Number(Math.floor(Number(totalTokensToSend) * 1000) / 1000).toFixed(3)}
           icon={null}
         />
         <StatCard title="ETH balance" value={ethBalanceFormatted} icon={ETHIcon.src} />
