@@ -6,10 +6,10 @@ interface Props {
 
 const ExampleCSV: React.FC<Props> = ({ setIsExampleCSVOpen }) => {
   const [showPopup, setShowPopup] = useState(true);
-  const csvContent = `0x48a38c840DF7761D8b42BA233a3548b0daC3926E,1
-0xC8c30Fa803833dD1Fd6DBCDd91Ed0b301EFf87cF,13.45
-0x7D52422D3A5fE9bC92D3aE8167097eE09F1b347d,1.049
-0x64c9525A3c3a65Ea88b06f184F074C2499578A7E,1 `;
+  const csvContent = `0xBC5A1E5833daC6Ce165c26f44c8b51284DF53391,1
+0xDa9B006a2D6c39F69E447924994018C08e268f7a,13.45
+0xfC8071D3BA8f18C8661fD068745389A9cF2D027F,1.049
+0x867E273da32d3d213bb0779764d2CB621B0524d6,1 `;
 
   const handleClose = () => {
     setShowPopup(false);
