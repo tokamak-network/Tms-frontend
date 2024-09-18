@@ -300,14 +300,26 @@ export function Multisend() {
       showHome();
     }
   };
+  const handleBack = () => {
+    if (currentStep > 1) {
+      setCurrentStep(1);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center pt-4 sm:pt-6 md:pt-8 sm:px-4 mb-[12%]">
+      <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-l text-grey-400 w-full max-w-[650px] px-4 sm:px-0 justify-between py-2 mb-2">
+        {currentStep > 1 && (
+          <button
+            onClick={handleBack}
+            className=" hover:text-[#0056b3] transition-colors duration-200 font-semibold"
+          >
+            ← Back
+          </button>
+        )}
+      </div>
       <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-l text-grey-400 w-full max-w-[650px] px-4 sm:px-0 justify-between">
-        <div
-          className="flex items-center gap-1 sm:gap-1.5 relative cursor-pointer hover:opacity-80 transition-opacity duration-200 hover:col-span-8"
-          onClick={() => setCurrentStep(1)}
-        >
+        <div className="flex items-center gap-1 sm:gap-1.5 relative hover:opacity-80 transition-opacity duration-200 ">
           <span
             className={`flex justify-center items-center ${
               currentStep === 1 ? 'bg-[#007AFF] text-white' : 'bg-[#F0F2F7] text-[#007AFF]'
