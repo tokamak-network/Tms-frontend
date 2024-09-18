@@ -182,7 +182,7 @@ export function Multisend() {
       });
     }
   };
-
+ 
   const HandleMultiSend = async () => {
     const data = JSON.parse(csvData as string);
     const addresses = Object.keys(data);
@@ -309,7 +309,7 @@ export function Multisend() {
   return (
     <div className="flex flex-col items-center pt-4 sm:pt-6 md:pt-8 sm:px-4 mb-[12%]">
       <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-l text-grey-400 w-full max-w-[650px] px-4 sm:px-0 justify-between py-2 mb-2">
-        {currentStep > 1 && (
+        {currentStep > 1 && currentStep !== 4 && (
           <button
             onClick={handleBack}
             className=" hover:text-[#0056b3] transition-colors duration-200 font-semibold"
