@@ -182,7 +182,7 @@ export function Multisend() {
       });
     }
   };
- 
+
   const HandleMultiSend = async () => {
     const data = JSON.parse(csvData as string);
     const addresses = Object.keys(data);
@@ -319,7 +319,7 @@ export function Multisend() {
         )}
       </div>
       <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-l text-grey-400 w-full max-w-[650px] px-4 sm:px-0 justify-between">
-        <div className="flex items-center gap-1 sm:gap-1.5 relative hover:opacity-80 transition-opacity duration-200 ">
+        <div className="flex items-center gap-1 sm:gap-1.5 relative transition-opacity duration-200 ">
           <span
             className={`flex justify-center items-center ${
               currentStep === 1 ? 'bg-[#007AFF] text-white' : 'bg-[#F0F2F7] text-[#007AFF]'
