@@ -195,6 +195,7 @@ const CSVUploader: React.FC<CSVDataProps> = ({
       } else {
         const [address, amount] = columns;
         const trimmedAddress = address.trim();
+        const trimmedAmount = amount.trim();
 
         if (!trimmedAddress) {
           newErrors.push({
@@ -229,15 +230,21 @@ const CSVUploader: React.FC<CSVDataProps> = ({
           }
         }
 
-        if (!amount.trim()) {
+        if (!trimmedAmount) {
           newErrors.push({
             line: index + 1,
             message: 'No amount given. Add amount with a comma after the address'
           });
           uniqueErrorLines.add(index + 1);
-        } else if (isNaN(parseFloat(amount.trim())) || parseFloat(amount.trim()) <= 0) {
-          newErrors.push({ line: index + 1, message: 'Invalid amount' });
-          uniqueErrorLines.add(index + 1);
+        } else {
+          const parsedAmount = parseFloat(trimmedAmount);
+          if (isNaN(parsedAmount) || parsedAmount <= 0 || !/^\d*\.?\d+$/.test(trimmedAmount)) {
+            newErrors.push({
+              line: index + 1,
+              message: 'Invalid amount. Must be a positive number'
+            });
+            uniqueErrorLines.add(index + 1);
+          }
         }
       }
     });

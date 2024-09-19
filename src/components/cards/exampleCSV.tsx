@@ -8,7 +8,7 @@ const ExampleCSV: React.FC<Props> = ({ setIsExampleCSVOpen }) => {
   const [showPopup, setShowPopup] = useState(true);
   const csvContent = `0xBC5A1E5833daC6Ce165c26f44c8b51284DF53391,1
 0xDa9B006a2D6c39F69E447924994018C08e268f7a,13.45
-0xfC8071D3BA8f18C8661fD068745389A9cF2D027F,1.049
+0xfC8071D3BA8f18C8661fD068745389A9cF2D027F,1.04
 0x867E273da32d3d213bb0779764d2CB621B0524d6,1 `;
 
   const handleClose = () => {
