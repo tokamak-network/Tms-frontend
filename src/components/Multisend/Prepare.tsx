@@ -67,7 +67,6 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
 
   const tokens: Token[] = [
     { symbol: 'TON', name: 'Tokamak Network', address: contracts.ton[chainId], icon: TONIcon },
-    { symbol: 'TOS', name: ' TONStarter', address: contracts.tos[chainId], icon: TOSIcon },
     { symbol: 'USDC', name: 'USD Coin', address: contracts.usdc[chainId], icon: USDCIcon },
     { symbol: 'USDT', name: 'Tether USD', address: contracts.usdt[chainId], icon: USDTIcon },
     { symbol: 'WETH', name: 'Wrapped Ether', address: contracts.weth[chainId], icon: WETHIcon },

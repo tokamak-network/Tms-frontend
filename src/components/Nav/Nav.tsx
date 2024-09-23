@@ -14,8 +14,7 @@ const Navbar = () => {
     { href: 'https://titan.tokamak.network/', text: 'L2 Mainnet' },
     { href: 'https://bridge.tokamak.network/#/', text: 'Bridge & Swap' },
     { href: 'https://simple.staking.tokamak.network/home', text: 'Staking' },
-    { href: 'https://dao.tokamak.network/#/', text: 'DAO' },
-    { href: 'https://tonstarter.tokamak.network/', text: 'Launchpad' }
+    { href: 'https://dao.tokamak.network/#/', text: 'DAO' }
   ];
   return (
     <nav className="font-titillium text-[15px] font-semibold leading-[1.53]">
