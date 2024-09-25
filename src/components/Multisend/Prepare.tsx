@@ -64,6 +64,7 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
 
   const account = useAccount().address;
   const chainId = getCurrentNetwork()?.chain.id;
+  console.log(typeof(chainId), 'chainId');
 
   const tokens: Token[] = [
     { symbol: 'TON', name: 'Tokamak Network', address: contracts.ton[chainId], icon: TONIcon },
@@ -92,7 +93,7 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
     if (account && chainId) {
       fetchBalances();
     }
-  }, [account, chainId,currentStep]);
+  }, [account, chainId, currentStep]);
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
@@ -126,7 +127,6 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
   };
 
   const handleTokenSelect = (token: Token) => {
-  
     setTokenDetails(undefined);
     setTokenAddress(token.address);
     setToken(token.address);
