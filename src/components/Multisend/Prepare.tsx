@@ -64,7 +64,6 @@ const PrepareComponent: React.FC<PrepareComponentProps> = ({
 
   const account = useAccount().address;
   const chainId = getCurrentNetwork()?.chain.id;
-  console.log(typeof(chainId), 'chainId');
 
   const tokens: Token[] = [
     { symbol: 'TON', name: 'Tokamak Network', address: contracts.ton[chainId], icon: TONIcon },
