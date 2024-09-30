@@ -13,6 +13,7 @@ import getCurrentNetwork from '../../hooks/getCurrentNetwork';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import getERC20ContractDetails from '../../hooks/getTokenDetails';
+import { Loader2 } from 'lucide-react';
 
 interface TokenDetailsState {
   name: string | any;
@@ -35,6 +36,7 @@ export function Multisend() {
   const [currentStep, setCurrentStep] = React.useState(1);
   const [searchQuery, setSearchQuery] = useState<string | undefined>('');
   const [allowance, setAllowance] = useState<any | undefined>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { address: account, isConnected } = useAccount();
   const currentNetwork = getCurrentNetwork();
@@ -133,6 +135,7 @@ export function Multisend() {
 
   const HandleApprove = async () => {
     try {
+      setIsLoading(true);
       if (parseFloat(tokenDetails?.balanceOf) < parseFloat(totalAmount)) {
         toast.error('Not enough balance', {
           position: 'top-right',
@@ -180,6 +183,8 @@ export function Multisend() {
         draggable: true,
         progress: undefined
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -192,6 +197,7 @@ export function Multisend() {
     const totalAmount = amounts.reduce((acc, current) => acc + current, BigInt(0));
 
     try {
+      setIsLoading(true);
       const isEthTransfer = tokenAddress === ethers.ZeroAddress;
       if (!account) {
         toast.error('Please connect your wallet', {
@@ -282,6 +288,8 @@ export function Multisend() {
         draggable: true,
         progress: undefined
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -389,7 +397,7 @@ export function Multisend() {
                 isConnected ? handleButtonClick() : openConnectModal();
               }}
               disabled={
-                getButtonText() === 'Continue'
+                isLoading || getButtonText() === 'Continue'
                   ? tokenAddress === '' ||
                     csvData === '' ||
                     (tokenAddress === ethers.ZeroAddress
@@ -424,7 +432,13 @@ export function Multisend() {
                   : 'bg-[#007AFF]' // Active color
               }`}
             >
-              {getButtonText()}
+              {isLoading ? (
+                <div className="flex items-center justify-center">
+                  <Loader2 className="mr-6 h-6 w-6 animate-spin" />
+                </div>
+              ) : (
+                getButtonText()
+              )}
             </button>
           )}
         </ConnectButton.Custom>
