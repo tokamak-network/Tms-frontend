@@ -326,7 +326,7 @@ export function Multisend() {
           </button>
         )}
       </div>
-      <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-l text-grey-400 w-full max-w-[650px] px-4 sm:px-0 justify-between">
+      <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm md:text-l text-grey-400 w-full max-w-[650px] px-4 sm:px-0 justify-between transform transition-all duration-500 ease-in-out translate-x-0">
         <div className="flex items-center gap-1 sm:gap-1.5 relative transition-opacity duration-200 ">
           <span
             className={`flex justify-center items-center ${
