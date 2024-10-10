@@ -18,6 +18,50 @@ interface TokenDetailsState {
   allowance: string | undefined;
 }
 
+function formatLargeNumber(num: string | number): string {
+  const suffixes = [
+    { value: 1e6, name: "Million" },
+    { value: 1e9, name: "Billion" },
+    { value: 1e12, name: "Trillion" },
+    { value: 1e15, name: "Quadrillion" },
+    { value: 1e18, name: "Quintillion" },
+    { value: 1e21, name: "Sextillion" },
+    { value: 1e24, name: "Septillion" },
+    { value: 1e27, name: "Octillion" },
+    { value: 1e30, name: "Nonillion" },
+    { value: 1e33, name: "Decillion" },
+    { value: 1e36, name: "Undecillion" },
+    { value: 1e39, name: "Duodecillion" },
+    { value: 1e42, name: "Tredecillion" },
+    { value: 1e45, name: "Quattuordecillion" },
+    { value: 1e48, name: "Quindecillion" },
+    { value: 1e51, name: "Sexdecillion" },
+    { value: 1e54, name: "Septendecillion" },
+    { value: 1e57, name: "Octodecillion" },
+    { value: 1e60, name: "Novemdecillion" },
+    { value: 1e63, name: "Vigintillion" },
+    { value: 1e100, name: "Googol" }
+  ];
+
+  num = Number(num);
+
+  if (isNaN(num) || !isFinite(num)) return num.toString();
+
+  if (num < 100) {
+    return num.toFixed(2);
+  }
+
+  const suffix = suffixes.slice().reverse().find(item => num >= item.value);
+
+  if (suffix) {
+    const scale = Math.floor(Math.log10(num / suffix.value));
+    const scaled = (num / suffix.value).toFixed(scale < 3 ? 2 : 0);
+    return scaled + " " + suffix.name;
+  }
+
+  return num.toFixed(2);
+}
+
 const TokenDetails: React.FC<TokenDetailsProps> = ({
   tokenAddress,
   setTokenDetails,
@@ -51,7 +95,7 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({
         setTokenDetails(details);
         setTokenDetailsState(details);
         setIsLoading(false);
-        setTimeout(() => setIsVisible(true), 50); // Delay to trigger animation
+        setTimeout(() => setIsVisible(true), 50);
       } catch (error) {
         console.error('Failed to fetch token details', error);
         setIsLoading(false);
@@ -62,7 +106,7 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({
 
   const handleClose = () => {
     setIsVisible(false);
-    setTimeout(() => setshowTokenDetails(false), 300); // Delay to allow fade-out animation
+    setTimeout(() => setshowTokenDetails(false), 300);
   };
 
   if (isLoading) {
@@ -91,38 +135,26 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({
       <div className="grid grid-cols-2 gap-2 sm:gap-4">
         <div className="flex flex-row items-center mt-2 sm:mt-4">
           <span className="text-gray-700 break-words">Balance:</span>
-          <span className="font-sans text-gray-900 ml-1 sm:ml-2 break-all">
-            {tokenDetails?.balanceOf
-              ? Number(tokenDetails.balanceOf) > 100000
-                ? `${Number(tokenDetails.balanceOf).toExponential(2)}`
-                : `${Number(Math.floor(Number(tokenDetails.balanceOf) * 100) / 100).toFixed(2)}`
-              : '0'}
+          <span className="font-sans text-gray-900 ml-1 sm:ml-2 ">
+            {tokenDetails?.balanceOf ? formatLargeNumber(tokenDetails.balanceOf) : '0'}
           </span>
         </div>
         <div className="flex flex-row items-center mt-2 sm:mt-4">
           <span className="text-gray-700 break-words">Decimals:</span>
-          <span className="font-sans text-gray-900 ml-1 sm:ml-2 break-all">
+          <span className="font-sans text-gray-900 ml-1 sm:ml-2 ">
             {tokenDetails?.decimals}
           </span>
         </div>
         <div className="flex flex-row items-center mt-2 sm:mt-4">
-          <span className="text-gray-700 break-words">Supply:</span>
-          <span className="font-sans text-gray-900 ml-1 sm:ml-2 break-all">
-            {tokenDetails?.totalSupply
-              ? Number(tokenDetails.totalSupply) > 1000000
-                ? `${Number(tokenDetails.totalSupply).toExponential(2)}`
-                : `${Number(tokenDetails.totalSupply)}`
-              : '0'}
+          <span className="text-gray-700 break-words">TotalSupply:</span>
+          <span className="font-sans text-gray-900 ml-1 sm:ml-2">
+            {tokenDetails?.totalSupply ? formatLargeNumber(tokenDetails.totalSupply) : '0'}
           </span>
         </div>
         <div className="flex flex-row items-center mt-2 sm:mt-4">
           <span className="text-gray-700 break-words">Allowance:</span>
-          <span className="font-sans text-gray-900 ml-2 break-all">
-            {tokenDetails?.allowance
-              ? Number(tokenDetails.allowance) > 1000000
-                ? `${Number(tokenDetails.allowance).toExponential(2)}`
-                : `${Number(Math.floor(Number(tokenDetails.allowance) * 100) / 100).toFixed(2)}`
-              : '0'}
+          <span className="font-sans text-gray-900 ml-2 ">
+            {tokenDetails?.allowance ? formatLargeNumber(tokenDetails.allowance) : '0'}
           </span>
         </div>
       </div>
